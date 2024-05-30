@@ -1,56 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Noto Sans KR', Arial, sans-serif;
+}
+/* Main container style */
 .Main {
-  text-align: center;
-}
-
-.Main-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.login-container {
-  margin-top: 20px;
-}
-
-form {
-  width: 300px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-}
-
-.form-group {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input {
-  width: calc(100% - 12px);
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-button {
+  overflow-y: scroll;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
+}
+
+/* Section styles */
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
   color: white;
+  font-size: 2em;
+}
+/* Gradient background for the first section */
+.gradient-background {
+  background: linear-gradient(to right, #CC00FF, #FFCC99);
+}
+
+/* Black background for the other sections */
+.black-background {
+  background: black;
+}
+
+/*navigation bar style*/
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 1rem;
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Navbar container style */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+/* Logo style */
+.logo {
+  color: white;
+  font-size: 1.5rem;
+  margin-left: 1rem;
+}
+
+.navbar-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: none;
-  border-radius: 3px;
+  border-radius: 20px;
+  height: 40px;
+}
+
+/* Navbar ul style */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Navbar li style */
+.navbar li {
+  margin: 0 1rem;
+}
+
+.navbar a:hover{
+  color: gray;
+}
+
+/* Navbar link style */
+.navbar a {
+  color: black;
+  text-decoration: none;
+  font-size: 1rem;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #0056b3;
+/* Intro container style */
+.intro-container {
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+/* Recommend button style */
+.recommend-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #CC00FF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.recommend-button:hover {
+  background-color: #FFCC99;
 }

@@ -57,11 +57,147 @@ function Main() {
           </div>
         </div>
       </section>
-      <section className="section black-background">
-        <h2>Search Music</h2>
+      <section className="section black-background1">
+        <div className='second-container'>
+          <h2>음악 검색</h2>
+          <div className='search-container'>
+            <input type="text" className="search-input" placeholder="검색어를 입력하세요" />
+            <button className="search-button">검색</button>
+          </div>
+        </div>
       </section>
-      <section className="section black-background">
-        <h2>Music TOP 30 Ranking</h2>
+      <section className="section black-background2">
+        <div className='third-container'>
+          <h2>실시간 TOP 랭킹</h2>
+          <div className='chart-container'>
+            <div className='chartline'>
+              <div className='chart-box'>
+                <span className='rank'>1</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>
+              <div className='chart-box'>
+                <span className='rank'>2</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>
+              <div className='chart-box'>
+                <span className='rank'>3</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>
+              <div className='chart-box'>
+                <span className='rank'>4</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>
+              <div className='chart-box'>
+                <span className='rank'>5</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>
+            </div>
+            <div className='chartline'>
+              <div className='chart-box'>
+                <span className='rank'>6</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>
+              <div className='chart-box'>
+                <span className='rank'>7</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>
+              <div className='chart-box'>
+                <span className='rank'>8</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>              
+              <div className='chart-box'>
+                <span className='rank'>9</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>              
+              <div className='chart-box'>
+                <span className='rank'>10</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>            
+            </div>
+            <div className='chartline'>
+            <div className='chart-box'>
+                <span className='rank'>11</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>              
+              <div className='chart-box'>
+                <span className='rank'>12</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>              
+              <div className='chart-box'>
+                <span className='rank'>13</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>              
+              <div className='chart-box'>
+                <span className='rank'>14</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>              
+              <div className='chart-box'>
+                <span className='rank'>15</span>
+                <div className='album-img'></div>
+                <div className='info'>
+                  <h4 className='title'>노래 제목</h4>
+                  <span className='artist'>아티스트</span>
+                </div>
+              </div>            
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );

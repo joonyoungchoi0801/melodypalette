@@ -33,10 +33,13 @@ html, body {
 }
 
 /* Black background for the other sections */
-.black-background {
+.black-background1 {
   background: black;
 }
 
+.black-background2 {
+  background: black;
+}
 /*navigation bar style*/
 .navbar {
   position: fixed;
@@ -157,4 +160,100 @@ html, body {
 
 .album:hover {
   transform: scale(1.1);
+}
+
+/*search-container style*/
+.second-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-container {
+  align-items: center;
+}
+
+.search-input {
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 1rem;
+  margin-top: 30px;
+  width: 650px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.792);
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  background-color: #CC00FF;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  width: 100px;
+  height: 50px;
+}
+
+.search-button:hover {
+  background-color: #9a01c1;
+}
+
+/*third-container styles*/
+.third-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.chartline {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 350px;
+  height: 400px;
+  padding: 1rem;
+  gap: 0.5rem;
+  background-color: transparent;
+}
+
+.chart-box {
+  display: flex;
+  align-items: center;
+  width: 330px;
+  height: 80px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: medium;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+}
+
+.chart-box:hover {
+  background-color: aliceblue;
+  color: black;
+}
+
+.rank {
+  width: 18px;
+  height: 23px;
+}
+
+.album-img {
+  width: 50px;
+  height: 50px;
+  background-color: #da75f3;
+  margin-left: 20px;
+  margin-right: 10px;
 }

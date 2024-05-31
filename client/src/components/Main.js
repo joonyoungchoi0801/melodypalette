@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Main.css';
+
 // import Login from './Login';
 
 const albumCovers = [
@@ -13,6 +15,8 @@ const albumCovers = [
 
 function Main() {
   const [navbarBackground, setNavbarBackground] = useState('transparent');
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -27,6 +31,10 @@ function Main() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSearch = () => {
+    navigate(`/search?query=${searchTerm}`);
+  };
 
   return (
     <div className="Main">
@@ -61,8 +69,8 @@ function Main() {
         <div className='second-container'>
           <h2>음악 검색</h2>
           <div className='search-container'>
-            <input type="text" className="search-input" placeholder="검색어를 입력하세요" />
-            <button className="search-button">검색</button>
+            <input type="text" className="search-input" placeholder="검색어를 입력하세요" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
+            <button className="search-button" onClick={handleSearch}>검색</button>
           </div>
         </div>
       </section>

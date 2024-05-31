@@ -1,0 +1,81 @@
+.SearchResult {
+  overflow-y: scroll;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  width: 100%;
+}
+
+.navbar {
+  background-color: black;
+}
+
+.search-container2 {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35vh;
+  width: 100%;
+  color: white;
+  font-size: 2em;
+}
+
+.result-song-container {
+  padding: 2rem;
+  background-color: black;
+  color: white;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.search-keyword {
+  color: #CC00FF;
+  font-weight: bold;
+  font-size: large;
+}
+
+.result-song-list {
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  height: 80vh;
+  margin-top: 20px;
+  border-top: 1px solid white; 
+  border-bottom: none; 
+  border-left: none;
+  border-right: none;
+}
+
+.result-song-line {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  height: 15vh;
+  align-items: center;
+  background-color: black;
+  border-bottom: 1px solid white; 
+  padding: 20px;
+}
+
+.album-img2 {
+  width: 70px;
+  height: 70px;
+  background-color: gainsboro;
+  margin-left: 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.result-singer-container{
+  padding: 2rem;
+  background-color: black;
+  color: white;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}

@@ -70,7 +70,21 @@ function SearchResult() {
         </div>
       </section>
       <section className='result-singer-container'>
-        
+        <h2>아티스트 + </h2>
+        <div className='singer-img-container'>
+          <div className='singer-img-box'>
+            <div className='singer-img' />
+            <p className='singer-name'>아티스트 명</p>
+          </div>  
+          <div className='singer-img-box'>
+            <div className='singer-img' />
+            <p className='singer-name'>아티스트 명</p>
+          </div>
+          <div className='singer-img-box'>
+            <div className='singer-img' />
+            <p className='singer-name'>아티스트 명</p>
+          </div>        
+        </div>
       </section>
     </div>
   );

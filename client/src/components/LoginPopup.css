@@ -54,7 +54,7 @@
 .login-button {
   width: 100%;
   padding: 10px;
-  background: #CC00FF;
+  background: black;
   color: white;
   border: none;
   border-radius: 5px;
@@ -62,5 +62,20 @@
 }
 
 .login-button:hover {
-  background: black;
+  background: #CC00FF;
+}
+
+.join-button {
+  width: 100%;
+  padding: 10px;
+  background: gray;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.join-button:hover {
+  background: #FFCC99;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import './LoginPopup.css';
 
-function LoginPopup({ isOpen, onClose }) {
+function LoginPopup({ isOpen, onClose, onSwitchToSignup }) {
   if (!isOpen) return null;
 
   return (
@@ -19,6 +19,7 @@ function LoginPopup({ isOpen, onClose }) {
             <input type="password" id="password" name="password" />
           </div>
           <button type="submit" className="login-button">로그인</button>
+          <button type="submit" className="join-button" onClick={onSwitchToSignup}>회원가입</button>
         </form>
       </div>
     </div>

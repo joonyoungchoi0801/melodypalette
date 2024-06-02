@@ -1,0 +1,102 @@
+.signup-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.signup-popup {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  height: 550px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.signup{
+  text-align: center;
+}
+
+.form-group {
+  margin-top: 5px;
+}
+
+.input-button-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.check-duplicate-button {
+  margin-left: 0px; 
+  font-size: 10px;
+  width: 60px;
+  height: 35px;
+  background-color: #CC00FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.check-duplicate-button:hover {
+  background-color: #ae00d9;
+}
+
+.send-email-code-button{
+  font-size: 10px;
+  height: 35px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.send-email-code-button:hover{
+  background-color: rgb(88, 88, 88);
+}
+
+.verify-email-code-button{
+  margin-left: 0px; 
+  font-size: 10px;
+  width: 60px;
+  height: 35px;
+  background-color: #CC00FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signup-button {
+  width: 100%;
+  padding: 10px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background: #CC00FF;
+}

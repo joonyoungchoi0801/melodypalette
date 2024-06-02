@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Main.css';
 import LoginPopup from './LoginPopup';
+import SignupPopup from './SignupPopup';
 
 // import Login from './Login';
 
@@ -19,6 +20,7 @@ function Main() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -48,6 +50,14 @@ function Main() {
 
   const closeLoginPopup = () => {
     setIsLoginPopupOpen(false);
+  };
+
+  const openSignupPopup = () => setIsSignupOpen(true);
+  const closeSignupPopup = () => setIsSignupOpen(false);
+
+  const switchToSignup = () => {
+    closeLoginPopup();
+    openSignupPopup();
   };
 
   return (
@@ -221,7 +231,8 @@ function Main() {
           </div>
         </div>
       </section>
-      <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} />
+      <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} onSwitchToSignup={switchToSignup}/>
+      <SignupPopup isOpen={isSignupOpen} onClose={closeSignupPopup} />
     </div>
   );
 }

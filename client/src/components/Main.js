@@ -43,7 +43,7 @@ function Main() {
           <h3 className="logo">Melodypalette</h3>
           <div className='navbar-box'>
             <ul>
-              <li><a href="#section1">음악 검색</a></li>
+              <li><a href="#section1">제목 또는 아티스트 검색</a></li>
               <li><a href="#section2">실시간 top 랭킹</a></li>
               <li><a href="#section3">Playlist</a></li>
               <li><a href="#section4">프로필</a></li>
@@ -67,7 +67,7 @@ function Main() {
       </section>
       <section className="section black-background1">
         <div className='second-container'>
-          <h2>음악 검색</h2>
+          <h2>제목 또는 아티스트 검색</h2>
           <div className='search-container'>
             <input type="text" className="search-input" placeholder="검색어를 입력하세요" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
             <button className="search-button" onClick={handleSearch}>검색</button>

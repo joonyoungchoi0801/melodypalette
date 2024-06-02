@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Main.css';
+import LoginPopup from './LoginPopup';
 
 // import Login from './Login';
 
@@ -17,6 +18,7 @@ function Main() {
   const [navbarBackground, setNavbarBackground] = useState('transparent');
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -40,6 +42,14 @@ function Main() {
     navigate('/recommendation'); 
   };
 
+  const handleProfileClick = () => {
+    setIsLoginPopupOpen(true);
+  };
+
+  const closeLoginPopup = () => {
+    setIsLoginPopupOpen(false);
+  };
+
   return (
     <div className="Main">
       <nav className="navbar" style={{ backgroundColor: navbarBackground }}>
@@ -50,7 +60,7 @@ function Main() {
               <li><a href="#section1">제목 또는 아티스트 검색</a></li>
               <li><a href="#section2">실시간 top 랭킹</a></li>
               <li><a href="#section3">Playlist</a></li>
-              <li><a href="#section4">프로필</a></li>
+              <li><a href="#section4" onClick={handleProfileClick}>프로필</a></li>
             </ul>
           </div>
         </div>
@@ -211,6 +221,7 @@ function Main() {
           </div>
         </div>
       </section>
+      <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} />
     </div>
   );
 }

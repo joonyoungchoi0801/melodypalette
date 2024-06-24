@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Recommendation.css';
 
 function Recommendation() {
@@ -26,8 +27,8 @@ function Recommendation() {
       </div>
       <div className='select-content'>
         <div className='options'>
-          <button className='option-button'>아티스트로 선택</button>
-          <button className='option-button'>장르로 선택</button>
+          <Link to="/artists" className='option-button'>아티스트로 선택</Link>
+          <Link to="/genres" className='option-button'>장르로 선택</Link>
         </div>
       </div>
     </div>

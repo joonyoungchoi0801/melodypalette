@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Main from './Main';
-import SearchResult from './SearchResult';
-import Recommendation from './Recommendation';
-import ArtistSelection from './ArtistSelection'; 
-import GenreSelection from './GenreSelection';
+import Main from './Main/Main';
+import SearchResult from './SearchResult/SearchResult';
+import Recommendation from './Recommendation/Recommendation';
+import ArtistSelection from './ArtistSelection/ArtistSelection'; 
+import GenreSelection from './GenreSelection/GenreSelection';
 
 function App() {
   return (

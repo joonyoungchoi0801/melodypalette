@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Main.css';
-import LoginPopup from './LoginPopup';
-import SignupPopup from './SignupPopup';
+import LoginPopup from '../LoginPopup/LoginPopup';
+import SignupPopup from '../SignupPopup/SignupPopup';
 
 // import Login from './Login';
 

@@ -8,16 +8,15 @@
 ## 🕰️개발 기간
 2024.05.28 ~ 진행중<br><br>
 
-## 개발 언어
+## ⚙️개발 언어
 - Frontend: **React**
 - Backend: **Node.js**(사용 예정)
 - Server: **Express**
 - Database: **MongoDB** (사용 예정)
 - Algorithm: 음악 추천 알고리즘 - 콘텐츠 기반 필터링(코사인 유사도 사용)
 - Data: Spotify API 활용해 음악 데이터 특성
-<br>
 
-## 주요 기능
+## 📍주요 기능
 - 계정 생성 및 로그인
 - 음악 검색
 - 실시간 TOP 랭킹 확인

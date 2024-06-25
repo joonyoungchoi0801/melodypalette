@@ -13,10 +13,12 @@ Frontend: **React**<br>
 Backend: **Node.js**(사용 예정)<br>
 Server: **Express**<br>
 Database: **MongoDB** (사용 예정)<br>
-Algorithm: **음악 추천 알고리즘 - 콘텐츠 기반 필터링(코사인 유사도 사용) **<br>
+Algorithm: 음악 추천 알고리즘 - 콘텐츠 기반 필터링(코사인 유사도 사용) <br>
 Data: Spotify API 활용해 음악 데이터 특성 <br>
 <br>
 
 ## 주요 기능
+- 계정 생성 및 로그인
+- 음악 검색
 
 ## 화면 구

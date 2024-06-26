@@ -18,6 +18,10 @@ function GenreSelection() {
       </nav>
       <div className='select-container'>
         <h1 className='page-title'>선호하는 장르</h1>
+        <div className='select-complete'>
+          <span className='select-limit'>최대 5개 이하 선택</span>
+          <button className='select-complete-btn'>선택 완료</button>
+        </div>
       </div>
       
     </div>

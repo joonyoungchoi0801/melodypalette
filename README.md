@@ -30,7 +30,7 @@
 ## 화면 구성
 
 ## start
-"""
+```
 cd client
 npm start
-"""
+```

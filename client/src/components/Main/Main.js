@@ -70,7 +70,7 @@ function Main() {
               <li><a href="#section1">제목 또는 아티스트 검색</a></li>
               <li><a href="#section2">실시간 top 랭킹</a></li>
               <li><a href="#section3">Playlist</a></li>
-              <li><a href="#section4" onClick={handleProfileClick}>프로필</a></li>
+              <li><a href="#section4" onClick={handleProfileClick}>로그인</a></li>
             </ul>
           </div>
         </div>

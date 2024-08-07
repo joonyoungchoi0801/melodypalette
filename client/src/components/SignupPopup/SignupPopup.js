@@ -8,6 +8,7 @@ function SignupPopup({ isOpen, onClose, openLoginPopup }) {
   const [username, setUsername] = useState('');
   const [emailCode, setEmailCode] = useState('');
   const [message, setMessage] = useState('');
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const sendEmailCode = async () => {
     try {
@@ -39,7 +40,12 @@ function SignupPopup({ isOpen, onClose, openLoginPopup }) {
         body: JSON.stringify({ email, code: emailCode }),
       });
       const data = await response.json();
-      setMessage(data.message);
+      if (response.ok) {
+        setIsEmailVerified(true);
+        setMessage('인증 성공');
+      } else {
+        setMessage(data.message);
+      }
     } catch (error) {
       setMessage('서버 오류');
     }
@@ -47,6 +53,10 @@ function SignupPopup({ isOpen, onClose, openLoginPopup }) {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    if (!isEmailVerified) {
+      setMessage('이메일 인증을 완료해주세요.');
+      return;
+    }
     if (password !== confirmPassword) {
       setMessage('비밀번호가 일치하지 않습니다.');
       return;
@@ -59,18 +69,24 @@ function SignupPopup({ isOpen, onClose, openLoginPopup }) {
         },
         body: JSON.stringify({ email, password, username }),
       });
+  
       const data = await response.json();
+      console.log('회원가입 응답 상태:', response.status);  // 응답 상태 코드 로그
+      console.log('회원가입 응답 데이터:', data);  // 응답 데이터 로그
+      
       if (response.ok) {
         setMessage('회원가입 성공!');
-        openLoginPopup(); // 로그인 팝업 열기
       } else {
-        setMessage(data.message);
+        console.error('회원가입 실패 데이터:', data);  // 오류 데이터 로그
+        setMessage(data.message || '서버 오류');  // 오류 메시지 설정
       }
     } catch (error) {
+      console.error('회원가입 오류:', error);  // 오류 로그
+      console.error('회원가입 오류 메시지:', error.message);  // 추가 로그
       setMessage('서버 오류');
     }
   };
-
+  
   if (!isOpen) return null;
 
   return (

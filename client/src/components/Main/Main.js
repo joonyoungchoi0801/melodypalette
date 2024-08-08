@@ -4,8 +4,6 @@ import './Main.css';
 import LoginPopup from '../LoginPopup/LoginPopup';
 import SignupPopup from '../SignupPopup/SignupPopup';
 
-// import Login from './Login';
-
 const albumCovers = [
   // 예시 앨범 이미지 URL
   'https://img.etnews.com/news/article/2024/05/23/cms_temp_article_23120344835638.jpg',
@@ -44,13 +42,9 @@ function Main() {
     navigate('/recommendation'); 
   };
 
-  const handleProfileClick = () => {
-    setIsLoginPopupOpen(true);
-  };
+  const openLoginPopup = () => setIsLoginPopupOpen(true);
+  const closeLoginPopup = () => setIsLoginPopupOpen(false);
 
-  const closeLoginPopup = () => {
-    setIsLoginPopupOpen(false);
-  };
 
   const openSignupPopup = () => setIsSignupOpen(true);
   const closeSignupPopup = () => setIsSignupOpen(false);
@@ -70,7 +64,7 @@ function Main() {
               <li><a href="#section1">제목 또는 아티스트 검색</a></li>
               <li><a href="#section2">실시간 top 랭킹</a></li>
               <li><a href="#section3">Playlist</a></li>
-              <li><a href="#section4" onClick={handleProfileClick}>로그인</a></li>
+              <li><a href="#section4" onClick={openLoginPopup}>로그인</a></li>
             </ul>
           </div>
         </div>
@@ -231,8 +225,9 @@ function Main() {
           </div>
         </div>
       </section>
-      <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} onSwitchToSignup={switchToSignup}/>
-      <SignupPopup isOpen={isSignupOpen} onClose={closeSignupPopup} />
+
+      <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} switchToSignup={switchToSignup} />
+      <SignupPopup isOpen={isSignupOpen} onClose={closeSignupPopup} openLoginPopup={() => setIsLoginPopupOpen(true)} />
     </div>
   );
 }

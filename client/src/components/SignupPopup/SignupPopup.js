@@ -69,13 +69,17 @@ function SignupPopup({ isOpen, onClose, openLoginPopup }) {
         },
         body: JSON.stringify({ email, password, username }),
       });
-  
+
       const data = await response.json();
       console.log('회원가입 응답 상태:', response.status);  // 응답 상태 코드 로그
       console.log('회원가입 응답 데이터:', data);  // 응답 데이터 로그
-      
+
       if (response.ok) {
         setMessage('회원가입 성공!');
+        setTimeout(() => {
+          onClose();
+          openLoginPopup(); // 로그인 팝업 열기
+        }, 2000);
       } else {
         console.error('회원가입 실패 데이터:', data);  // 오류 데이터 로그
         setMessage(data.message || '서버 오류');  // 오류 메시지 설정
@@ -86,7 +90,7 @@ function SignupPopup({ isOpen, onClose, openLoginPopup }) {
       setMessage('서버 오류');
     }
   };
-  
+
   if (!isOpen) return null;
 
   return (

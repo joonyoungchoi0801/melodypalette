@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './LoginPopup.css';
 
-function LoginPopup({ isOpen, onClose, onSwitchToSignup }) {
+function LoginPopup({ isOpen, onClose, switchToSignup }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -44,7 +44,7 @@ function LoginPopup({ isOpen, onClose, onSwitchToSignup }) {
             <input type="password" id="login-password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <button type="submit" className="login-button">로그인</button>
-          <button type="submit" className="join-button" onClick={onSwitchToSignup}>회원가입</button>
+          <button type="submit" className="join-button" onClick={switchToSignup}>회원가입</button>
         </form>
         {message && <p>{message}</p>}
       </div>

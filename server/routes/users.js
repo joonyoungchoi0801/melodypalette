@@ -17,41 +17,37 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: '이미 사용중인 이메일입니다.' });
     }
 
-    // 비밀번호 해싱
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // 새로운 사용자 생성 및 저장
-    const newUser = new User({ email, password: hashedPassword, username });
+    // 새로운 사용자 생성 및 저장 (해싱하지 않음)
+    const newUser = new User({ email, password, username });
     await newUser.save();
-    console.log('새 사용자 저장:', { email, username });
-
     res.status(201).json({ message: '회원가입 성공' });
   } catch (error) {
-    console.error('회원가입 오류:', error);
-    res.status(500).json({ message: '서버 오류', error: error.message }); // 에러 메시지를 명확히
+    res.status(500).json({ message: '서버 오류', error: error.message });
   }
 });
-
 
 // 로그인 라우트
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  console.log('로그인 시도:', email, password);
 
   try {
     // 사용자 확인
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: '잘못된 이메일 또는 비밀번호입니다.' });
+      console.log('사용자 없음:', email);
+      return res.status(400).json({ message: '잘못된 이메일입니다.' });
     }
 
     // 비밀번호 확인
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(400).json({ message: '잘못된 이메일 또는 비밀번호입니다.' });
+      console.log('비밀번호 불일치:', email);
+      return res.status(400).json({ message: '잘못된 비밀번호입니다.' });
     }
-
     res.status(200).json({ message: '로그인 성공' });
   } catch (error) {
+    console.error('로그인 오류:', error);
     res.status(500).json({ message: '서버 오류', error });
   }
 });

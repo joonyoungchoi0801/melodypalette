@@ -16,9 +16,13 @@ const albumCovers = [
 function Main() {
   const [navbarBackground, setNavbarBackground] = useState('transparent');
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
+  const [setUserEmail] = useState(''); // 로그인된 사용자 이메일
+
+  const navigate = useNavigate();
+
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -54,6 +58,19 @@ function Main() {
     openSignupPopup();
   };
 
+  const handleLoginSuccess = (email) => {
+    setIsLoggedIn(true);
+    setUserEmail(email); // 로그인된 사용자 이메일 저장
+  };
+
+  const handleProfileClick = () => {
+    if (isLoggedIn) {
+      navigate('/profile'); // 로그인된 사용자는 프로필 페이지로 이동
+    } else {
+      openLoginPopup(); // 로그인되지 않은 사용자는 로그인 팝업 열기
+    }
+  };
+
   return (
     <div className="Main">
       <nav className="navbar" style={{ backgroundColor: navbarBackground }}>
@@ -64,7 +81,10 @@ function Main() {
               <li><a href="#section1">제목 또는 아티스트 검색</a></li>
               <li><a href="#section2">실시간 top 랭킹</a></li>
               <li><a href="#section3">Playlist</a></li>
-              <li><a href="#section4" onClick={openLoginPopup}>로그인</a></li>
+              <li><a href="#profile" onClick={handleProfileClick}>
+                  {isLoggedIn ? '프로필' : '로그인'}
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -226,8 +246,16 @@ function Main() {
         </div>
       </section>
 
-      <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} switchToSignup={switchToSignup} />
-      <SignupPopup isOpen={isSignupOpen} onClose={closeSignupPopup} openLoginPopup={() => setIsLoginPopupOpen(true)} />
+      <LoginPopup 
+      isOpen={isLoginPopupOpen} 
+      onClose={closeLoginPopup} 
+      switchToSignup={switchToSignup}
+      onLoginSuccess={handleLoginSuccess} />
+
+      <SignupPopup 
+      isOpen={isSignupOpen} 
+      onClose={closeSignupPopup} 
+      openLoginPopup={() => setIsLoginPopupOpen(true)} />
     </div>
   );
 }

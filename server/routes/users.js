@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
 
 // 회원가입 라우트
 router.post('/signup', async (req, res) => {
@@ -45,7 +44,7 @@ router.post('/login', async (req, res) => {
       console.log('비밀번호 불일치:', email);
       return res.status(400).json({ message: '잘못된 비밀번호입니다.' });
     }
-    res.status(200).json({ message: '로그인 성공' });
+    res.status(200).json({ message: '로그인 성공', redirectUrl: '/', username: user.username});
   } catch (error) {
     console.error('로그인 오류:', error);
     res.status(500).json({ message: '서버 오류', error });

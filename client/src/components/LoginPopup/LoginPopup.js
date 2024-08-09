@@ -20,9 +20,10 @@ function LoginPopup({ isOpen, onClose, switchToSignup, onLoginSuccess }) {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
+      const { username } = data;
       if (response.ok) {
         setMessage('로그인 성공');
-        onLoginSuccess(email); 
+        onLoginSuccess(email, username); 
         setTimeout(() => {
           onClose(); // 팝업 닫기
           navigate('/'); // 메인 페이지로 이동

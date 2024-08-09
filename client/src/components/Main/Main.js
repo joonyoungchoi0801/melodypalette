@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Main.css';
 import LoginPopup from '../LoginPopup/LoginPopup';
 import SignupPopup from '../SignupPopup/SignupPopup';
+import ProfilePopup from '../ProfilePopup/ProfilePopup';
 
 const albumCovers = [
   // 예시 앨범 이미지 URL
@@ -19,7 +20,9 @@ function Main() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
-  const [setUserEmail] = useState(''); // 로그인된 사용자 이메일
+  const [userEmail, setUserEmail] = useState(''); // 로그인된 사용자 이메일
+  const [username, setUsername] = useState('');
+  const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -53,19 +56,31 @@ function Main() {
   const openSignupPopup = () => setIsSignupOpen(true);
   const closeSignupPopup = () => setIsSignupOpen(false);
 
+  const openProfilePopup = () => setIsProfilePopupOpen(true);
+  const closeProfilePopup = () => setIsProfilePopupOpen(false);
+
+  useEffect(() => {
+    console.log('User email:', userEmail);
+    console.log('Username:', username);
+  }, [userEmail, username]);
+  
+
   const switchToSignup = () => {
     closeLoginPopup();
     openSignupPopup();
   };
 
-  const handleLoginSuccess = (email) => {
+  const handleLoginSuccess = (email, username) => {
     setIsLoggedIn(true);
     setUserEmail(email); // 로그인된 사용자 이메일 저장
+    setUsername(username); // 로그인된 사용자 username 저장
+    console.log('로그인 성공:', { email, username });
+    navigate('/');
   };
 
   const handleProfileClick = () => {
     if (isLoggedIn) {
-      navigate('/profile'); // 로그인된 사용자는 프로필 페이지로 이동
+      openProfilePopup(); // 프로필 팝업 열기
     } else {
       openLoginPopup(); // 로그인되지 않은 사용자는 로그인 팝업 열기
     }
@@ -256,6 +271,12 @@ function Main() {
       isOpen={isSignupOpen} 
       onClose={closeSignupPopup} 
       openLoginPopup={() => setIsLoginPopupOpen(true)} />
+
+      <ProfilePopup 
+        isOpen={isProfilePopupOpen} 
+        onClose={closeProfilePopup} 
+        userEmail={userEmail}
+        username={username} />
     </div>
   );
 }

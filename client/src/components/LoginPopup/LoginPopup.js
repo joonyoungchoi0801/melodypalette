@@ -20,9 +20,10 @@ function LoginPopup({ isOpen, onClose, switchToSignup, onLoginSuccess }) {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      const { username } = data;
+      const { token, username } = data;
       if (response.ok) {
         setMessage('로그인 성공');
+        localStorage.setItem('token', token); // 로그인 성공 시 토큰을 저장
         onLoginSuccess(email, username); 
         setTimeout(() => {
           onClose(); // 팝업 닫기

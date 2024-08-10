@@ -1,9 +1,45 @@
 import './ArtistSelection.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function ArtistSelection() {
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [artists, setArtists] = useState([]);
+
+// API를 사용해 아티스트 데이터 가져오기
+async function fetchSpotifyToken() {
+  try {
+    const response = await fetch('http://localhost:5000/api/token');
+    const data = await response.json();
+
+    if (data.access_token) {
+      return data.access_token;
+    } else {
+      throw new Error('No access token found');
+    }
+  } catch (error) {
+    console.error('Error fetching token:', error.message);
+  }
+}
+
+// 클라이언트에서 토큰을 받아오고 이를 활용해 Spotify API에 요청
+useEffect(() => {
+  const getTopArtists = async () => {
+    const token = await fetchSpotifyToken();
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/top-artists?token=${token}`);
+      const artistsData = await response.json();
+      console.log('Artists data:', artistsData); // 이미지 URL 디버깅용
+      setArtists(artistsData); // 상태에 아티스트 데이터 설정
+    } catch (error) {
+      console.error('Error fetching top artists:', error.message);
+    }
+  };
+
+  getTopArtists();
+}, []);
 
 //아티스트 이미지 선택하거나 해제할 때
 const toggleSelectArtist = (artistId) => {
@@ -21,22 +57,6 @@ const toggleSelectArtist = (artistId) => {
     }
   }
 };
- //아티스트 데이터
-  const artists = [
-    { id: 1, name: 'Newjeans', imageUrl: 'https://cdn.mediatoday.co.kr/news/photo/202311/313885_438531_4716.jpg' },
-    { id: 2, name: 'KISS OF LIFE', imageUrl: 'https://newsimg-hams.hankookilbo.com/2023/09/28/6829b876-f7dc-4cec-ac6b-3848aedb6893.jpg' },
-    { id: 3, name: 'THE BOYZ', imageUrl: 'https://cdn.m-i.kr/news/photo/202308/1037865_801651_2133.jpg' },
-    { id: 4, name: 'aespa', imageUrl: 'https://isplus.com/data/isp/image/2024/05/27/isp20240527000067.800x.0.jpg' },
-    { id: 5, name: '(여자)아이들', imageUrl: 'https://cdn.k-trendynews.com/news/photo/202401/164775_247502_4938.png' },
-    { id: 6, name: 'RIIZE', imageUrl: 'https://images.chosun.com/resizer/zkOR-Z3t05y6kOUpeHe0wfuhXW0=/616x0/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/2FRA4M6BJJCUYKF3VPBMNLGUSQ.jpg' },
-    { id: 7, name: 'NMIXX', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMno7zrpmdOJ0POYFPtkNj4EUo4BEwmiwlPQ&s' },
-    { id: 8, name: '투모로우바이투게더', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1GaPNo97asOlXnaMYmWul-Io-F4kBkMS3Dg&s' },
-    { id: 9, name: 'IVE', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5F68Yz6R5suesCX77P__tgYA3EWctrHOQzw&s' },
-    { id: 10, name: 'NCT DREAM', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVB5bYIy6k7saYWOuenHmrfT1Mnh4RxDdKgg&s' },
-    { id: 11, name: 'Seventeen', imageUrl: 'https://biz.chosun.com/resizer/lfSXaKhI5Lkq4yl0gkxe6RVXbL8=/530x756/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosunbiz/JF66Z5OQVYWPZHPRBQ5NK67OPQ.jpg' },
-    { id: 12, name: 'BLACKPINK', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6pLuRvRzLX0QVsO8Imir6kY6SWsjuDDQsYQ&s' },
-
-  ];
 
   return (
     <div className='ArtistSelection'>
@@ -61,18 +81,22 @@ const toggleSelectArtist = (artistId) => {
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <div className='select-list'>
-          {artists.map((artist) => (
-            <div
-              key={artist.id}
-              className={`artist-item ${selectedArtists.includes(artist.id) ? 'selected' : ''}`}
-              onClick={() => toggleSelectArtist(artist.id)}
-            >
-              <div className='artist-image-container'>
-                <img src={artist.imageUrl} alt={artist.name} className='artist-image' />
-              </div>
-              <p className='artist-name'>{artist.name}</p>
-            </div>
-          ))}
+        {artists.map((artist) => (
+  <div
+    key={artist.id}
+    className={`artist-item ${selectedArtists.includes(artist.id) ? 'selected' : ''}`}
+    onClick={() => toggleSelectArtist(artist.id)}
+  >
+    <div className='artist-image-container'>
+      <img
+        src={artist.imageUrl || 'default-image-url.jpg'} // 기본 이미지 URL 추가
+        alt={artist.name}
+        className='artist-image'
+      />
+    </div>
+    <p className='artist-name'>{artist.name}</p>
+  </div>
+))}
         </div>
       </div>
     </div>

@@ -9,8 +9,8 @@
 
 .select-container {
   padding: 20px;
-  overflow: hidden;
-  /* max-height: calc(100vh - 120px);  */
+  overflow-y: auto; 
+  max-height: calc(100vh - 120px); 
 }
 
 .page-title {
@@ -51,8 +51,9 @@
 
 .genre-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(6, 1fr); 
+  grid-auto-rows: minmax(150px, auto); 
+  gap: 14px; 
   padding: 0 30px 50px;
 }
 
@@ -64,7 +65,9 @@
   cursor: pointer;
   transition: transform 0.3s, background 0.3s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  /* background-color: {(Math.random().toString(16) + "000000").substring(2,8)}; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .genre-item.selected {
@@ -87,5 +90,4 @@
   color: red;
   text-align: center;
   margin: 10px 0 30px;
-  overflow: hidden;
 }

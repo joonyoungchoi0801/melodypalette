@@ -5,6 +5,7 @@ function ArtistSelection() {
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [artists, setArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 // API를 사용해 아티스트 데이터 가져오기
 async function fetchSpotifyToken() {
@@ -32,9 +33,15 @@ useEffect(() => {
       const response = await fetch(`http://localhost:5000/api/top-artists?token=${token}`);
       const artistsData = await response.json();
       console.log('Artists data:', artistsData); // 이미지 URL 디버깅용
-      setArtists(artistsData); // 상태에 아티스트 데이터 설정
+      if (Array.isArray(artistsData)) {
+        setArtists(artistsData);
+      } else {
+        console.error('API 응답이 배열이 아닙니다:', artistsData);
+      }
     } catch (error) {
       console.error('Error fetching top artists:', error.message);
+    } finally {
+      setLoading(false); // 로딩 완료
     }
   };
 
@@ -80,24 +87,24 @@ const toggleSelectArtist = (artistId) => {
           <button className='select-complete-btn'>선택 완료</button>
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <div className='select-list'>
-        {artists.map((artist) => (
-  <div
-    key={artist.id}
-    className={`artist-item ${selectedArtists.includes(artist.id) ? 'selected' : ''}`}
-    onClick={() => toggleSelectArtist(artist.id)}
-  >
-    <div className='artist-image-container'>
-      <img
-        src={artist.imageUrl || 'default-image-url.jpg'} // 기본 이미지 URL 추가
-        alt={artist.name}
-        className='artist-image'
-      />
-    </div>
-    <p className='artist-name'>{artist.name}</p>
-  </div>
-))}
+        {loading ? (
+          <div className="loading-spinner">로딩 중...</div>
+        ) : (
+          <div className='select-list'>
+            {artists.map((artist) => (
+              <div
+                key={artist.id}
+                className={`artist-item ${selectedArtists.includes(artist.id) ? 'selected' : ''}`}
+                onClick={() => toggleSelectArtist(artist.id)}
+              >
+                <div className='artist-image-container'>
+                  <img src={artist.imageUrl} alt={artist.name} className='artist-image' />
+                </div>
+                <p className='artist-name'>{artist.name}</p>
+              </div>
+            ))}
         </div>
+        )}
       </div>
     </div>
   );

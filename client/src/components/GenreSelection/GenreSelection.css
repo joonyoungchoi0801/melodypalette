@@ -1,41 +1,91 @@
 .GenreSelection {
-  background: black;
+  background: #111;
   color: white;
   width: 100%;
+  min-height: 100vh;
+  padding-top: 100px;
+  overflow: hidden;
 }
 
-.genre-item{
+.select-container {
+  padding: 20px;
+  overflow: hidden;
+  /* max-height: calc(100vh - 120px);  */
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.select-complete {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
+  padding: 0 30px;
+}
+
+.select-complete-btn {
+  padding: 10px 25px;
+  background-color: #CC00FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
-.genre-image-container {
-  position: relative;
-  border: 10px solid transparent;
-  border-radius: 50%;
-  transition: border 0.3s ease;
+.select-complete-btn:hover {
+  background-color: #FF00FF;
 }
 
-.genre-item.selected .genre-image-container {
-  border-color: #CC00FF;
+.loading-spinner {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 20px;
+  color: #888;
 }
 
-.genre-image {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+.genre-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 0 30px 50px;
+}
+
+.genre-item {
+  background: #333;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  /* background-color: {(Math.random().toString(16) + "000000").substring(2,8)}; */
+}
+
+.genre-item.selected {
+  background-color: #FF00FF;
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+.genre-item:hover {
+  transform: scale(1.02);
 }
 
 .genre-name {
-  margin-top: 5px;
-  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #FFF;
 }
 
 .error-message {
   color: red;
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 30px;
+  margin: 10px 0 30px;
+  overflow: hidden;
 }

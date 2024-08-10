@@ -1,18 +1,73 @@
 import './GenreSelection.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function GenreSelection() {
   const [selectGenres, setSelectGenres] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [genres, setGenres] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Spotify API에서 액세스 토큰을 가져오는 함수
+  async function fetchSpotifyToken() {
+    try {
+      const response = await fetch('http://localhost:5000/api/token');
+      const data = await response.json();
+      if (data.access_token) {
+        return data.access_token;
+      } else {
+        throw new Error('No access token found');
+      }
+    } catch (error) {
+      console.error('Error fetching token:', error.message);
+    }
+  }
+
+  // Spotify API에서 장르 데이터를 가져오는 함수
+  useEffect(() => {
+    const fetchGenres = async () => {
+      const token = await fetchSpotifyToken();
+      if (!token) return;
+  
+      try {
+        const response = await fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        const data = await response.json();
+        if (data.genres && Array.isArray(data.genres)) {
+          // 특정 장르만 필터링하여 가져옵니다.
+          const selectedGenres = ['pop', 'hip-hop', 'jazz', 'classical', 'edm', 'r-n-b', 'happy', 'blues', 'piano', 'indie-pop', 'indie', 'dance', 'chill', 'rainy-day', 'drum-and-bass', 'groove', 'guitar', 'disney', 'j-pop', 'movies', 'sad', 'singer-songwriter', 'sleep', 'summer']; //특정 장르
+          const genreList = data.genres
+            .filter(genre => selectedGenres.includes(genre))
+            .map((genre, index) => ({
+              id: index + 1, // 임의의 ID 할당
+              name: genre,
+            }));
+          setGenres(genreList);
+        } else {
+          console.error('API 응답이 배열이 아닙니다:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching genres:', error.message);
+      } finally {
+        setLoading(false); // 로딩 완료
+      }
+    };
+  
+    fetchGenres();
+  }, []);
+  
+  // 장르 선택 토글 함수
   const toggleSelectGenre = (genreId) => {
-    if(selectGenres.includes(genreId)){
-      setSelectGenres((preSelected) => 
-        preSelected.filter((id) =>id !== genreId)
+    if (selectGenres.includes(genreId)) {
+      setSelectGenres((preSelected) =>
+        preSelected.filter((id) => id !== genreId)
       );
       setErrorMessage('');
-    }else {
-      if(selectGenres.length < 5){
+    } else {
+      if (selectGenres.length < 5) {
         setSelectGenres((preSelected) => [...preSelected, genreId]);
         setErrorMessage('');
       } else {
@@ -20,22 +75,6 @@ function GenreSelection() {
       }
     }
   };
-
-  //장르 데이터
-  const genres = [
-    { id: 1, name: 'Pop', imageUrl: 'https://cdn.pixabay.com/photo/2017/12/04/17/48/michael-jackson-2997510_1280.jpg' },
-    { id: 2, name: 'Rock', imageUrl: 'https://cdn.pixabay.com/photo/2015/09/25/23/11/festival-958414_1280.jpg' },
-    { id: 3, name: 'Hip Hop', imageUrl: 'https://cdn.pixabay.com/photo/2017/09/09/19/23/hiphop-2733136_1280.jpg' },
-    { id: 4, name: 'Jazz', imageUrl: 'https://cdn.pixabay.com/photo/2013/10/22/23/21/jazz-199547_1280.jpg' },
-    { id: 5, name: 'Classical', imageUrl: 'https://cdn.pixabay.com/photo/2016/07/02/21/05/piano-1493797_1280.jpg' },
-    { id: 6, name: 'EDM', imageUrl: 'https://cdn.pixabay.com/photo/2018/06/10/11/38/festival-3466251_1280.jpg' },
-    { id: 7, name: 'R&B', imageUrl: 'https://cdn.pixabay.com/photo/2014/11/21/16/43/singer-540771_1280.jpg' },
-    { id: 8, name: '어쿠스틱', imageUrl: 'https://cdn.pixabay.com/photo/2017/05/01/18/18/guitar-2276181_1280.jpg' },
-    { id: 9, name: '밴드', imageUrl: 'https://cdn.pixabay.com/photo/2023/01/29/00/16/drums-7751985_1280.jpg' },
-    { id: 10, name: 'OST', imageUrl: 'https://cdn.pixabay.com/photo/2019/05/23/13/11/headphones-4223911_1280.jpg' },
-    { id: 11, name: '댄스', imageUrl: 'https://cdn.pixabay.com/photo/2014/08/29/05/00/dance-430554_1280.jpg' },
-    { id: 12, name: '트로트', imageUrl: 'https://cdn.pixabay.com/photo/2018/05/24/14/35/disco-ball-3426765_1280.jpg' },
-  ];
 
   return (
     <div className='GenreSelection'>
@@ -59,20 +98,21 @@ function GenreSelection() {
           <button className='select-complete-btn'>선택 완료</button>
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <div className='select-list'>
-          {genres.map((genre) => (
-            <div
-              key={genre.id}
-              className={`genre-item ${selectGenres.includes(genre.id) ? 'selected' : ''}`}
-              onClick={() => toggleSelectGenre(genre.id)}
-            >
-              <div className='genre-image-container'>
-                <img src={genre.imageUrl} alt={genre.name} className='genre-image' />
+        {loading ? (
+          <div className="loading-spinner">로딩 중...</div>
+        ) : (
+          <div className='genre-grid'>
+            {genres.map((genre) => (
+              <div
+                key={genre.id}
+                className={`genre-item ${selectGenres.includes(genre.id) ? 'selected' : ''}`}
+                onClick={() => toggleSelectGenre(genre.id)}
+              >
+                <p className='genre-name'>{genre.name}</p>
               </div>
-              <p className='genre-name'>{genre.name}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

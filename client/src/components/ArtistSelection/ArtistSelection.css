@@ -8,15 +8,17 @@ body {
   background: black;
   color: white;
   width: 100%;
-}
-
-.select-container {
+  min-height: 100vh;
   padding-top: 100px;
 }
 
-.page-title {
+/* .select-container {
+  padding-top: 100px;
+} */
+
+/* .page-title {
   margin-left: 30px;
-}
+} */
 
 .select-complete {
   display: flex;

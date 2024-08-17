@@ -22,13 +22,14 @@ function LoginPopup({ isOpen, onClose, switchToSignup, onLoginSuccess }) {
       const data = await response.json();
       const { token, username } = data;
       if (response.ok) {
-        setMessage('로그인 성공');
+        // setMessage('로그인 성공');
         localStorage.setItem('token', token); // 로그인 성공 시 토큰을 저장
         onLoginSuccess(email, username); 
-        setTimeout(() => {
-          onClose(); // 팝업 닫기
-          navigate('/'); // 메인 페이지로 이동
-        }, 2000);
+
+        // 사용자에게 알람 표시 후 메인 페이지로 이동
+        alert('로그인 성공! 메인 페이지로 이동합니다.');
+        onClose(); // 팝업 닫기
+        navigate('/'); // 메인 페이지로 이동
       } else {
         setMessage(data.message || '로그인 실패');
       }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import './LoginPopup.css';
 
 function LoginPopup({ isOpen, onClose, switchToSignup, onLoginSuccess }) {
@@ -7,6 +8,7 @@ function LoginPopup({ isOpen, onClose, switchToSignup, onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,9 +24,9 @@ function LoginPopup({ isOpen, onClose, switchToSignup, onLoginSuccess }) {
       const data = await response.json();
       const { token, username } = data;
       if (response.ok) {
-        // setMessage('로그인 성공');
         localStorage.setItem('token', token); // 로그인 성공 시 토큰을 저장
-        onLoginSuccess(email, username); 
+        login(token); // AuthContext를 통해 로그인 상태 업데이트
+        onLoginSuccess(email, username, token); 
 
         // 사용자에게 알람 표시 후 메인 페이지로 이동
         alert('로그인 성공! 메인 페이지로 이동합니다.');

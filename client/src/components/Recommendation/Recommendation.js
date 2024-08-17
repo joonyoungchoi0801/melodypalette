@@ -1,23 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import Navbar from '../Navbar/Navbar';
 import './Recommendation.css';
+import LoginPopup from '../LoginPopup/LoginPopup';
 
 function Recommendation() {
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
+  const { isLoggedIn, login } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setIsLoginPopupOpen(true); // 로그인이 되어 있지 않으면 팝업을 엽니다.
+    }
+  }, [isLoggedIn]);
+
+  const handleLoginSuccess = (email, username, token) => {
+    login(token); // 로그인 상태를 업데이트
+    setIsLoginPopupOpen(false); // 팝업 닫기
+    navigate('/'); // 메인 페이지로 이동
+  };
+
+  const handlePopupClose = () => {
+    if (!isLoggedIn) {
+      setIsLoginPopupOpen(false); // 팝업 닫기
+      navigate('/'); // 메인 페이지로 이동
+    }
+  };
+
+  if (!isLoggedIn && isLoginPopupOpen) {
+    return (
+      <LoginPopup
+        isOpen={isLoginPopupOpen}
+        onClose={handlePopupClose}
+        onLoginSuccess={handleLoginSuccess}
+      />
+    );
+  }
+
   return (
     <div className='Recommendation'>
-      <nav className="navbar">
-        <div className="navbar-container">
-          <h3 className="logo">Melodypalette</h3>
-          <div className='navbar-box'>
-            <ul>
-              <li><a href="#section1">제목 또는 아티스트 검색</a></li>
-              <li><a href="#section2">실시간 top 랭킹</a></li>
-              <li><a href="#section3">Playlist</a></li>
-              <li><a href="#section4">프로필</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
       <div className="content">
         <h1>음악 추천</h1>
         <p className='description'>

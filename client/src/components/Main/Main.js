@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Main.css';
+import Navbar from '../Navbar/Navbar';
 import LoginPopup from '../LoginPopup/LoginPopup';
 import SignupPopup from '../SignupPopup/SignupPopup';
 import ProfilePopup from '../ProfilePopup/ProfilePopup';
@@ -37,7 +38,6 @@ const albumCovers = [
 ];
 
 function Main() {
-  const [navbarBackground, setNavbarBackground] = useState('transparent');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
@@ -67,20 +67,6 @@ function Main() {
     };
   
     checkLoginStatus();
-  }, []);
-
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > window.innerHeight) {
-      setNavbarBackground('black');
-    } else {
-      setNavbarBackground('transparent');
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleSearch = () => {
@@ -139,22 +125,9 @@ function Main() {
 
   return (
     <div className="Main">
-      <nav className="navbar" style={{ backgroundColor: navbarBackground }}>
-      <div className="navbar-container">
-          <h3 className="logo">Melodypalette</h3>
-          <div className='navbar-box'>
-            <ul>
-              <li><a href="#section1">제목 또는 아티스트 검색</a></li>
-              <li><a href="#section2">실시간 top 랭킹</a></li>
-              <li><a href="#section3">Playlist</a></li>
-              <li><a href="#profile" onClick={handleProfileClick}>
-                  {isLoggedIn ? '프로필' : '로그인'}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar
+        onProfileClick={handleProfileClick}
+      />
       <section className="section gradient-background">
         <div className="intro-container">
           <h3>Melodypalette에서 새로운 음악을 만나보세요</h3>

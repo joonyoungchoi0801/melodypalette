@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import LoginPopup from '../LoginPopup/LoginPopup';
 import SignupPopup from '../SignupPopup/SignupPopup';
 import ProfilePopup from '../ProfilePopup/ProfilePopup';
@@ -7,7 +8,7 @@ import './Navbar.css';
 
 const fetchUserData = async (token) => {
   try {
-    const response = await fetch('https://localhost:5000/users', {
+    const response = await fetch('http://localhost:5000/api/users', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -16,7 +17,7 @@ const fetchUserData = async (token) => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch user data');
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json();
@@ -27,16 +28,19 @@ const fetchUserData = async (token) => {
   }
 };
 
-function Navbar({ onProfileClick }) {
+function Navbar() {
   const [backgroundColor, setBackgroundColor] = useState('transparent');
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
   const [userEmail, setUserEmail] = useState(''); // 로그인된 사용자 이메일
   const [username, setUsername] = useState('');
   const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
-
+  const { isLoggedIn, login, logout } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('Navbar Login state:', isLoggedIn);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -46,62 +50,59 @@ function Navbar({ onProfileClick }) {
         const userData = await fetchUserData(token);
   
         if (userData) {
-          setIsLoggedIn(true);
           setUserEmail(userData.email);  // API에서 받은 이메일 설정
           setUsername(userData.username); // API에서 받은 사용자 이름 설정
         } else {
-          setIsLoggedIn(false);  // 만약 데이터를 가져오지 못하면 로그아웃 상태로 처리
-          localStorage.removeItem('token');  // 토큰 삭제
+          logout();
         }
       }
     };
   
     checkLoginStatus();
-  }, []);
-
+  }, [login, logout]);
 
   const openLoginPopup = () => setIsLoginPopupOpen(true);
   const closeLoginPopup = () => setIsLoginPopupOpen(false);
-
 
   const openSignupPopup = () => setIsSignupOpen(true);
   const closeSignupPopup = () => setIsSignupOpen(false);
 
   const openProfilePopup = () => setIsProfilePopupOpen(true);
   const closeProfilePopup = () => setIsProfilePopupOpen(false);
-
-  // useEffect(() => {
-  //   console.log('User email:', userEmail);
-  //   console.log('Username:', username);
-  // }, [userEmail, username]);
   
-
   const switchToSignup = () => {
     closeLoginPopup();
     openSignupPopup();
   };
 
-  const handleLoginSuccess = (email, username) => {
-    setIsLoggedIn(true);
+  const handleLoginSuccess = (username, email, token) => {
+    console.log('handleLoginSuccess 호출:', { email, token, username });
+    login(token);
     setUserEmail(email); // 로그인된 사용자 이메일 저장
     setUsername(username); // 로그인된 사용자 username 저장
-    console.log('로그인 성공:', { email, username });
-    navigate('/');
   };
+  
+  useEffect(() => {
+    if (userEmail && username) {
+      console.log('로그인 후 상태:', { userEmail, username }); // 상태 확인
+      navigate('/');
+    }
+  }, [userEmail, username, navigate]);
 
   const handleProfileClick = () => {
+    console.log('Handle Profile Click 상태:', { userEmail, username });
     if (isLoggedIn) {
       openProfilePopup(); // 프로필 팝업 열기
     } else {
       openLoginPopup(); // 로그인되지 않은 사용자는 로그인 팝업 열기
     }
   };
-//로그아웃
+
+  // 로그아웃
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    logout();
     setUserEmail('');
     setUsername('');
-    localStorage.removeItem('token'); // 토큰 삭제 또는 필요에 따라 다른 저장소 사용
     closeProfilePopup(); // 프로필 팝업 닫기
     navigate('/'); // 로그아웃 후 메인 페이지로 이동
   };
@@ -124,7 +125,7 @@ function Navbar({ onProfileClick }) {
     <header className="navbar" style={{ backgroundColor }}>
       <div className="navbar-container">
         <h3 className="logo">Melodypalette</h3>
-        <nav className="navbar-box" >
+        <nav className="navbar-box">
           <ul>
             <li><a href="#section1">제목 또는 아티스트 검색</a></li>
             <li><a href="#section2">실시간 TOP 랭킹</a></li>

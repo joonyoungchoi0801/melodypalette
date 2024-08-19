@@ -26,7 +26,7 @@ function LoginPopup({ isOpen, onClose, switchToSignup, onLoginSuccess }) {
       if (response.ok) {
         localStorage.setItem('token', token); // 로그인 성공 시 토큰을 저장
         login(token); // AuthContext를 통해 로그인 상태 업데이트
-        onLoginSuccess(email, username, token); 
+        onLoginSuccess(username, email, token);
 
         // 사용자에게 알람 표시 후 메인 페이지로 이동
         alert('로그인 성공! 메인 페이지로 이동합니다.');

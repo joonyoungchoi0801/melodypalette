@@ -33,6 +33,7 @@ router.post('/login', async (req, res) => {
   try {
     // 사용자 확인
     const user = await User.findOne({ email });
+    // const token = generateToken(user);
     if (!user) {
       console.log('사용자 없음:', email);
       return res.status(400).json({ message: '잘못된 이메일입니다.' });

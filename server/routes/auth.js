@@ -1,60 +1,47 @@
-const express = require('express');
-const router = express.Router();
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-require('dotenv').config();
+// const express = require('express');
+// const axios = require('axios');
+// const querystring = require('querystring');
+// const router = express.Router();
 
-// nodemailer 설정
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: true, // SSL을 사용하는 경우 true로 설정
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// const clientId = process.env.SPOTIFY_CLIENT_ID;
+// const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+// const redirectUri = process.env.SPOTIFY_REDIRECT_URI;
 
-const verificationCodes = {}; // 메모리 내 저장 (임시)
+// // 스포티파이 인증 URL로 리다이렉트
+// router.get('/login', (req, res) => {
+//   const scope = 'user-read-private user-read-email'; // 필요한 권한
+//   const authUrl = `https://accounts.spotify.com/authorize?${querystring.stringify({
+//     response_type: 'code',
+//     client_id: clientId,
+//     scope: scope,
+//     redirect_uri: redirectUri,
+//   })}`;
+//   res.redirect(authUrl);
+// });
 
-router.post('/send-email-code', (req, res) => {
-  const { email } = req.body;
+// // 스포티파이 콜백 처리
+// router.get('/callback', async (req, res) => {
+//   const code = req.query.code || null;
 
-  // 랜덤 인증번호 생성
-  const code = crypto.randomBytes(3).toString('hex');
+//   try {
+//     const response = await axios.post('https://accounts.spotify.com/api/token', querystring.stringify({
+//       code: code,
+//       redirect_uri: redirectUri,
+//       grant_type: 'authorization_code',
+//     }), {
+//       headers: {
+//         'Content-Type': 'application/x-www-form-urlencoded',
+//         'Authorization': 'Basic ' + Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
+//       },
+//     });
 
-  // 메모리 내에 저장 (DB를 사용할 경우 DB에 저장)
-  verificationCodes[email] = code;
+//     const { access_token, refresh_token } = response.data;
+//     // Access token과 refresh token을 사용하여 스포티파이 API 호출
+//     res.json({ access_token, refresh_token });
+//   } catch (error) {
+//     console.error('Error during Spotify authentication:', error);
+//     res.status(500).json({ error: 'Failed to authenticate with Spotify' });
+//   }
+// });
 
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: 'Email Verification Code',
-    text: `Your verification code is: ${code}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error); // 에러를 콘솔에 출력
-      return res.status(500).json({ message: '이메일 전송 실패', error });
-    } else {
-      console.log('Email sent:', info.response); // 이메일 전송 성공 메시지 출력
-      res.status(200).json({ message: '인증 번호가 이메일로 전송되었습니다.' });
-    }
-  });
-});
-
-router.post('/verify-email-code', (req, res) => {
-  const { email, code } = req.body;
-  
-  console.log('Verification attempt:', { email, code, storedCode: verificationCodes[email] });
-
-  if (verificationCodes[email] && verificationCodes[email] === code) {
-    delete verificationCodes[email]; // 인증 완료 후 코드 삭제
-    res.status(200).json({ message: '인증 성공' });
-  } else {
-    res.status(400).json({ message: '인증 실패' });
-  }
-});
-
-module.exports = router;
+// module.exports = router;

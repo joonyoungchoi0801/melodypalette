@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Main.css';
 import Navbar from '../Navbar/Navbar';
 
 const albumCovers = [
-  // 예시 앨범 이미지 URL
   'https://img.etnews.com/news/article/2024/05/23/cms_temp_article_23120344835638.jpg',
   'http://img.etoday.co.kr/pto_db/2024/05/20240509102337_2022568_1200_1800.jpg',
   'https://cdn.sports.hankooki.com/news/photo/202404/6861711_1079508_493.jpg',
@@ -16,16 +15,20 @@ function Main() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
- 
   const handleSearch = () => {
+    console.log('Search button clicked with term:', searchTerm);
     navigate(`/search?query=${searchTerm}`);
   };
 
   const handleRecommendButtonClick = () => {
-    navigate('/recommendation'); 
+    console.log('Recommend button clicked');
+    navigate('/recommendation');
   };
 
-  
+  useEffect(() => {
+    console.log('Main component rendered');
+  }, []);
+
   return (
     <div className="Main">
       <Navbar/>
@@ -57,130 +60,16 @@ function Main() {
           <h2>실시간 TOP 랭킹</h2>
           <div className='chart-container'>
             <div className='chartline'>
-              <div className='chart-box'>
-                <span className='rank'>1</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
+              {Array.from({ length: 15 }, (_, index) => (
+                <div key={index} className='chart-box'>
+                  <span className='rank'>{index + 1}</span>
+                  <div className='album-img'></div>
+                  <div className='info'>
+                    <h4 className='title'>노래 제목</h4>
+                    <span className='artist'>아티스트</span>
+                  </div>
                 </div>
-              </div>
-              <div className='chart-box'>
-                <span className='rank'>2</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>
-              <div className='chart-box'>
-                <span className='rank'>3</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>
-              <div className='chart-box'>
-                <span className='rank'>4</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>
-              <div className='chart-box'>
-                <span className='rank'>5</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>
-            </div>
-            <div className='chartline'>
-              <div className='chart-box'>
-                <span className='rank'>6</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>
-              <div className='chart-box'>
-                <span className='rank'>7</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>
-              <div className='chart-box'>
-                <span className='rank'>8</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>              
-              <div className='chart-box'>
-                <span className='rank'>9</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>              
-              <div className='chart-box'>
-                <span className='rank'>10</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>            
-            </div>
-            <div className='chartline'>
-            <div className='chart-box'>
-                <span className='rank'>11</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>              
-              <div className='chart-box'>
-                <span className='rank'>12</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>              
-              <div className='chart-box'>
-                <span className='rank'>13</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>              
-              <div className='chart-box'>
-                <span className='rank'>14</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>              
-              <div className='chart-box'>
-                <span className='rank'>15</span>
-                <div className='album-img'></div>
-                <div className='info'>
-                  <h4 className='title'>노래 제목</h4>
-                  <span className='artist'>아티스트</span>
-                </div>
-              </div>            
+              ))}
             </div>
           </div>
         </div>

@@ -5,20 +5,19 @@ const AuthContext = createContext();
 
 // Context 제공자 컴포넌트
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [userProfile, setUserProfile] = useState(null);
 
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    setIsLoggedIn(true);
+  const setProfile = (profile) => {
+    setUserProfile(profile);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
+    setUserProfile(null);
+    window.location.href = 'http://localhost:5000/api/spotify/logout';
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ userProfile, setProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );

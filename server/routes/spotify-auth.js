@@ -15,12 +15,13 @@ router.get('/auth', (req, res) => {
     redirect_uri: redirectUri,
   })}`;
 
+  console.log(authUrl); // 디버깅을 위해 URL을 출력
   res.redirect(authUrl);
 });
 
 // 스포티파이 콜백 처리 라우트
-router.get('/callback', async (req, res) => {
-  const { code } = req.query;
+router.post('/callback', async (req, res) => {
+  const { code } = req.body; // POST 방식에서는 req.body를 사용합니다.
 
   try {
     const authOptions = {
@@ -40,10 +41,9 @@ router.get('/callback', async (req, res) => {
     const response = await axios(authOptions);
     const { access_token, refresh_token } = response.data;
 
-    // 여기서 메인 페이지로 리디렉션
-    res.redirect(`http://localhost:3000?access_token=${access_token}`);
+    res.json({ access_token, refresh_token });
   } catch (error) {
-    console.error('스포티파이 인증 오류:', error);
+    console.error('스포티파이 인증 오류:', error.response ? error.response.data : error.message);
     res.status(500).json({ error: '스포티파이 인증 실패' });
   }
 });

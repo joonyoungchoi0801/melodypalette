@@ -15,6 +15,23 @@ function Main() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  const [userProfile, setUserProfile] = useState(null);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
+
+    if (accessToken) {
+      fetch('https://api.spotify.com/v1/me', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then(response => response.json())
+        .then(data => setUserProfile(data))
+        .catch(error => console.error('Error fetching user profile:', error));
+    }
+  }, []);
+
   const handleSearch = () => {
     console.log('Search button clicked with term:', searchTerm);
     navigate(`/search?query=${searchTerm}`);
@@ -36,6 +53,15 @@ function Main() {
         <div className="intro-container">
           <h3>Melodypalette에서 새로운 음악을 만나보세요</h3>
           <p className='intro-text'>음악 취향을 분석하여, 당신에게 딱 맞는 곡을 추천해드립니다.</p>
+
+          {userProfile ? (
+        <div>
+          <h1>Welcome, {userProfile.display_name}</h1>
+        </div>
+      ) : (
+        <h1>Please log in</h1>
+      )}
+
           <button className="recommend-button" onClick={handleRecommendButtonClick}>음악 추천받기</button>
           <div className="album-container">
             {albumCovers.map((cover, index) => (

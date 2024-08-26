@@ -6,6 +6,7 @@ import SearchResult from './components/SearchResult/SearchResult';
 import Recommendation from './components/Recommendation/Recommendation';
 import ArtistSelection from './components/ArtistSelection/ArtistSelection'; 
 import GenreSelection from './components/GenreSelection/GenreSelection';
+import Callback from '../src/components/Callback/Callback';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/recommendation" element={<Recommendation />} />
           <Route path="/artists" element={<ArtistSelection />} />
           <Route path="/genres" element={<GenreSelection />} />
+          <Route path="/callback" element={<Callback />} />
         </Routes>
       </Router>
     </AuthProvider>

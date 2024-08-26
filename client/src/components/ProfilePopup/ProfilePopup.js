@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import './ProfilePopup.css';
-// import { useNavigate } from 'react-router-dom';
 
-const ProfilePopup = ({ isOpen, onClose, userProfile, onLogout }) => {
-  const [displayProfile, setDisplayProfile] = useState(userProfile);
-  // const navigate = useNavigate();
+const ProfilePopup = ({ isOpen, onClose, onLogout }) => {
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
-    setDisplayProfile(userProfile);
-  }, [userProfile]);
+    const accessToken = localStorage.getItem('access_token');
+
+    if (accessToken) {
+      fetch('https://api.spotify.com/v1/me', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then(response => response.json())
+        .then(data => setUserProfile(data))
+        .catch(error => console.error('Error fetching user profile:', error));
+    }
+  }, []);
 
   const handleLogout = () => {
-    // 스포티파이 로그아웃 처리
-    window.location.href = 'http://localhost:5000/api/spotify/logout';
+    onLogout();
   };
 
   if (!isOpen) return null;
@@ -24,12 +32,12 @@ const ProfilePopup = ({ isOpen, onClose, userProfile, onLogout }) => {
         <h2 className='profile'>프로필</h2>
         <div className="profile-info">
           <img 
-            src={displayProfile?.imageUrl || '/images/profile.png'} 
+            src={userProfile?.images?.[0]?.url || '/images/profile.png'} 
             alt="Profile" 
             className="profile-image" 
           />
           <div className="profile-details">
-            <p className="profile-username">{displayProfile?.name || '정보 없음'}</p>
+            <p className="profile-username">{userProfile?.display_name || '정보 없음'}</p>
           </div>
         </div>
         <button className="logout-button" onClick={handleLogout}>로그아웃</button>

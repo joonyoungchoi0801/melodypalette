@@ -5,54 +5,12 @@ import LoginPopup from '../LoginPopup/LoginPopup';
 import ProfilePopup from '../ProfilePopup/ProfilePopup';
 import './Navbar.css';
 
-const fetchUserData = async (token) => {
-  try {
-    const response = await fetch('http://localhost:5000/api/users', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    return null;
-  }
-};
-
 function Navbar() {
   const [backgroundColor, setBackgroundColor] = useState('transparent');
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn,  login, logout } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      const token = localStorage.getItem('token');
-
-      if (token) {
-        const userData = await fetchUserData(token);
-
-        if (userData) {
-          setUserEmail(userData.email);
-          setUsername(userData.username);
-        } else {
-          logout(); // 인증 실패 시 로그아웃 처리
-        }
-      }
-    };
-
-    checkLoginStatus();
-  }, [login, logout]);
 
   const openLoginPopup = () => setIsLoginPopupOpen(true);
   const closeLoginPopup = () => setIsLoginPopupOpen(false);
@@ -60,21 +18,10 @@ function Navbar() {
   const openProfilePopup = () => setIsProfilePopupOpen(true);
   const closeProfilePopup = () => setIsProfilePopupOpen(false);
 
-  const switchToSignup = () => {
-    closeLoginPopup();
-  };
-
   const handleLoginSuccess = (username, email, token) => {
     login(token);
-    setUserEmail(email);
-    setUsername(username);
+    navigate('/');
   };
-
-  useEffect(() => {
-    if (userEmail && username) {
-      navigate('/');
-    }
-  }, [userEmail, username, navigate]);
 
   const handleProfileClick = () => {
     if (isLoggedIn) {
@@ -86,8 +33,6 @@ function Navbar() {
 
   const handleLogout = () => {
     logout();
-    setUserEmail('');
-    setUsername('');
     closeProfilePopup();
     navigate('/');
   };
@@ -123,15 +68,13 @@ function Navbar() {
       <LoginPopup
         isOpen={isLoginPopupOpen}
         onClose={closeLoginPopup}
-        switchToSignup={switchToSignup}
         onLoginSuccess={handleLoginSuccess}
       />
 
       <ProfilePopup
         isOpen={isProfilePopupOpen}
         onClose={closeProfilePopup}
-        userEmail={userEmail}
-        username={username}
+        // userProfile={userProfile}
         onLogout={handleLogout}
       />
     </header>

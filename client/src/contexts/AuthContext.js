@@ -1,27 +1,46 @@
 import React, { createContext, useState, useContext } from 'react';
 
-// Context 생성
 const AuthContext = createContext();
 
-// Context 제공자 컴포넌트
 export const AuthProvider = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
 
-  const setProfile = (profile) => {
-    setUserProfile(profile);
+  const login = (token) => {
+    setIsLoggedIn(true);
+    // Fetch user profile and set it
+    fetchUserProfile(token);
   };
 
   const logout = () => {
+    setIsLoggedIn(false);
     setUserProfile(null);
-    window.location.href = 'http://localhost:5000/api/spotify/logout';
+    // Clear any tokens or user data
+    localStorage.removeItem('token');
   };
 
+  const fetchUserProfile = async (token) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/users', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUserProfile(data);
+      } else {
+        console.error('Failed to fetch user profile:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
+  
+
   return (
-    <AuthContext.Provider value={{ userProfile, setProfile, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userProfile, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Context를 사용하는 커스텀 훅
 export const useAuth = () => useContext(AuthContext);

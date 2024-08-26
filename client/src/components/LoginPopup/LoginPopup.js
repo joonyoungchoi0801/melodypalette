@@ -2,7 +2,7 @@ import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 import './LoginPopup.css';
 
-function LoginPopup({ isOpen, onClose, switchToSignup }) {
+function LoginPopup({ isOpen, onClose }) {
   // const navigate = useNavigate();
 
   const handleSpotifyLogin = () => {
@@ -20,7 +20,6 @@ function LoginPopup({ isOpen, onClose, switchToSignup }) {
         <button className="spotify-login-button" onClick={handleSpotifyLogin}>
           스포티파이로 로그인
         </button>
-        {/* <button type="button" className="join-button" onClick={switchToSignup}>회원가입</button> */}
       </div>
     </div>
   );

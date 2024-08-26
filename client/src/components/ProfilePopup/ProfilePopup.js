@@ -1,26 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './ProfilePopup.css';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ProfilePopup = ({ isOpen, onClose, onLogout }) => {
-  const [userProfile, setUserProfile] = useState(null);
-
-  useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-
-    if (accessToken) {
-      fetch('https://api.spotify.com/v1/me', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-        .then(response => response.json())
-        .then(data => setUserProfile(data))
-        .catch(error => console.error('Error fetching user profile:', error));
-    }
-  }, []);
+  const { userProfile, logout } = useAuth();
 
   const handleLogout = () => {
-    onLogout();
+    logout(); // AuthContext에서 제공하는 logout 호출
+    onLogout(); // 추가적인 클로즈 핸들러 호출
   };
 
   if (!isOpen) return null;

@@ -74,7 +74,6 @@ function Navbar() {
       <ProfilePopup
         isOpen={isProfilePopupOpen}
         onClose={closeProfilePopup}
-        // userProfile={userProfile}
         onLogout={handleLogout}
       />
     </header>

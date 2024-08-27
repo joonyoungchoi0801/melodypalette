@@ -22,7 +22,7 @@ function Main() {
 
   const handleRecommendButtonClick = () => {
     console.log('Recommend button clicked');
-    navigate('/recommendation');
+    navigate('/RecommendationOptions');
   };
 
   useEffect(() => {

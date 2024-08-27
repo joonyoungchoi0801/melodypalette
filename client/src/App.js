@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Main from './components/Main/Main';
 import SearchResult from './components/SearchResult/SearchResult';
-import Recommendation from './components/Recommendation/Recommendation';
+import RecommendationOptions from './components/RecommendationOptions/RecommendationOptions';
 import ArtistSelection from './components/ArtistSelection/ArtistSelection'; 
 import GenreSelection from './components/GenreSelection/GenreSelection';
 import Callback from '../src/components/Callback/Callback';
@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/search" element={<SearchResult />} />
-          <Route path="/recommendation" element={<Recommendation />} />
+          <Route path="/RecommendationOptions" element={<RecommendationOptions />} />
           <Route path="/artists" element={<ArtistSelection />} />
           <Route path="/genres" element={<GenreSelection />} />
           <Route path="/callback" element={<Callback />} />

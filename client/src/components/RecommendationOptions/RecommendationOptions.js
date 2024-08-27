@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navbar/Navbar';
-import './Recommendation.css';
+import './RecommendationOptions.css';
 import LoginPopup from '../LoginPopup/LoginPopup';
 
-function Recommendation() {
+function RecommendationOptions() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const { isLoggedIn, login } = useAuth();
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ function Recommendation() {
   }
 
   return (
-    <div className='Recommendation'>
+    <div className='RecommendationOptions'>
       <Navbar />
       <div className="content">
         <h1>음악 추천</h1>
@@ -59,4 +59,4 @@ function Recommendation() {
   );
 }
 
-export default Recommendation;
+export default RecommendationOptions;

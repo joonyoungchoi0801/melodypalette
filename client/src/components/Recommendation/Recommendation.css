@@ -29,13 +29,13 @@
 .recommendation-artist {
   font-size: 1.2em;
   margin: 0 0 10px;
-  color: #1DB954; /* Spotify 그린 색상 */
+  color: #555;
 }
 
 /* 곡명 스타일 */
 .recommendation-track {
   font-size: 1em;
-  color: #555;
+  color: #1DB954; /* Spotify 그린 색상 */
   margin: 0;
 }
 

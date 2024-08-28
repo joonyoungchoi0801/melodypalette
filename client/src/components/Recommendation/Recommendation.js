@@ -16,8 +16,8 @@ function Recommendation() {
         {recommendations.length > 0 ? (
             recommendations.map((track, index) => (
               <div key={index} className='recommendation-item'>
-                <h2 className='recommendation-artist'>{track.artist}</h2>
-                <p className='recommendation-track'>곡명: {track.name}</p>
+                <h1 className='recommendation-track'>{track.name}</h1>
+                <p className='recommendation-artist'>{track.artist}</p>
               </div>
             ))
           ) : (

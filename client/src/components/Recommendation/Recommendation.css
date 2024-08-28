@@ -7,14 +7,6 @@
   padding-top: 100px;
 }
 
-/* 페이지 제목 스타일 */
-.page-title {
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: #333;
-  text-align: center;
-}
-
 /* 추천 곡 리스트 스타일 */
 .recommendations-list {
   display: flex;

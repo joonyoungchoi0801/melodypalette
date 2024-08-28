@@ -1,0 +1,56 @@
+/* 페이지 전체 레이아웃 스타일 */
+.Recommendation {
+  background: black;
+  color: white;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 100px;
+}
+
+/* 페이지 제목 스타일 */
+.page-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* 추천 곡 리스트 스타일 */
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 개별 추천 아이템 스타일 */
+.recommendation-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 아티스트 이름 스타일 */
+.recommendation-artist {
+  font-size: 1.2em;
+  margin: 0 0 10px;
+  color: #1DB954; /* Spotify 그린 색상 */
+}
+
+/* 곡명 스타일 */
+.recommendation-track {
+  font-size: 1em;
+  color: #555;
+  margin: 0;
+}
+
+/* 추천 항목이 없을 때의 스타일 */
+.no-recommendations {
+  text-align: center;
+  font-size: 1.2em;
+  color: #999;
+  margin-top: 50px;
+}

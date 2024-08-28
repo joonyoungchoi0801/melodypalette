@@ -1,12 +1,15 @@
 import './ArtistSelection.css';
 import { useState, useEffect } from 'react';
 import Navbar from '../Navbar/Navbar';
+import { getTrackRecommendationsFromRelatedArtists } from '../../services/RecommendationService'; // 함수 이름 수정
+import { useNavigate } from 'react-router-dom';
 
 function ArtistSelection() {
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
 // API를 사용해 아티스트 데이터 가져오기
 async function fetchSpotifyToken() {
@@ -66,6 +69,24 @@ const toggleSelectArtist = (artistId) => {
   }
 };
 
+// 선택 완료 버튼 클릭 시
+const handleSelectComplete = async () => {
+  if (selectedArtists.length === 0) {
+    setErrorMessage('아티스트를 선택하세요.');
+    return;
+  }
+
+  const token = await fetchSpotifyToken();
+  if (!token) return;
+
+  // 추천을 가져오는 함수 호출
+  const recommendations = await getTrackRecommendationsFromRelatedArtists(selectedArtists, token);
+  console.log('Recommendations:', recommendations);
+
+  // 추천 페이지로 이동하며 추천 결과를 쿼리 파라미터로 전달
+  navigate('/recommendations', { state: { recommendations } });
+};
+
   return (
     <div className='ArtistSelection'>
       <Navbar />
@@ -73,7 +94,7 @@ const toggleSelectArtist = (artistId) => {
         <h1 className='page-title'>선호하는 아티스트</h1>
         <div className='select-complete'>
           <span className='select-limit'>최대 5개 이하 선택</span>
-          <button className='select-complete-btn'>선택 완료</button>
+          <button className='select-complete-btn' onClick={handleSelectComplete}>선택 완료</button>
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {loading ? (

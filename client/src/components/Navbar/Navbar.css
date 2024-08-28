@@ -1,16 +1,29 @@
-/*navigation bar style*/
+/* Navbar 기본 스타일 */
 .navbar {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   padding: 1rem;
   transition: background-color 0.3s ease;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1000; /* 페이지 콘텐츠보다 위에 위치하도록 설정 */
 }
 
-/* Navbar container style */
+/* 스크롤되지 않았을 때의 Navbar 스타일 */
+.navbar.transparent {
+  background-color: transparent;
+}
+
+/* 스크롤된 후의 Navbar 스타일 */
+.navbar.scrolled {
+  background-color: rgba(0, 0, 0, 0.8); /* 배경색을 어둡게 변경 */
+  backdrop-filter: blur(10px); /* 배경 흐림 효과 */
+}
+
+/* Navbar container 스타일 */
 .navbar-container {
   display: flex;
   justify-content: space-between;
@@ -18,13 +31,14 @@
   align-items: center;
 }
 
-/* Logo style */
+/* 로고 스타일 */
 .logo {
   color: white;
   font-size: 1.5rem;
   margin-left: 1rem;
 }
 
+/* Navbar 박스 스타일 */
 .navbar-box {
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -33,7 +47,7 @@
   height: 40px;
 }
 
-/* Navbar ul style */
+/* Navbar ul 스타일 */
 .navbar ul {
   list-style: none;
   display: flex;
@@ -43,16 +57,17 @@
   margin-top: 0.5rem;
 }
 
-/* Navbar li style */
+/* Navbar li 스타일 */
 .navbar li {
   margin: 0 1rem;
 }
 
-.navbar a:hover{
+/* 링크 호버 시 색상 변경 */
+.navbar a:hover {
   color: gray;
 }
 
-/* Navbar link style */
+/* 링크 기본 스타일 */
 .navbar a {
   color: black;
   text-decoration: none;

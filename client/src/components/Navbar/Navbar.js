@@ -6,10 +6,10 @@ import ProfilePopup from '../ProfilePopup/ProfilePopup';
 import './Navbar.css';
 
 function Navbar() {
-  const [backgroundColor, setBackgroundColor] = useState('transparent');
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
-  const { isLoggedIn,  login, logout } = useAuth();
+  const { isLoggedIn, login, logout } = useAuth();
   const navigate = useNavigate();
 
   const openLoginPopup = () => setIsLoginPopupOpen(true);
@@ -40,7 +40,7 @@ function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
-      setBackgroundColor(offset > window.innerHeight ? 'black' : 'transparent');
+      setIsScrolled(offset > 50); // 스크롤 위치가 50px을 넘으면 색상을 변경
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -48,7 +48,7 @@ function Navbar() {
   }, []);
 
   return (
-    <header className="navbar" style={{ backgroundColor }}>
+    <header className={`navbar ${isScrolled ? 'scrolled' : 'transparent'}`}>
       <div className="navbar-container">
         <h3 className="logo">Melodypalette</h3>
         <nav className="navbar-box">

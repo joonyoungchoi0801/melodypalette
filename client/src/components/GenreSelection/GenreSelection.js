@@ -1,14 +1,18 @@
 import './GenreSelection.css';
 import { useState, useEffect } from 'react';
 import Navbar from '../Navbar/Navbar';
+import { useNavigate } from 'react-router-dom';
+import { getTracksByGenre } from '../../services/RecommendationService';
 
 function GenreSelection() {
   const [selectGenres, setSelectGenres] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchingRecommendations, setFetchingRecommendations] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
+  const navigate = useNavigate();
 
-  // Spotify API에서 액세스 토큰을 가져오는 함수
   async function fetchSpotifyToken() {
     try {
       const response = await fetch('http://localhost:5000/api/token');
@@ -23,27 +27,25 @@ function GenreSelection() {
     }
   }
 
-  // Spotify API에서 장르 데이터를 가져오는 함수
   useEffect(() => {
     const fetchGenres = async () => {
       const token = await fetchSpotifyToken();
       if (!token) return;
-  
+
       try {
         const response = await fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-  
+
         const data = await response.json();
         if (data.genres && Array.isArray(data.genres)) {
-          // 특정 장르만 필터링하여 가져옵니다.
-          const selectedGenres = ['pop', 'hip-hop', 'jazz', 'classical', 'edm', 'r-n-b', 'happy', 'blues', 'piano', 'indie-pop', 'indie', 'dance', 'chill', 'rainy-day', 'drum-and-bass', 'groove', 'guitar', 'disney', 'j-pop', 'movies', 'sad', 'singer-songwriter', 'sleep', 'summer']; //특정 장르
+          const selectedGenres = ['pop', 'hip-hop', 'jazz', 'classical', 'edm', 'r-n-b', 'happy', 'blues', 'piano', 'indie-pop', 'indie', 'dance', 'chill', 'rainy-day', 'drum-and-bass', 'groove', 'guitar', 'disney', 'j-pop', 'movies', 'sad', 'singer-songwriter', 'sleep', 'summer'];
           const genreList = data.genres
             .filter(genre => selectedGenres.includes(genre))
             .map((genre, index) => ({
-              id: index + 1, // 임의의 ID 할당
+              id: index + 1,
               name: genre,
             }));
           setGenres(genreList);
@@ -53,14 +55,33 @@ function GenreSelection() {
       } catch (error) {
         console.error('Error fetching genres:', error.message);
       } finally {
-        setLoading(false); // 로딩 완료
+        setLoading(false);
       }
     };
-  
+
     fetchGenres();
   }, []);
-  
-  // 장르 선택 토글 함수
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (selectGenres.length > 0) {
+        setFetchingRecommendations(true);
+        try {
+          const token = await fetchSpotifyToken();
+          const genreIds = selectGenres.map(id => genres.find(genre => genre.id === id)?.name);
+          const recommendedTracks = await getTracksByGenre(genreIds, token);
+          setRecommendations(recommendedTracks);
+        } catch (error) {
+          console.error('Error fetching recommendations:', error.message);
+        } finally {
+          setFetchingRecommendations(false);
+        }
+      }
+    };
+
+    fetchRecommendations();
+  }, [selectGenres, genres]); // Added genres as a dependency
+
   const toggleSelectGenre = (genreId) => {
     if (selectGenres.includes(genreId)) {
       setSelectGenres((preSelected) =>
@@ -77,6 +98,15 @@ function GenreSelection() {
     }
   };
 
+  const handleSelectComplete = () => {
+    if (selectGenres.length === 0) {
+      setErrorMessage('장르를 선택하세요.');
+      return;
+    }
+
+    navigate('/recommendations', { state: { recommendations } });
+  };
+
   return (
     <div className='GenreSelection'>
       <Navbar />
@@ -84,7 +114,13 @@ function GenreSelection() {
         <h1 className='page-title'>선호하는 장르</h1>
         <div className='select-complete'>
           <span className='select-limit'>최대 5개 이하 선택</span>
-          <button className='select-complete-btn'>선택 완료</button>
+          <button
+            className='select-complete-btn'
+            onClick={handleSelectComplete}
+            disabled={fetchingRecommendations}
+          >
+            선택 완료
+          </button>
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {loading ? (
@@ -102,6 +138,7 @@ function GenreSelection() {
             ))}
           </div>
         )}
+        {fetchingRecommendations && <div className="loading-spinner">추천 곡 로딩 중...</div>}
       </div>
     </div>
   );

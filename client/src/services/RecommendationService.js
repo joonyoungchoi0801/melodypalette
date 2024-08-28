@@ -69,3 +69,22 @@ export const getTrackRecommendationsFromRelatedArtists = async (selectedArtists,
     return [];
   }
 };
+
+// 장르 기반으로 곡 추천 받기
+export const getTracksByGenre = async (genres, token) => {
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/recommendations?seed_genres=${genres.join(',')}&limit=10`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+    return data.tracks.map(track => ({
+      id: track.id,
+      name: track.name,
+      artist: track.artists.map(artist => artist.name).join(', '),
+    }));
+  } catch (error) {
+    console.error('Error fetching tracks by genre:', error.message);
+    return [];
+  }
+};

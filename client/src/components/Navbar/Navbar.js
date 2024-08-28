@@ -18,9 +18,13 @@ function Navbar() {
   const openProfilePopup = () => setIsProfilePopupOpen(true);
   const closeProfilePopup = () => setIsProfilePopupOpen(false);
 
-  const handleLoginSuccess = (username, email, token) => {
+  const handleLoginSuccess = (token) => {
     login(token);
     navigate('/');
+  };
+
+  const handleLogoClick = () => {
+    navigate('/'); // 메인 페이지로 이동
   };
 
   const handleProfileClick = () => {
@@ -50,7 +54,7 @@ function Navbar() {
   return (
     <header className={`navbar ${isScrolled ? 'scrolled' : 'transparent'}`}>
       <div className="navbar-container">
-        <h3 className="logo">Melodypalette</h3>
+        <h3 className="logo" onClick={handleLogoClick}>Melodypalette</h3>
         <nav className="navbar-box">
           <ul>
             <li><a href="#section1">제목 또는 아티스트 검색</a></li>

@@ -116,7 +116,7 @@ function Main() {
           </div>
         </div>
       </section>
-      <section className="section black-background1">
+      <section className="section black-background1" id="section2">
         <div className='second-container'>
           <h2>제목 또는 아티스트 검색</h2>
           <div className='search-container'>
@@ -131,9 +131,9 @@ function Main() {
           </div>
         </div>
       </section>
-      <section className="section black-background2">
+      <section className="section black-background2" id="section3">
         <div className='third-container'>
-          <h2>실시간 HOT HITS KOREA</h2>
+          <h2>실시간 TOP 랭킹</h2>
           <div className='chart-container'>
             {loading ? (
               <div className="loading-spinner">로딩 중...</div>

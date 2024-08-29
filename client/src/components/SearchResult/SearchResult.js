@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './SearchResult.css';
 
@@ -35,12 +35,20 @@ async function fetchSearchResults(query, token) {
 }
 
 function SearchResult() {
+  const [searchTerm, setSearchTerm] = useState(''); // 입력한 검색어 상태 관리
   const [tracks, setTracks] = useState([]);
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const query = params.get('query');
+
+  useEffect(() => {
+    if (query) {
+      setSearchTerm(query); // URL에서 받아온 쿼리를 searchTerm 상태에 설정
+    }
+  }, [query]);
 
   useEffect(() => {
     const getSearchResults = async () => {
@@ -58,13 +66,26 @@ function SearchResult() {
     getSearchResults();
   }, [query]);
 
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
+    }
+  };
+
   return (
     <div className='SearchResult'>
       <Navbar />
       <section className='search-container2'>
         <div className='search-container'>
-          <input type="text" className="search-input" placeholder="검색어를 입력하세요" />
-          <button className="search-button">검색</button>
+        <input
+            type="text"
+            className="search-input"
+            placeholder="검색어를 입력하세요"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} // 입력 변화에 따른 상태 업데이트
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()} // 엔터 키로도 검색 가능
+          />
+          <button className="search-button" onClick={handleSearch}>검색</button>
         </div>
       </section>
       <section className='result-song-container'>

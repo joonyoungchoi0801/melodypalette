@@ -59,7 +59,7 @@ function Navbar() {
           <ul>
             <li><a href="#section2">제목 또는 아티스트 검색</a></li>
             <li><a href="#section3">실시간 TOP 랭킹</a></li>
-            <li><a href="#section4">Playlist</a></li>
+            <li><a href="/UserPlaylists">Playlist</a></li>
             <li>
               <a href="#profile" onClick={handleProfileClick}>
                 {isLoggedIn ? '프로필' : '로그인'}

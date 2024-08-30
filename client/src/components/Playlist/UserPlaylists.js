@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import './UserPlaylists.css'; // 필요한 경우 스타일링을 위한 CSS 파일
+import { useNavigate } from 'react-router-dom'; // 변경: useHistory → useNavigate
+import './UserPlaylists.css'; 
 import Navbar from '../Navbar/Navbar';
 
 function UserPlaylists() {
   const [playlists, setPlaylists] = useState([]);
   const [newPlaylistName, setNewPlaylistName] = useState('');
+  const navigate = useNavigate(); // 변경: useHistory() → useNavigate()
 
-  // 저장된 플레이리스트를 가져오는 함수
   useEffect(() => {
     const storedPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
     setPlaylists(storedPlaylists);
   }, []);
 
-  // 새 플레이리스트를 만드는 함수
   const createNewPlaylist = () => {
-    if (newPlaylistName.trim() === '') return; // 이름이 비어있으면 생성을 중단
+    if (newPlaylistName.trim() === '') return;
 
     const newPlaylist = {
-      id: Date.now(), // 고유 ID 생성
+      id: Date.now(),
       name: newPlaylistName,
       tracks: [],
-      coverImage: '/default-cover.jpg' // 기본 커버 이미지 설정
+      coverImage: '/default-cover.jpg'
     };
 
     const updatedPlaylists = [...playlists, newPlaylist];
     setPlaylists(updatedPlaylists);
-    localStorage.setItem('userPlaylists', JSON.stringify(updatedPlaylists)); // 로컬 스토리지에 저장
-    setNewPlaylistName(''); // 입력 필드 초기화
+    localStorage.setItem('userPlaylists', JSON.stringify(updatedPlaylists));
+    setNewPlaylistName('');
+  };
+
+  const goToPlaylistDetail = (id) => {
+    navigate(`/playlists/${id}`); 
   };
 
   return (
@@ -52,6 +56,7 @@ function UserPlaylists() {
             <div 
               key={playlist.id} 
               className="playlist-card"
+              onClick={() => goToPlaylistDetail(playlist.id)}
             >
               <div className="playlist-info">
                 <h3 className="playlist-name">{playlist.name}</h3>

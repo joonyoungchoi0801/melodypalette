@@ -1,0 +1,72 @@
+/* 전체 페이지 레이아웃 */
+.PlaylistDetail {
+  background: black;
+  color: white;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 100px;
+}
+
+/* 페이지 제목 스타일 */
+.playlist-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* 뒤로 가기 버튼 스타일 */
+.back-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #1DB954; /* Spotify 녹색 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.back-button:hover {
+  background-color: #1AA34A;
+}
+
+/* 트랙 리스트 컨테이너 스타일 */
+.track-list-container {
+  margin-top: 20px;
+}
+
+/* 트랙 아이템 스타일 */
+.track-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 트랙 이미지 스타일 */
+.track-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 15px;
+}
+
+/* 트랙 정보 스타일 */
+.track-info {
+  flex-grow: 1;
+}
+
+.track-info h3 {
+  font-size: 18px;
+  margin: 0 0 5px;
+}
+
+.track-info p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}

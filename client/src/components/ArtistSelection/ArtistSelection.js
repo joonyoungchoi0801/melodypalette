@@ -1,7 +1,7 @@
 import './ArtistSelection.css';
 import { useState, useEffect } from 'react';
 import Navbar from '../Navbar/Navbar';
-import { getTrackRecommendationsFromRelatedArtists } from '../../services/RecommendationService'; // 함수 이름 수정
+import { getTrackRecommendationsWithCosineSimilarity } from '../../services/RecommendationService'; // 함수 이름 수정
 import { useNavigate } from 'react-router-dom';
 
 function ArtistSelection() {
@@ -80,7 +80,7 @@ const handleSelectComplete = async () => {
   if (!token) return;
 
   // 추천을 가져오는 함수 호출
-  const recommendations = await getTrackRecommendationsFromRelatedArtists(selectedArtists, token);
+  const recommendations = await getTrackRecommendationsWithCosineSimilarity(selectedArtists, token);
   console.log('Recommendations:', recommendations);
 
   // 추천 페이지로 이동하며 추천 결과를 쿼리 파라미터로 전달

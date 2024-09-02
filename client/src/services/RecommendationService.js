@@ -1,14 +1,21 @@
-// 특정 아티스트의 상위 트랙을 가져오는 함수
 const fetchArtistTopTracks = async (artistId, token) => {
   try {
     const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=US`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
+
+    // 데이터 구조 점검
+    if (!data || !data.tracks) {
+      console.error('Invalid data structure:', data);
+      return [];
+    }
+
     return data.tracks.map(track => ({
       id: track.id,
       name: track.name,
-      artist: track.artists[0].name,
+      artist: track.artists.map(artist => artist.name).join(', '), // 아티스트 이름을 추출
+      spotifyUrl: track.external_urls.spotify, // Spotify URL 추가
     }));
   } catch (error) {
     console.error('Error fetching artist top tracks:', error.message);
@@ -16,42 +23,129 @@ const fetchArtistTopTracks = async (artistId, token) => {
   }
 };
 
-// 선택한 아티스트들의 연관 아티스트 기반 추천을 생성하는 함수
-export const getTrackRecommendationsFromRelatedArtists = async (selectedArtists, token) => {
+
+// 트랙의 오디오 특징을 가져오는 함수
+const fetchTrackAudioFeatures = async (trackIds, token) => {
   try {
+    const response = await fetch(`https://api.spotify.com/v1/audio-features?ids=${trackIds.join(',')}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+
+    // 데이터 검증
+    if (!data || !data.audio_features) {
+      console.error('Invalid data structure:', data);
+      return [];
+    }
+
+    return data.audio_features;
+  } catch (error) {
+    console.error('Error fetching track audio features:', error.message);
+    return [];
+  }
+};
+
+const calculateArtistFeatureVector = async (artistId, token) => {
+  try {
+    const topTracks = await fetchArtistTopTracks(artistId, token);
+    if (!topTracks.length) {
+      console.error('No top tracks found for artist:', artistId);
+      return [];
+    }
+
+    const trackIds = topTracks.map(track => track.id);
+    const audioFeatures = await fetchTrackAudioFeatures(trackIds, token);
+
+    // 데이터 검증
+    if (!audioFeatures || !audioFeatures.length) {
+      console.error('No audio features found for tracks:', trackIds);
+      return [];
+    }
+
+    // 오디오 특징 값의 합계를 계산
+    const featureSums = audioFeatures.reduce((acc, features) => {
+      if (!features) return acc;
+
+      acc.energy += features.energy || 0;
+      acc.danceability += features.danceability || 0;
+      acc.tempo += features.tempo || 0;
+      acc.acousticness += features.acousticness || 0;
+      return acc;
+    }, { energy: 0, danceability: 0, tempo: 0, acousticness: 0 });
+
+    const numTracks = audioFeatures.length;
+
+    // 평균 값을 계산하여 벡터 생성
+    return [
+      featureSums.energy / numTracks,
+      featureSums.danceability / numTracks,
+      featureSums.tempo / numTracks,
+      featureSums.acousticness / numTracks
+    ];
+  } catch (error) {
+    console.error('Error calculating artist feature vector:', error.message);
+    return [];
+  }
+};
+
+
+// 두 벡터 간의 코사인 유사도 계산 함수
+const cosineSimilarity = (vecA, vecB) => {
+  const dotProduct = vecA.reduce((acc, curr, index) => acc + curr * vecB[index], 0);
+  const magnitudeA = Math.sqrt(vecA.reduce((acc, curr) => acc + curr * curr, 0));
+  const magnitudeB = Math.sqrt(vecB.reduce((acc, curr) => acc + curr * curr, 0));
+  return dotProduct / (magnitudeA * magnitudeB);
+};
+
+export const getTrackRecommendationsWithCosineSimilarity = async (selectedArtists, token) => {
+  try {
+    const selectedArtistsFeatures = await Promise.all(
+      selectedArtists.map(artistId => calculateArtistFeatureVector(artistId, token))
+    );
+
+    if (selectedArtistsFeatures.some(features => !features.length)) {
+      console.error('Some selected artists have no valid feature vectors');
+      return [];
+    }
+
     const relatedArtistsMap = new Map();
 
-    // 선택한 각 아티스트의 연관 아티스트를 가져옴
     for (const artistId of selectedArtists) {
       const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}/related-artists`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-      
-      // 연관 아티스트들의 유사성을 측정해 Map에 추가 (유사성 점수는 예를 들어 1.0으로 설정)
-      data.artists.forEach(artist => {
-        if (relatedArtistsMap.has(artist.id)) {
-          relatedArtistsMap.set(artist.id, relatedArtistsMap.get(artist.id) + 1);
-        } else {
-          relatedArtistsMap.set(artist.id, 1);
+
+      for (const artist of data.artists) {
+        const artistFeatures = await calculateArtistFeatureVector(artist.id, token);
+        
+        if (artistFeatures.length) {
+          const similarity = Math.max(
+            ...selectedArtistsFeatures.map(
+              selectedFeatures => cosineSimilarity(selectedFeatures, artistFeatures)
+            )
+          );
+
+          if (relatedArtistsMap.has(artist.id)) {
+            relatedArtistsMap.set(artist.id, Math.max(relatedArtistsMap.get(artist.id), similarity));
+          } else {
+            relatedArtistsMap.set(artist.id, similarity);
+          }
         }
-      });
+      }
     }
 
-    // 유사성이 높은 상위 10개의 아티스트를 선택
     const sortedRelatedArtists = Array.from(relatedArtistsMap.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(entry => entry[0]);
 
-    // 상위 10개의 아티스트의 곡을 가져옴
     const allTracks = await Promise.all(
       sortedRelatedArtists.map(artistId => fetchArtistTopTracks(artistId, token))
     );
 
-    // 각 아티스트에서 고르게 곡을 추천하는 방식으로 상위 10곡 추출
     const recommendationTracks = [];
-    const maxTracks = 10; // 추천할 최대 곡 수
+    const maxTracks = 10;
     let trackIndex = 0;
 
     while (recommendationTracks.length < maxTracks && trackIndex < Math.max(...allTracks.map(artistTracks => artistTracks.length))) {

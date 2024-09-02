@@ -27,7 +27,7 @@
 
 /* 아티스트 이름 스타일 */
 .recommendation-artist {
-  font-size: 1.2em;
+  font-size: 1em;
   margin: 0 0 10px;
   color: #555;
 }
@@ -45,4 +45,37 @@
   font-size: 1.2em;
   color: #999;
   margin-top: 50px;
+}
+
+.recommendation-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.like-button, .dislike-button, .play-button {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.like-button.liked {
+  background-color: #4CAF50; /* 좋아요가 눌렸을 때 녹색 */
+  color: white;
+}
+
+.dislike-button.disliked {
+  background-color: #F44336; /* 싫어요가 눌렸을 때 빨간색 */
+  color: white;
+}
+
+.play-button {
+  background-color: #2196F3; /* 재생 버튼은 파란색 */
+  color: white;
+}
+
+.recommendation-item {
+  margin-bottom: 20px;
 }

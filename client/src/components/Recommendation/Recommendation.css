@@ -5,15 +5,16 @@
   width: 100%;
   min-height: 100vh;
   padding-top: 100px;
+  padding-bottom: 30px;
 }
 
 /* 추천 곡 리스트 스타일 */
 .recommendations-list {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
-  margin: 0 auto;
+  flex-wrap: wrap; /* 여러 줄로 감싸기 */
+  gap: 20px; /* 항목 간의 간격 */
+  max-width: 95%; /* 전체 너비 제한 */
+  margin: 0 auto; /* 가운데 정렬 */
 }
 
 /* 개별 추천 아이템 스타일 */
@@ -23,6 +24,31 @@
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  width: calc(50% - 20px); /* 두 개 열로 나누기 (간격을 고려) */
+  box-sizing: border-box; /* 패딩과 테두리 포함 너비 계산 */
+}
+
+.album-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.recommendation-info {
+  flex: 1; /* 텍스트와 버튼 영역이 이미지와 동일한 높이를 가지도록 함 */
+}
+
+/* 곡명 스타일 */
+.recommendation-track {
+  font-size: 1.1em;
+  color: black; /* Spotify 그린 색상 */
+  margin: 0;
+  font-weight: bold;
 }
 
 /* 아티스트 이름 스타일 */
@@ -32,25 +58,9 @@
   color: #555;
 }
 
-/* 곡명 스타일 */
-.recommendation-track {
-  font-size: 1em;
-  color: #1DB954; /* Spotify 그린 색상 */
-  margin: 0;
-}
-
-/* 추천 항목이 없을 때의 스타일 */
-.no-recommendations {
-  text-align: center;
-  font-size: 1.2em;
-  color: #999;
-  margin-top: 50px;
-}
-
 .recommendation-actions {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .like-button, .dislike-button, .play-button {
@@ -59,15 +69,16 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
+  transition: background-color 0.3s;
 }
 
 .like-button.liked {
-  background-color: #4CAF50; /* 좋아요가 눌렸을 때 녹색 */
+  background-color: violet; /* 좋아요가 눌렸을 때 녹색 */
   color: white;
 }
 
 .dislike-button.disliked {
-  background-color: #F44336; /* 싫어요가 눌렸을 때 빨간색 */
+  background-color: #fec881; /* 싫어요가 눌렸을 때 빨간색 */
   color: white;
 }
 
@@ -76,6 +87,10 @@
   color: white;
 }
 
-.recommendation-item {
-  margin-bottom: 20px;
+/* 추천 항목이 없을 때의 스타일 */
+.no-recommendations {
+  text-align: center;
+  font-size: 1.2em;
+  color: #999;
+  margin-top: 50px;
 }

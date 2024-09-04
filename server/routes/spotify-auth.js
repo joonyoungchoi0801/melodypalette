@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const querystring = require('querystring');
+const User = require('../models/User');
 
 // 스포티파이 인증 라우트
 router.get('/auth', (req, res) => {
@@ -15,7 +16,7 @@ router.get('/auth', (req, res) => {
     redirect_uri: redirectUri,
   })}`;
 
-  console.log(authUrl); // 디버깅을 위해 URL을 출력
+  console.log(authUrl); 
   res.redirect(authUrl);
 });
 
@@ -41,6 +42,30 @@ router.post('/callback', async (req, res) => {
     const response = await axios(authOptions);
     const { access_token, refresh_token } = response.data;
 
+    // 사용자 정보 요청
+    const userResponse = await axios.get('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    const { id, display_name, email } = userResponse.data;
+
+    // 사용자 정보 MongoDB에 저장 또는 업데이트
+    await User.findOneAndUpdate(
+      { spotifyId: id },
+      { 
+        displayName: display_name,
+        email,
+        accessToken: access_token,
+        refreshToken: refresh_token,
+        expiresIn: response.data.expires_in,
+        lastLogin: new Date(),
+      },
+      { upsert: true, new: true }
+    );
+
+    // 클라이언트로 응답
     res.json({ access_token, refresh_token });
   } catch (error) {
     console.error('스포티파이 인증 오류:', error.response ? error.response.data : error.message);
@@ -48,6 +73,7 @@ router.post('/callback', async (req, res) => {
   }
 });
 
+//로그아웃 처리 라우트
 router.get('/logout', (req, res) => {
   res.redirect('https://accounts.spotify.com/logout');
 });

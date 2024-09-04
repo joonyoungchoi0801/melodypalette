@@ -55,29 +55,36 @@ function Recommendation() {
         {recommendations.length > 0 ? (
             recommendations.map((track, index) => (
               <div key={index} className='recommendation-item'>
-                <h1 className='recommendation-track'>{track.name || 'No Title'}</h1>
-                <p className='recommendation-artist'>{track.artist || 'Unknown Artist'}</p>
-                <div className='recommendation-actions'>
-                <button 
-                  className={`like-button ${likes[track.id] ? 'liked' : ''}`}
-                  onClick={() => handleLike(track.id)}
-                >
-                  👍 좋아요
-                </button>
-                <button 
-                  className={`dislike-button ${dislikes[track.id] ? 'disliked' : ''}`}
-                  onClick={() => handleDislike(track.id)}
-                >
-                  👎 싫어요
-                </button>
-                <button 
-                  className='play-button'
-                  onClick={() => handlePlay(track)}
-                >
-                  ▶️ 재생
-                </button>
+                <img 
+                  src={track.albumImage || 'default_album_image_url.jpg'} 
+                  alt={`${track.name} album cover`} 
+                  className='album-image'
+                />
+                <div className='recommendation-info'>
+                  <h1 className='recommendation-track'>{track.name || 'No Title'}</h1>
+                  <p className='recommendation-artist'>{track.artist || 'Unknown Artist'}</p>
+                  <div className='recommendation-actions'>
+                    <button 
+                      className={`like-button ${likes[track.id] ? 'liked' : ''}`}
+                      onClick={() => handleLike(track.id)}
+                    >
+                      👍 좋아요
+                    </button>
+                    <button 
+                      className={`dislike-button ${dislikes[track.id] ? 'disliked' : ''}`}
+                      onClick={() => handleDislike(track.id)}
+                    >
+                      👎 싫어요
+                    </button>
+                    <button 
+                      className='play-button'
+                      onClick={() => handlePlay(track)}
+                    >
+                      ▶️ 재생
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
           ))
         ) : (
           <p className='no-recommendations'>추천할 항목이 없습니다.</p>

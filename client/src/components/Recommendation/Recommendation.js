@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Recommendation.css';
 
@@ -9,6 +9,7 @@ function Recommendation() {
 
   const [likes, setLikes] = useState({}); // 좋아요 상태 관리
   const [dislikes, setDislikes] = useState({}); // 싫어요 상태 관리
+  const navigate = useNavigate();
 
   // 좋아요 버튼 클릭 핸들러
   const handleLike = (trackId) => {
@@ -45,6 +46,11 @@ function Recommendation() {
     const spotifyUrl = track.spotifyUrl || `https://open.spotify.com/search/${encodeURIComponent(track.name)} ${encodeURIComponent(track.artist)}`;
     console.log('Playing track:', track); // 추가 로깅
     window.open(spotifyUrl, '_blank');
+  };
+
+  // 추천 완료 버튼 클릭 핸들러
+  const handleFinish = () => {
+    navigate('/'); // 메인 페이지로 이동
   };
   
   return (
@@ -89,6 +95,9 @@ function Recommendation() {
         ) : (
           <p className='no-recommendations'>추천할 항목이 없습니다.</p>
         )}
+      </div>
+      <div className='recommendation-button-container'>
+        <button className='recommendation-finished' onClick={handleFinish}>추천 완료</button>
       </div>
     </div>
   );

@@ -94,3 +94,26 @@
   color: #999;
   margin-top: 50px;
 }
+
+.recommendation-button-container {
+  display: flex;
+  justify-content: center; /* 가로 방향 중앙 정렬 */
+  margin-top: 30px; /* 위쪽 여백 */
+}
+
+.recommendation-finished {
+  padding: 15px 30px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.recommendation-finished:hover{
+  background-color: #e0dfdf;
+}

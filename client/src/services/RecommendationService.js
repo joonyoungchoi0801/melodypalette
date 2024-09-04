@@ -15,6 +15,7 @@ const fetchArtistTopTracks = async (artistId, token) => {
       id: track.id,
       name: track.name,
       artist: track.artists.map(artist => artist.name).join(', '), // 아티스트 이름을 추출
+      albumImage: track.album.images[0]?.url,
       spotifyUrl: track.external_urls.spotify, // Spotify URL 추가
     }));
   } catch (error) {
@@ -176,6 +177,7 @@ export const getTracksByGenre = async (genres, token) => {
       id: track.id,
       name: track.name,
       artist: track.artists.map(artist => artist.name).join(', '),
+      albumImage: track.album.images[0]?.url,
     }));
   } catch (error) {
     console.error('Error fetching tracks by genre:', error.message);

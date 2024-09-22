@@ -178,6 +178,7 @@ export const getTracksByGenre = async (genres, token) => {
       name: track.name,
       artist: track.artists.map(artist => artist.name).join(', '),
       albumImage: track.album.images[0]?.url,
+      spotifyUrl: track.external_urls.spotify
     }));
   } catch (error) {
     console.error('Error fetching tracks by genre:', error.message);

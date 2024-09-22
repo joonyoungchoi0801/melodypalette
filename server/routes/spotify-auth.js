@@ -6,8 +6,8 @@ const User = require('../models/User');
 
 // 스포티파이 인증 라우트
 router.get('/auth', (req, res) => {
-  const redirectUri = 'http://localhost:3000/callback';
-  const scope = 'user-read-private user-read-email';
+  const redirectUri = process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:3000/callback';
+  const scope = 'user-read-private user-read-email user-read-playback-state user-modify-playback-state streaming';
 
   const authUrl = `https://accounts.spotify.com/authorize?${querystring.stringify({
     response_type: 'code',
@@ -68,7 +68,7 @@ router.post('/callback', async (req, res) => {
     // 클라이언트로 응답
     res.json({ access_token, refresh_token });
   } catch (error) {
-    console.error('스포티파이 인증 오류:', error.response ? error.response.data : error.message);
+    console.error('스포티파이 인증 오류:', error.response?.data || error.message);
     res.status(500).json({ error: '스포티파이 인증 실패' });
   }
 });

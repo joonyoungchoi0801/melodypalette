@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Recommendation.css';
+import Player from '../Player/Player';
 
 function Recommendation() {
   const { state } = useLocation(); // 상태에서 추천 결과 가져오기
   const recommendations = state?.recommendations || [];
-
+  const [selectedTrackUri] = useState(''); // 재생할 곡 URI 상태 관리
   const [likes, setLikes] = useState({}); // 좋아요 상태 관리
   const [dislikes, setDislikes] = useState({}); // 싫어요 상태 관리
   const navigate = useNavigate();
+  //1시간마다 accessToken 리셋되므로 리프레시 해줘야 함
+  const accessToken = 'BQCu2phRqC9RHse4JBufSi7RBwfI_qR-vLwTXK0Q-gLFDtwnmpZIqZQGw8-Xp3DeoiM29OnF6H2p3X2cbv6gGe0PqabNHvCVOXGQwSqTB-46p6aattemjTnC4rd_f7dIIs89aDMphhOWw3cPLUbCPc4pQVbfFYaQa_ceXaTQ0H1UsxY-6Lb2VvIHkXQuEcnpQDrBUQwbZLYD5iaU-ET_RWh3kjGkgbWQq0_KFX34';
+  console.log(accessToken);
+  console.log(recommendations); // 추천 트랙 배열 출력
+
 
   // 좋아요 버튼 클릭 핸들러
   const handleLike = (trackId) => {
@@ -43,10 +49,10 @@ function Recommendation() {
 
   // 재생 버튼 클릭 핸들러
   const handlePlay = (track) => {
-    const spotifyUrl = track.spotifyUrl || `https://open.spotify.com/search/${encodeURIComponent(track.name)} ${encodeURIComponent(track.artist)}`;
-    console.log('Playing track:', track); // 추가 로깅
-    window.open(spotifyUrl, '_blank');
-  };
+    console.log('Playing track:', track);
+    const uri = track.spotifyUrl; // 선택된 곡의 URI
+    navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artist)}&albumImage=${encodeURIComponent(track.albumImage)}`);
+  };  
 
   // 추천 완료 버튼 클릭 핸들러
   const handleFinish = () => {
@@ -99,6 +105,8 @@ function Recommendation() {
       <div className='recommendation-button-container'>
         <button className='recommendation-finished' onClick={handleFinish}>추천 완료</button>
       </div>
+      {/* Player 컴포넌트를 렌더링하여 선택된 곡 재생 */}
+      {selectedTrackUri && <Player token={accessToken} trackUri={selectedTrackUri} />}
     </div>
   );
 }

@@ -8,6 +8,7 @@ import ArtistSelection from './components/ArtistSelection/ArtistSelection';
 import GenreSelection from './components/GenreSelection/GenreSelection';
 import Callback from '../src/components/Callback/Callback';
 import Recommendation from './components/Recommendation/Recommendation';
+import Player from './components/Player/Player';
 import UserPlaylists from './components/Playlist/UserPlaylists';
 import PlaylistDetail from './components/Playlist/PlaylistDetail';
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/genres" element={<GenreSelection />} />
           <Route path="/callback" element={<Callback />} />
           <Route path="/recommendations" element={<Recommendation />} />
+          <Route path='/player' element={<Player />} />
           <Route path="/playlists" element={<UserPlaylists />} />
           <Route path="/playlists/:id" element={<PlaylistDetail />} />        
         </Routes>

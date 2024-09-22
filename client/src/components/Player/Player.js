@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import './Player.css'; 
+import './Player.css'; // CSS 파일 추가
 
 function Player() {
   const location = useLocation();
@@ -64,14 +64,14 @@ function Player() {
 
   // 재생/일시정지 토글 함수
   const togglePlayback = () => {
-    if (player) {
+    if (player && player.togglePlay) {
       player.togglePlay().then(() => {
         setIsPaused(!isPaused);
       }).catch(error => {
         console.error('Error toggling playback:', error);
       });
     } else {
-      console.error('Player is not initialized');
+      console.error('Player is not initialized or togglePlay is not available');
     }
   };
 

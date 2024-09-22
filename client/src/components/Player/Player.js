@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import './Player.css'; 
 
 function Player() {
   const location = useLocation();
@@ -75,20 +76,23 @@ function Player() {
   };
 
   return (
-    <div>
-      <h2>Now Playing</h2>
+    <div className="player-container">
       {trackUri ? (
         <div>
-          <img src={trackAlbumImage} alt={trackName} style={{ width: '300px' }} />
-          <h3>{trackName}</h3>
-          <p>{trackArtist}</p>
+          <img src={trackAlbumImage} alt={trackName} />
+          <div className="player-track-info">
+            <h3>{trackName}</h3>
+            <p>{trackArtist}</p>
+          </div>
         </div>
       ) : (
         <p>No track info available</p>
       )}
-      <button onClick={togglePlayback}>
-        {isPaused ? 'Play' : 'Pause'}
-      </button>
+      <div className="player-controls">
+        <button onClick={togglePlayback}>
+          {isPaused ? '▶️' : '⏸️'}
+        </button>
+      </div>
     </div>
   );
 }

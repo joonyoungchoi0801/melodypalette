@@ -47,7 +47,7 @@ function PlaylistDetail() {
         ) : (
           playlist.tracks.map(track => (
             <div key={track.id} className="track-item">
-              <img className="track-image" src={track.albumArt} alt={track.name} />
+              <img className="track-image" src={track.albumImage} alt={track.name} />
               <div className="track-info">
                 <h3>{track.name}</h3>
                 <p>{track.artist}</p>

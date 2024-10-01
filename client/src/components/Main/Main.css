@@ -19,7 +19,8 @@
 }
 /* Gradient background for the first section */
 .gradient-background {
-  background: linear-gradient(to right, #CC00FF, #FFCC99);
+  /* background: linear-gradient(to right, #CC00FF, #FFCC99); */
+  background: white;
 }
 
 /* Black background for the other sections */
@@ -41,7 +42,7 @@
 
 .intro-text{
   font-size: 25px;
-  color: white;
+  color: black;
 }
 
 /* Recommend button style */
@@ -60,7 +61,7 @@
 }
 
 .recommend-button:hover {
-  background-color: #CC00FF;
+  background-color: gray;
 }
 
 /* Album container styles */

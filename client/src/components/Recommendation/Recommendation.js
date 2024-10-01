@@ -10,12 +10,15 @@ function Recommendation() {
   const [selectedTrackUri] = useState(''); // 재생할 곡 URI 상태 관리
   const [likes, setLikes] = useState({}); // 좋아요 상태 관리
   const [dislikes, setDislikes] = useState({}); // 싫어요 상태 관리
+  const [isPlaylistOpen, setIsPlaylistOpen] = useState(false); // 플레이리스트 선택 창 열기/닫기
+  const [selectedTrack, setSelectedTrack] = useState(null); // 추가할 트랙 정보
   const navigate = useNavigate();
+  
   //1시간마다 accessToken 리셋되므로 리프레시 해줘야 함
-  const accessToken = 'BQCu2phRqC9RHse4JBufSi7RBwfI_qR-vLwTXK0Q-gLFDtwnmpZIqZQGw8-Xp3DeoiM29OnF6H2p3X2cbv6gGe0PqabNHvCVOXGQwSqTB-46p6aattemjTnC4rd_f7dIIs89aDMphhOWw3cPLUbCPc4pQVbfFYaQa_ceXaTQ0H1UsxY-6Lb2VvIHkXQuEcnpQDrBUQwbZLYD5iaU-ET_RWh3kjGkgbWQq0_KFX34';
-  console.log(accessToken);
-  console.log(recommendations); // 추천 트랙 배열 출력
+  const accessToken = 'BQAg69TzEus_qBbznxa2u3_aFDoJkCan9PiCjwZDKO6N4ARD8FW54FjvEqYKrHdoJFlSGQ97yoCbxhgXfAzTwvfCNOrEpPWaYxafS9wTQXryyN3Sak2Op_aXQxXFTIY-cgAyyfN1U_lo2ax4-9-dMAg0iAbn2DLM1Zu14AdiO7no3B3wVFv-UvU04CvSpDuBWSZbd_t_mC_UXxFG7DcJMQIhqXtwkxi09YLUgODT';
 
+  // 플레이리스트를 불러오기 위한 예시 (로컬 스토리지 또는 API에서 가져옴)
+  const userPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
 
   // 좋아요 버튼 클릭 핸들러
   const handleLike = (trackId) => {
@@ -23,7 +26,6 @@ function Recommendation() {
       ...prevLikes,
       [trackId]: !prevLikes[trackId], // 토글 기능
     }));
-    // 싫어요가 눌려있을 경우 해제
     if (dislikes[trackId]) {
       setDislikes(prevDislikes => ({
         ...prevDislikes,
@@ -36,9 +38,8 @@ function Recommendation() {
   const handleDislike = (trackId) => {
     setDislikes(prevDislikes => ({
       ...prevDislikes,
-      [trackId]: !prevDislikes[trackId], // 토글 기능
+      [trackId]: !prevDislikes[trackId],
     }));
-    // 좋아요가 눌려있을 경우 해제
     if (likes[trackId]) {
       setLikes(prevLikes => ({
         ...prevLikes,
@@ -49,16 +50,39 @@ function Recommendation() {
 
   // 재생 버튼 클릭 핸들러
   const handlePlay = (track) => {
-    console.log('Playing track:', track);
-    const uri = track.spotifyUrl; // 선택된 곡의 URI
+    const uri = track.spotifyUrl;
     navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artist)}&albumImage=${encodeURIComponent(track.albumImage)}`);
-  };  
+  };
+
+  // 추가 버튼 클릭 핸들러
+  const handleAddToPlaylist = (track) => {
+    setSelectedTrack(track); // 추가할 트랙 저장
+    setIsPlaylistOpen(true); // 플레이리스트 선택 창 열기
+  };
+
+  // 플레이리스트에 곡 추가
+  const handleSelectPlaylist = (playlistId) => {
+    if (!selectedTrack) return;
+
+    const updatedPlaylists = userPlaylists.map((playlist) => {
+      if (playlist.id === playlistId) {
+        return { 
+          ...playlist, 
+          tracks: [...playlist.tracks, selectedTrack] // 선택한 트랙 추가
+        };
+      }
+      return playlist;
+    });
+
+    localStorage.setItem('userPlaylists', JSON.stringify(updatedPlaylists)); // 로컬 스토리지 업데이트
+    setIsPlaylistOpen(false); // 창 닫기
+  };
 
   // 추천 완료 버튼 클릭 핸들러
   const handleFinish = () => {
     navigate('/'); // 메인 페이지로 이동
   };
-  
+
   return (
     <div className='Recommendation'>
       <Navbar />
@@ -94,6 +118,12 @@ function Recommendation() {
                     >
                       ▶️ 재생
                     </button>
+                    <button 
+                      className='add-button' // 추가 버튼
+                      onClick={() => handleAddToPlaylist(track)}
+                    >
+                      ➕ 추가
+                    </button>
                   </div>
                 </div>
               </div>
@@ -102,10 +132,31 @@ function Recommendation() {
           <p className='no-recommendations'>추천할 항목이 없습니다.</p>
         )}
       </div>
+
+      {/* 플레이리스트 선택 UI */}
+      {isPlaylistOpen && (
+        <div className="playlist-selection">
+          <h3>플레이리스트 선택</h3>
+          {userPlaylists.length > 0 ? (
+            userPlaylists.map((playlist) => (
+              <button 
+                key={playlist.id} 
+                className='playlist-option'
+                onClick={() => handleSelectPlaylist(playlist.id)}
+              >
+                {playlist.name}
+              </button>
+            ))
+          ) : (
+            <p>플레이리스트가 없습니다.</p>
+          )}
+        </div>
+      )}
+
       <div className='recommendation-button-container'>
         <button className='recommendation-finished' onClick={handleFinish}>추천 완료</button>
       </div>
-      {/* Player 컴포넌트를 렌더링하여 선택된 곡 재생 */}
+
       {selectedTrackUri && <Player token={accessToken} trackUri={selectedTrackUri} />}
     </div>
   );

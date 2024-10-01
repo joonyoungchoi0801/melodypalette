@@ -5,9 +5,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const axios = require('axios');
 
-const clientId = process.env.SPOTIFY_CLIENT_ID;
-const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-
 const userRoutes = require('./routes/users');
 const spotifyAuthRoutes = require('./routes/spotify-auth');
 const playlistRoutes = require('./routes/playlists');
@@ -25,7 +22,7 @@ const PORT = process.env.PORT || 5000;
 
 // 데이터베이스 연결
 const mongoURI = process.env.MONGO_URI;
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, ssl: true, })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -64,7 +61,6 @@ app.get('/api/token', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch token' });
   }
 });
-
 
 app.get('/api/top-artists', async (req, res) => {
   const { token } = req.query;

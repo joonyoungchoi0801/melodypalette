@@ -73,6 +73,51 @@ router.post('/callback', async (req, res) => {
   }
 });
 
+// 엑세스 토큰 갱신 라우트
+router.post('/refresh-token', async (req, res) => {
+  const { userId } = req.body; // 요청에서 사용자 ID를 받습니다
+
+  try {
+    // 사용자의 리프레시 토큰을 MongoDB에서 찾습니다
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const refreshToken = user.refreshToken;
+    if (!refreshToken) {
+      return res.status(400).json({ error: 'Refresh token not available' });
+    }
+
+    const authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      headers: {
+        Authorization: 'Basic ' + Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64'),
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: querystring.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }),
+    };
+
+    // 새로운 엑세스 토큰 요청
+    const response = await axios.post(authOptions.url, authOptions.data, { headers: authOptions.headers });
+
+    const { access_token, expires_in } = response.data;
+
+    // 사용자 데이터베이스에 새로운 엑세스 토큰과 만료 시간 저장
+    user.accessToken = access_token;
+    user.expiresIn = expires_in;
+    await user.save();
+
+    res.json({ access_token, expires_in });
+  } catch (error) {
+    console.error('Error refreshing token:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to refresh token' });
+  }
+});
+
 //로그아웃 처리 라우트
 router.get('/logout', (req, res) => {
   res.redirect('https://accounts.spotify.com/logout');

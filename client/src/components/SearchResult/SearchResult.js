@@ -43,6 +43,7 @@ function SearchResult() {
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const query = params.get('query');
+  const accessToken = 'BQCLkW3vOqrZgOr6il8XejbOAjonpKmIkFHx4Fn1njvZYoLhYkRywDMnMYol1bTWdzYaqmXVWDZr2oJZ0EdRFhFXx74R0xw32vLx_cZw_q4sQTp-c-dhbpS4zF48FoaBi-Bx0-_A3ovuxLi1c9Daoe_mXiYhDtO-Sd6AhdQVEUUKheJuQR41Ej7xR4ld8ROpVqTz6VRVsxChaauMwAB5jhQeGmgnUH-YUxAo_wq7';
 
   useEffect(() => {
     if (query) {
@@ -72,6 +73,13 @@ function SearchResult() {
     }
   };
 
+  const handlePlay = (track) => {
+    console.log('Playing track:', track);
+    const uri = track.uri; // Spotify URI
+    navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artists.map(artist => artist.name).join(', '))}&albumImage=${encodeURIComponent(track.album.images[0]?.url)}`);
+  };
+  
+
   return (
     <div className='SearchResult'>
       <Navbar />
@@ -100,7 +108,11 @@ function SearchResult() {
                 <img className='album-img2' src={track.album.images[0]?.url} alt={track.name} />
                 <p>{track.name}</p>
                 <p>{track.artists.map(artist => artist.name).join(', ')}</p>
-                <p><a href={track.external_urls.spotify} target="_blank" rel="noopener noreferrer">듣기</a></p>
+                <button 
+                  className='play-button'
+                  onClick={() => handlePlay(track)}>
+                    ▶️ 재생
+                </button>
               </div>
             ))
           )}

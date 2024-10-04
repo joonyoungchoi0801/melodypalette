@@ -33,6 +33,12 @@ function Player() {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
+          }).then(response => {
+            if (response.ok) {
+              console.log('Track started playing');
+            } else {
+              console.error('Failed to start track playback', response);
+            }
           });
         }
       });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Recommendation.css';
@@ -7,6 +7,7 @@ import Player from '../Player/Player';
 function Recommendation() {
   const { state } = useLocation(); // 상태에서 추천 결과 가져오기
   const recommendations = state?.recommendations || [];
+  const [accessToken, setAccessToken] = useState(''); // 서버에서 받아온 액세스 토큰 상태 관리
   const [selectedTrackUri] = useState(''); // 재생할 곡 URI 상태 관리
   const [likes, setLikes] = useState({}); // 좋아요 상태 관리
   const [dislikes, setDislikes] = useState({}); // 싫어요 상태 관리
@@ -14,9 +15,15 @@ function Recommendation() {
   const [selectedTrack, setSelectedTrack] = useState(null); // 추가할 트랙 정보
   const navigate = useNavigate();
   
-  //1시간마다 accessToken 리셋되므로 리프레시 해줘야 함
-  const accessToken = 'BQAg69TzEus_qBbznxa2u3_aFDoJkCan9PiCjwZDKO6N4ARD8FW54FjvEqYKrHdoJFlSGQ97yoCbxhgXfAzTwvfCNOrEpPWaYxafS9wTQXryyN3Sak2Op_aXQxXFTIY-cgAyyfN1U_lo2ax4-9-dMAg0iAbn2DLM1Zu14AdiO7no3B3wVFv-UvU04CvSpDuBWSZbd_t_mC_UXxFG7DcJMQIhqXtwkxi09YLUgODT';
-
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      setAccessToken(token);
+    } else {
+      console.error('Access token is missing');
+    }
+  }, []);
+  
   // 플레이리스트를 불러오기 위한 예시 (로컬 스토리지 또는 API에서 가져옴)
   const userPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
 
@@ -87,6 +94,8 @@ function Recommendation() {
     <div className='Recommendation'>
       <Navbar />
       <h1 className='page-title'>추천 곡</h1>
+      <div>
+    </div>
       <div className='recommendations-list'>
         {recommendations.length > 0 ? (
             recommendations.map((track, index) => (

@@ -42,22 +42,24 @@ app.get('/api/token', async (req, res) => {
       Authorization: 'Basic ' + Buffer.from(client_id + ':' + client_secret).toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded',  // Content-Type 명시
     },
-    form: 'grant_type=client_credentials',  // form 데이터를 문자열로 변환
+    data: new URLSearchParams({
+      grant_type: 'client_credentials', // qs 패키지 또는 URLSearchParams를 사용하여 데이터를 변환
+    }),
   };
 
   try {
-    const response = await axios.post(authOptions.url, authOptions.form, {
+    const response = await axios.post(authOptions.url, authOptions.data.toString(), {
       headers: authOptions.headers,
     });
 
     if (response.data && response.data.access_token) {
-      console.log('Token fetched:', response.data);
+      // console.log('Token fetched:', response.data);
       res.json(response.data); // JSON 응답
     } else {
       res.status(500).json({ error: 'Invalid token response' });
     }
   } catch (error) {
-    console.error('Error fetching token:', error.message);
+    console.error('Error fetching token:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to fetch token' });
   }
 });

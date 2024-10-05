@@ -48,6 +48,19 @@ function PlaylistDetail() {
     navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artist)}&albumImage=${encodeURIComponent(track.albumImage)}`);
   };
 
+  // 곡 삭제 핸들러
+  const handleDeleteTrack = (trackId) => {
+    const updatedTracks = playlist.tracks.filter(track => track.id !== trackId);
+    const updatedPlaylist = { ...playlist, tracks: updatedTracks };
+    
+    // 로컬 스토리지 업데이트
+    const storedPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
+    const updatedPlaylists = storedPlaylists.map(pl => (pl.id === playlist.id ? updatedPlaylist : pl));
+    localStorage.setItem('userPlaylists', JSON.stringify(updatedPlaylists));
+
+    setPlaylist(updatedPlaylist); // 상태 업데이트
+  };
+
   // 뒤로 가기 버튼 클릭 시 플레이리스트 목록으로 돌아가는 함수
   const goBack = () => {
     navigate('/playlists');
@@ -70,11 +83,17 @@ function PlaylistDetail() {
                 <p>{track.artist}</p>
               </div>
               <button 
-                      className='play-button'
-                      onClick={() => handlePlay(track)}
-                    >
-                      ▶️ 재생
-                    </button>
+                className='play-button'
+                onClick={() => handlePlay(track)}
+              >
+                ▶️
+              </button>
+              <button 
+                className='delete-button' 
+                onClick={() => handleDeleteTrack(track.id)}
+              >
+                🗑 삭제
+              </button>
             </div>
           ))
         )}

@@ -39,11 +39,20 @@ function SearchResult() {
   const [tracks, setTracks] = useState([]);
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [accessToken, setAccessToken] = useState(''); // 서버에서 받아온 액세스 토큰 상태 관리
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const query = params.get('query');
-  const accessToken = 'BQCLkW3vOqrZgOr6il8XejbOAjonpKmIkFHx4Fn1njvZYoLhYkRywDMnMYol1bTWdzYaqmXVWDZr2oJZ0EdRFhFXx74R0xw32vLx_cZw_q4sQTp-c-dhbpS4zF48FoaBi-Bx0-_A3ovuxLi1c9Daoe_mXiYhDtO-Sd6AhdQVEUUKheJuQR41Ej7xR4ld8ROpVqTz6VRVsxChaauMwAB5jhQeGmgnUH-YUxAo_wq7';
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      setAccessToken(token);
+    } else {
+      console.error('Access token is missing');
+    }
+  }, []);
 
   useEffect(() => {
     if (query) {

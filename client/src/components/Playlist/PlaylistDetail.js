@@ -7,8 +7,16 @@ function PlaylistDetail() {
   const { id } = useParams(); // URL에서 플레이리스트 ID를 가져옴
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState(null);
+  const [accessToken, setAccessToken] = useState(''); // 서버에서 받아온 액세스 토큰 상태 관리
 
-  const accessToken = 'BQD3SevM8Ci2IeIEx8LQEIwKCfVDpQhDS3n2sPypp3fxpSKdP-8VoghLlyXh-L2f-aPzLjHYR8U0HAXW3P5vIcqWZ02XudrDZZZ4k9xXalVzn1O-L7IknOO4seWojm2Dow__zBMqJMw0Nrh2wltsXgF7EEQRcjsJ4FT_heHr5aCpyqVJtSxKi8De404vKaBC4R2GTA-6ocLEEwF26ajqzYkSoT3EYH8HIlcapZHz';
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      setAccessToken(token);
+    } else {
+      console.error('Access token is missing');
+    }
+  }, []);
 
   // 해당 플레이리스트를 로드하는 함수
   useEffect(() => {

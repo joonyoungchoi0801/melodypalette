@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import './Player.css'; // CSS 파일 추가
+import './Player.css';
+import Navbar from '../Navbar/Navbar';
 
 function Player() {
   const location = useLocation();
@@ -12,9 +13,9 @@ function Player() {
   const trackAlbumImage = queryParams.get('albumImage');
   const [player, setPlayer] = useState(null);
   const [isPaused, setIsPaused] = useState(true); // 재생/일시정지 상태 관리
+  const [isPlayerReady, setIsPlayerReady] = useState(false); // 플레이어 준비 여부 상태
 
   useEffect(() => {
-    // Spotify SDK 로드
     window.onSpotifyWebPlaybackSDKReady = () => {
       const newPlayer = new window.Spotify.Player({
         name: 'My Spotify Player',
@@ -41,12 +42,22 @@ function Player() {
             }
           });
         }
+
+        setIsPlayerReady(true); // 플레이어 준비 상태 설정
       });
 
-      // 플레이어 연결
+      newPlayer.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+        setIsPlayerReady(false);
+      });
+
+      newPlayer.addListener('player_state_changed', (state) => {
+        setIsPaused(state?.paused);
+      });
+
       newPlayer.connect().then(success => {
         if (success) {
-          setPlayer(newPlayer); // 플레이어가 준비되면 설정
+          setPlayer(newPlayer);
           console.log('Player connected successfully');
         } else {
           console.log('Player connection failed');
@@ -70,36 +81,49 @@ function Player() {
 
   // 재생/일시정지 토글 함수
   const togglePlayback = () => {
-    if (player && player.togglePlay) {
+    if (isPlayerReady && player?.togglePlay) {
       player.togglePlay().then(() => {
         setIsPaused(!isPaused);
       }).catch(error => {
         console.error('Error toggling playback:', error);
       });
     } else {
-      console.error('Player is not initialized or togglePlay is not available');
+      console.error('Player is not ready or togglePlay is not available');
     }
   };
 
+  // 뒤로 버튼 클릭 시 호출
+  const handleBack = () => {
+    window.history.back();  // 이전 페이지로 이동
+  };
+
   return (
-    <div className="player-container">
-      {trackUri ? (
-        <div>
-          <img src={trackAlbumImage} alt={trackName} />
-          <div className="player-track-info">
-            <h3>{trackName}</h3>
-            <p>{trackArtist}</p>
+    <div className='Player'>
+      <Navbar />
+      <button onClick={handleBack} className="x-button">✖</button>
+      <div className="player-container">
+        {trackUri ? (
+          <div>
+            <img src={trackAlbumImage} alt={trackName} />
+            <div className="player-track-info">
+              <h3>{trackName}</h3>
+              <p>{trackArtist}</p>
+            </div>
           </div>
+        ) : (
+          <p>No track info available</p>
+        )}
+        <div className="player-controls">
+          <button 
+            onClick={togglePlayback}
+            disabled={!isPlayerReady} // 플레이어가 준비되지 않으면 버튼 비활성화
+          >
+            {isPaused ? '▶️' : '⏸️'}
+          </button>
         </div>
-      ) : (
-        <p>No track info available</p>
-      )}
-      <div className="player-controls">
-        <button onClick={togglePlayback}>
-          {isPaused ? '▶️' : '⏸️'}
-        </button>
       </div>
     </div>
+    
   );
 }
 

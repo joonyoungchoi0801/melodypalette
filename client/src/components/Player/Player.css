@@ -1,4 +1,9 @@
 /* Player.css */
+.Player{
+  margin-top: 100px;
+  background-color: white;
+}
+
 .player-container {
   display: flex;
   flex-direction: column;
@@ -11,7 +16,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   width: 400px;
   margin: 0 auto;
-  margin-top: 25px;
+  margin-top: 80px;
 }
 
 .player-container img {
@@ -61,4 +66,22 @@
 
 .player-controls button:active {
   background-color: #14833b;
+}
+
+.x-button {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: black;
+  padding: 5px;
+  transition: transform 0.3s ease;
+}
+
+.x-button:hover {
+  transform: scale(1.1);
+  color: #b3b3b3; /* Red hover color for emphasis */
 }

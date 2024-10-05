@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Recommendation.css';
 import Player from '../Player/Player';
+import PlaylistPopup from '../PlaylistPopup/PlaylistPopup'; 
 
 function Recommendation() {
   const { state } = useLocation(); // 상태에서 추천 결과 가져오기
@@ -142,24 +143,12 @@ function Recommendation() {
         )}
       </div>
 
-      {/* 플레이리스트 선택 UI */}
       {isPlaylistOpen && (
-        <div className="playlist-selection">
-          <h3>플레이리스트 선택</h3>
-          {userPlaylists.length > 0 ? (
-            userPlaylists.map((playlist) => (
-              <button 
-                key={playlist.id} 
-                className='playlist-option'
-                onClick={() => handleSelectPlaylist(playlist.id)}
-              >
-                {playlist.name}
-              </button>
-            ))
-          ) : (
-            <p>플레이리스트가 없습니다.</p>
-          )}
-        </div>
+        <PlaylistPopup 
+          playlists={userPlaylists} 
+          onSelect={handleSelectPlaylist} 
+          onClose={() => setIsPlaylistOpen(false)} // 팝업 닫기
+        />
       )}
 
       <div className='recommendation-button-container'>

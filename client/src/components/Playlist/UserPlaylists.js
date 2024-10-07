@@ -1,36 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // 변경: useHistory → useNavigate
+import { useNavigate } from 'react-router-dom'; 
+import { useAuth } from '../../contexts/AuthContext';
 import './UserPlaylists.css'; 
 import Navbar from '../Navbar/Navbar';
 
 function UserPlaylists() {
   const [playlists, setPlaylists] = useState([]);
   const [newPlaylistName, setNewPlaylistName] = useState('');
-  const navigate = useNavigate(); // 변경: useHistory() → useNavigate()
+  const navigate = useNavigate(); 
+  const { userProfile } = useAuth();
 
+  // 백엔드에서 플레이리스트 가져오기
   useEffect(() => {
-    const storedPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
-    setPlaylists(storedPlaylists);
-  }, []);
+    if (!userProfile || !userProfile.id) return;
 
-  const createNewPlaylist = () => {
+    fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userProfile.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setPlaylists(data.playlists))
+      .catch((error) => console.error('Error fetching playlists:', error));
+  }, [userProfile]);
+
+   // 새로운 플레이리스트 생성 함수
+   const createNewPlaylist = () => {
     if (newPlaylistName.trim() === '') return;
 
-    const newPlaylist = {
-      id: Date.now(),
-      name: newPlaylistName,
-      tracks: [],
-      coverImage: '/default-cover.jpg'
-    };
-
-    const updatedPlaylists = [...playlists, newPlaylist];
-    setPlaylists(updatedPlaylists);
-    localStorage.setItem('userPlaylists', JSON.stringify(updatedPlaylists));
-    setNewPlaylistName('');
+    fetch('http://localhost:5000/api/playlists/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: newPlaylistName,
+        userId: userProfile.id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const newPlaylist = data.newPlaylist;
+        setPlaylists([...playlists, newPlaylist]);
+        setNewPlaylistName(''); // 입력 필드 초기화
+      })
+      .catch((error) => console.error('플레이리스트 생성 중 오류 발생:', error));
   };
 
   const goToPlaylistDetail = (id) => {
-    navigate(`/playlists/${id}`); 
+    navigate(`/playlists/${id}`);
   };
 
   return (
@@ -54,9 +73,9 @@ function UserPlaylists() {
         ) : (
           playlists.map(playlist => (
             <div 
-              key={playlist.id} 
+              key={playlist._id} 
               className="playlist-card"
-              onClick={() => goToPlaylistDetail(playlist.id)}
+              onClick={() => goToPlaylistDetail(playlist._id)}
             >
               <div className="playlist-info">
                 <h3 className="playlist-name">{playlist.name}</h3>

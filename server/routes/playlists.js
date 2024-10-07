@@ -24,6 +24,18 @@ router.post('/add-track', async (req, res) => {
   }
 });
 
+//사용자 플레이리스트 가져오기
+router.get('/user-playlists', async (req, res) => {
+  const { userId } = req.query; // 사용자 ID를 받아서 해당 사용자의 플레이리스트 조회
+  console.log(userId);
+  try {
+    const playlists = await Playlist.find({ userId });
+    res.json({ playlists });
+  } catch (error) {
+    res.status(500).json({ error: '플레이리스트를 가져오는데 실패했습니다.' });
+  }
+});
+
 // 새로운 플레이리스트 생성
 router.post('/create', async (req, res) => {
   const { name, userId } = req.body;

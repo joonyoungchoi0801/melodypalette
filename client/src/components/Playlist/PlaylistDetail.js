@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import './PlaylistDetail.css';
 import Navbar from '../Navbar/Navbar';
 
 function PlaylistDetail() {
+  const { userProfile } = useAuth(); // 사용자 프로필 불러오기
+  const userId = userProfile?.id; // 사용자 아이디 추출
   const { id } = useParams(); // URL에서 플레이리스트 ID를 가져옴
   const navigate = useNavigate();
   const [playlist, setPlaylist] = useState(null);
@@ -20,21 +23,35 @@ function PlaylistDetail() {
 
   // 해당 플레이리스트를 로드하는 함수
   useEffect(() => {
-    // 로컬 스토리지에 저장된 플레이리스트를 가져옴
-    const storedPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
-    
-    // 저장된 플레이리스트 내용을 콘솔에 출력 (디버깅용)
-    console.log('Stored Playlists:', storedPlaylists);
-    
-    // URL의 ID와 일치하는 플레이리스트를 찾음
-    const selectedPlaylist = storedPlaylists.find(pl => pl.id === parseInt(id, 10));
-    
-    // 선택된 플레이리스트 내용을 콘솔에 출력 (디버깅용)
-    console.log('Selected Playlist:', selectedPlaylist);
-    
-    // 상태에 선택된 플레이리스트를 설정
-    setPlaylist(selectedPlaylist);
-  }, [id]);
+    // API를 사용하여 플레이리스트 가져오기
+    const fetchPlaylist = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`, { 
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('플레이리스트를 가져오는 데 실패했습니다.');
+        }
+
+        const data = await response.json();
+        const selectedPlaylist = data.playlists.find(p => p._id === id); // 특정 플레이리스트 찾기
+        if (!selectedPlaylist) {
+          throw new Error('플레이리스트를 찾을 수 없습니다.');
+        }
+        
+        setPlaylist(selectedPlaylist); // 상태에 선택된 플레이리스트를 설정
+      } catch (error) {
+        console.error('Error fetching playlist:', error);
+      }
+    };
+
+    fetchPlaylist();
+  }, [id, accessToken, userId]);
 
   // 플레이리스트가 없을 때의 처리
   if (!playlist) {
@@ -43,23 +60,38 @@ function PlaylistDetail() {
 
   // 재생 버튼 클릭 핸들러
   const handlePlay = (track) => {
-    console.log('Playing track:', track);
-    const uri = track.spotifyUrl; // 선택된 곡의 URI
+    const uri = track.spotifyUri; // 선택된 곡의 URI
     navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artist)}&albumImage=${encodeURIComponent(track.albumImage)}`);
   };
 
   // 곡 삭제 핸들러
-  const handleDeleteTrack = (trackId) => {
-    const updatedTracks = playlist.tracks.filter(track => track.id !== trackId);
-    const updatedPlaylist = { ...playlist, tracks: updatedTracks };
-    
-    // 로컬 스토리지 업데이트
-    const storedPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
-    const updatedPlaylists = storedPlaylists.map(pl => (pl.id === playlist.id ? updatedPlaylist : pl));
-    localStorage.setItem('userPlaylists', JSON.stringify(updatedPlaylists));
-
-    setPlaylist(updatedPlaylist); // 상태 업데이트
+  const handleDeleteTrack = async (trackId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/playlists/${playlist._id}/tracks/${trackId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('곡 삭제 실패: ' + response.statusText); 
+      }
+  
+      // 삭제된 트랙을 제외한 새로운 트랙 목록 생성
+      const updatedTracks = playlist.tracks.filter(track => track._id !== trackId);
+      
+      // 상태 업데이트
+      setPlaylist(prevPlaylist => ({
+        ...prevPlaylist,
+        tracks: updatedTracks,
+      }));
+    } catch (error) {
+      console.error('곡 삭제 실패:', error);
+    }
   };
+  
 
   // 뒤로 가기 버튼 클릭 시 플레이리스트 목록으로 돌아가는 함수
   const goBack = () => {
@@ -72,11 +104,11 @@ function PlaylistDetail() {
       <button className="back-button" onClick={goBack}>뒤로 가기</button>
       <h2 className='playlist-title'>{playlist.name}</h2>
       <div className="track-list-container">
-        {playlist.tracks.length === 0 ? (
+        {playlist.tracks && playlist.tracks.length === 0 ? ( // tracks가 존재하는지 확인
           <p>플레이리스트에 노래가 없습니다.</p>
         ) : (
-          playlist.tracks.map(track => (
-            <div key={track.id} className="track-item">
+          playlist.tracks && playlist.tracks.map(track => ( // tracks가 존재할 때만 map 실행
+            <div key={`${track.spotifyUri}-${track.name}`} className="track-item">
               <img className="track-image" src={track.albumImage} alt={track.name} />
               <div className="track-info">
                 <h3>{track.name}</h3>
@@ -90,7 +122,7 @@ function PlaylistDetail() {
               </button>
               <button 
                 className='delete-button' 
-                onClick={() => handleDeleteTrack(track.id)}
+                onClick={() => handleDeleteTrack(track._id)} 
               >
                 🗑 삭제
               </button>
@@ -100,6 +132,7 @@ function PlaylistDetail() {
       </div>
     </div>
   );
+  
 }
 
 export default PlaylistDetail;

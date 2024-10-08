@@ -4,16 +4,18 @@ import Navbar from '../Navbar/Navbar';
 import './Recommendation.css';
 import Player from '../Player/Player';
 import PlaylistPopup from '../PlaylistPopup/PlaylistPopup'; 
+import { useAuth } from '../../contexts/AuthContext';
 
 function Recommendation() {
+  const { userProfile } = useAuth(); // 사용자 프로필 불러오기
+  const userId = userProfile?.id; // 사용자 아이디 추출
   const { state } = useLocation(); // 상태에서 추천 결과 가져오기
   const recommendations = state?.recommendations || [];
   const [accessToken, setAccessToken] = useState(''); // 서버에서 받아온 액세스 토큰 상태 관리
-  const [selectedTrackUri] = useState(''); // 재생할 곡 URI 상태 관리
-  const [likes, setLikes] = useState({}); // 좋아요 상태 관리
-  const [dislikes, setDislikes] = useState({}); // 싫어요 상태 관리
+  const [selectedTrackUri, setSelectedTrackUri] = useState(''); // 재생할 곡 URI 상태 관리
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false); // 플레이리스트 선택 창 열기/닫기
   const [selectedTrack, setSelectedTrack] = useState(null); // 추가할 트랙 정보
+  const [userPlaylists, setUserPlaylists] = useState([]); // 사용자 플레이리스트 상태 
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -23,42 +25,19 @@ function Recommendation() {
     } else {
       console.error('Access token is missing');
     }
-  }, []);
-  
-  // 플레이리스트를 불러오기 위한 예시 (로컬 스토리지 또는 API에서 가져옴)
-  const userPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
-
-  // 좋아요 버튼 클릭 핸들러
-  const handleLike = (trackId) => {
-    setLikes(prevLikes => ({
-      ...prevLikes,
-      [trackId]: !prevLikes[trackId], // 토글 기능
-    }));
-    if (dislikes[trackId]) {
-      setDislikes(prevDislikes => ({
-        ...prevDislikes,
-        [trackId]: false,
-      }));
+    // 사용자 플레이리스트 불러오기
+    if (userId) {
+      fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => setUserPlaylists(data.playlists))
+        .catch(error => console.error('플레이리스트를 불러오는데 실패했습니다.', error));
     }
-  };
-
-  // 싫어요 버튼 클릭 핸들러
-  const handleDislike = (trackId) => {
-    setDislikes(prevDislikes => ({
-      ...prevDislikes,
-      [trackId]: !prevDislikes[trackId],
-    }));
-    if (likes[trackId]) {
-      setLikes(prevLikes => ({
-        ...prevLikes,
-        [trackId]: false,
-      }));
-    }
-  };
+  }, [userId]);
 
   // 재생 버튼 클릭 핸들러
   const handlePlay = (track) => {
     const uri = track.spotifyUrl;
+    setSelectedTrackUri(uri);
     navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artist)}&albumImage=${encodeURIComponent(track.albumImage)}`);
   };
 
@@ -72,18 +51,39 @@ function Recommendation() {
   const handleSelectPlaylist = (playlistId) => {
     if (!selectedTrack) return;
 
-    const updatedPlaylists = userPlaylists.map((playlist) => {
-      if (playlist.id === playlistId) {
-        return { 
-          ...playlist, 
-          tracks: [...playlist.tracks, selectedTrack] // 선택한 트랙 추가
-        };
+    fetch('http://localhost:5000/api/playlists/add-track', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        playlistId,
+        track: {
+          name: selectedTrack.name,
+          artist: selectedTrack.artist,
+          albumImage: selectedTrack.albumImage,
+          spotifyUri: selectedTrack.spotifyUri,
+        },
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message === 'Track added to playlist successfully') {
+        alert('곡이 플레이리스트에 성공적으로 추가되었습니다!');
+        // 플레이리스트 상태 업데이트
+        return fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`);
+      } else {
+        alert(data.error);
       }
-      return playlist;
+    })
+    .then(response => response.json())
+    .then(data => {
+      setUserPlaylists(data.playlists); // 업데이트된 플레이리스트 상태 설정
+      setIsPlaylistOpen(false);
+    })
+    .catch(error => {
+      console.error('곡 추가 실패:', error);
     });
-
-    localStorage.setItem('userPlaylists', JSON.stringify(updatedPlaylists)); // 로컬 스토리지 업데이트
-    setIsPlaylistOpen(false); // 창 닫기
   };
 
   // 추천 완료 버튼 클릭 핸들러
@@ -96,7 +96,7 @@ function Recommendation() {
       <Navbar />
       <h1 className='page-title'>추천 곡</h1>
       <div>
-    </div>
+      </div>
       <div className='recommendations-list'>
         {recommendations.length > 0 ? (
             recommendations.map((track, index) => (
@@ -111,16 +111,10 @@ function Recommendation() {
                   <p className='recommendation-artist'>{track.artist || 'Unknown Artist'}</p>
                   <div className='recommendation-actions'>
                     <button 
-                      className={`like-button ${likes[track.id] ? 'liked' : ''}`}
-                      onClick={() => handleLike(track.id)}
+                      // className={`like-button ${likes[track.id] ? 'liked' : ''}`}
+                      // onClick={() => handleLike(track.id)}
                     >
                       👍 좋아요
-                    </button>
-                    <button 
-                      className={`dislike-button ${dislikes[track.id] ? 'disliked' : ''}`}
-                      onClick={() => handleDislike(track.id)}
-                    >
-                      👎 싫어요
                     </button>
                     <button 
                       className='play-button'

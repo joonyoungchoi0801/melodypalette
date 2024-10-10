@@ -21,7 +21,7 @@ function PlaylistPopup({ track, playlists, onSelect, onClose }) {
         ) : (
           <p>플레이리스트가 없습니다.</p>
         )}
-        <button className="close-button" onClick={onClose}>X</button>
+        <button className="playlist-close-button" onClick={onClose}>뒤로가기</button>
       </div>
     </div>
   );

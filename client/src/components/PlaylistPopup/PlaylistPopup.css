@@ -39,12 +39,10 @@
   background-color: #9aa09c;
 }
 
-.close-button {
-  margin-top: 20px;
+.playlist-close-button {
+  margin-top: 10px;
   background-color: transparent;
-  color: white;
   border: none;
-  border-radius: 5px;
   padding: 10px 20px;
   cursor: pointer;
 }

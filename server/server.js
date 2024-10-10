@@ -8,6 +8,7 @@ const axios = require('axios');
 const userRoutes = require('./routes/users');
 const spotifyAuthRoutes = require('./routes/spotify-auth');
 const playlistRoutes = require('./routes/playlists');
+const likeRoutes = require('./routes/userLikes');
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -30,6 +31,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, ss
 app.use('/api/users', userRoutes);
 app.use('/api/spotify', spotifyAuthRoutes);
 app.use('/api/playlists', playlistRoutes);
+app.use('/api/likes', likeRoutes);
 
 // 토큰을 가져오기 위한 라우트
 app.get('/api/token', async (req, res) => {

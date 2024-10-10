@@ -16,8 +16,9 @@ function Recommendation() {
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false); // 플레이리스트 선택 창 열기/닫기
   const [selectedTrack, setSelectedTrack] = useState(null); // 추가할 트랙 정보
   const [userPlaylists, setUserPlaylists] = useState([]); // 사용자 플레이리스트 상태 
+  const [likedTracks, setLikedTracks] = useState([]); // 좋아요 상태 관리
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -25,14 +26,80 @@ function Recommendation() {
     } else {
       console.error('Access token is missing');
     }
+
     // 사용자 플레이리스트 불러오기
     if (userId) {
       fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`)
         .then(response => response.json())
         .then(data => setUserPlaylists(data.playlists))
         .catch(error => console.error('플레이리스트를 불러오는데 실패했습니다.', error));
+
+      // 사용자의 좋아요 목록을 불러오기
+      fetch(`http://localhost:5000/api/likes?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          setLikedTracks(data.likedTracks.map(trackId => ({ id: trackId }))); // 좋아요 목록 상태 관리
+        })
+        .catch(error => console.error('좋아요 목록을 불러오는데 실패했습니다.', error));
     }
   }, [userId]);
+
+  // 좋아요 버튼 클릭 핸들러
+  const handleLike = (trackId, trackName) => {
+    const isLiked = likedTracks.some(track => track.id === trackId);
+
+    if (isLiked) {
+      // 이미 좋아요가 되어있는 경우 제거
+      setLikedTracks(prev => prev.filter(track => track.id !== trackId));
+
+      // 데이터베이스에서 좋아요 제거 요청
+      fetch('http://localhost:5000/api/likes', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, trackId }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Like removed successfully') {
+          console.log('좋아요가 제거되었습니다.');
+        // } else {
+        //   console.error(data.error);
+        }
+      })
+      .catch(error => {
+        console.error('좋아요 제거 실패:', error);
+      });
+    } else {
+      // 좋아요 추가
+      setLikedTracks(prev => [...prev, { id: trackId, name: trackName }]); // 트랙 정보 추가
+
+      // 데이터베이스에 좋아요 추가 요청
+      fetch('http://localhost:5000/api/likes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, trackId }),
+      })
+      .then(response => {
+        console.log('응답 상태:', response.status); // 응답 상태 코드 확인
+        return response.json();
+      })
+      .then(data => {
+        console.log('서버 응답:', data); // 서버 응답 로그
+        if (data.message === 'Like added successfully') {
+          console.log('좋아요가 추가되었습니다.');
+        // } else {
+        //   console.error(data.error);
+        }
+      })
+      .catch(error => {
+        console.error('좋아요 추가 실패:', error);
+      });
+    }
+  };
 
   // 재생 버튼 클릭 핸들러
   const handlePlay = (track) => {
@@ -95,42 +162,40 @@ function Recommendation() {
     <div className='Recommendation'>
       <Navbar />
       <h1 className='page-title'>추천 곡</h1>
-      <div>
-      </div>
       <div className='recommendations-list'>
         {recommendations.length > 0 ? (
-            recommendations.map((track, index) => (
-              <div key={index} className='recommendation-item'>
-                <img 
-                  src={track.albumImage || 'default_album_image_url.jpg'} 
-                  alt={`${track.name} album cover`} 
-                  className='album-image'
-                />
-                <div className='recommendation-info'>
-                  <h1 className='recommendation-track'>{track.name || 'No Title'}</h1>
-                  <p className='recommendation-artist'>{track.artist || 'Unknown Artist'}</p>
-                  <div className='recommendation-actions'>
-                    <button 
-                      // className={`like-button ${likes[track.id] ? 'liked' : ''}`}
-                      // onClick={() => handleLike(track.id)}
-                    >
-                      👍 좋아요
-                    </button>
-                    <button 
-                      className='play-button'
-                      onClick={() => handlePlay(track)}
-                    >
-                      ▶️ 재생
-                    </button>
-                    <button 
-                      className='add-button' // 추가 버튼
-                      onClick={() => handleAddToPlaylist(track)}
-                    >
-                      ➕ 추가
-                    </button>
-                  </div>
+          recommendations.map((track) => (
+            <div key={track.id} className='recommendation-item'>
+              <img 
+                src={track.albumImage || 'default_album_image_url.jpg'} 
+                alt={`${track.name} album cover`} 
+                className='album-image'
+              />
+              <div className='recommendation-info'>
+                <h1 className='recommendation-track'>{track.name || 'No Title'}</h1>
+                <p className='recommendation-artist'>{track.artist || 'Unknown Artist'}</p>
+                <div className='recommendation-actions'>
+                <button 
+                  className={`like-button ${likedTracks.some(likedTrack => likedTrack.id === track.id) ? 'liked' : ''}`}                  
+                  onClick={() => handleLike(track.id, track.name)} // 트랙 ID와 이름을 전달
+                >
+                  👍 좋아요
+                </button>
+                  <button 
+                    className='play-button'
+                    onClick={() => handlePlay(track)}
+                  >
+                    ▶️ 재생
+                  </button>
+                  <button 
+                    className='add-button' // 추가 버튼
+                    onClick={() => handleAddToPlaylist(track)}
+                  >
+                    ➕ 추가
+                  </button>
                 </div>
               </div>
+            </div>
           ))
         ) : (
           <p className='no-recommendations'>추천할 항목이 없습니다.</p>

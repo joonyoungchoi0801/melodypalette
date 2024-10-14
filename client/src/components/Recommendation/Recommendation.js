@@ -10,16 +10,27 @@ function Recommendation() {
   const { userProfile } = useAuth(); // 사용자 프로필 불러오기
   const userId = userProfile?.id; // 사용자 아이디 추출
   const { state } = useLocation(); // 상태에서 추천 결과 가져오기
-  const recommendations = state?.recommendations || [];
+  const navigate = useNavigate();
+
+  // 추천 결과를 localStorage에서 불러오거나, state에서 가져옴
+  const [recommendations] = useState(() => {
+    const savedRecommendations = localStorage.getItem('recommendations');
+    return state?.recommendations || (savedRecommendations ? JSON.parse(savedRecommendations) : []);
+  });
+
   const [accessToken, setAccessToken] = useState(''); // 서버에서 받아온 액세스 토큰 상태 관리
   const [selectedTrackUri, setSelectedTrackUri] = useState(''); // 재생할 곡 URI 상태 관리
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false); // 플레이리스트 선택 창 열기/닫기
   const [selectedTrack, setSelectedTrack] = useState(null); // 추가할 트랙 정보
   const [userPlaylists, setUserPlaylists] = useState([]); // 사용자 플레이리스트 상태 
   const [likedTracks, setLikedTracks] = useState([]); // 좋아요 상태 관리
-  const navigate = useNavigate();
 
   useEffect(() => {
+    // 추천 결과를 localStorage에 저장
+    if (recommendations.length > 0) {
+      localStorage.setItem('recommendations', JSON.stringify(recommendations));
+    }
+
     const token = localStorage.getItem('access_token');
     if (token) {
       setAccessToken(token);
@@ -42,7 +53,7 @@ function Recommendation() {
         })
         .catch(error => console.error('좋아요 목록을 불러오는데 실패했습니다.', error));
     }
-  }, [userId]);
+  }, [userId, recommendations]);
 
   // 좋아요 버튼 클릭 핸들러
   const handleLike = (trackId, trackName) => {

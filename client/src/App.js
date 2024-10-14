@@ -11,6 +11,7 @@ import Recommendation from './components/Recommendation/Recommendation';
 import Player from './components/Player/Player';
 import UserPlaylists from './components/Playlist/UserPlaylists';
 import PlaylistDetail from './components/Playlist/PlaylistDetail';
+import LikedSongs from './components/LikedSongs/LikedSongs';
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
           <Route path="/recommendations" element={<Recommendation />} />
           <Route path='/player' element={<Player />} />
           <Route path="/playlists" element={<UserPlaylists />} />
-          <Route path="/playlists/:id" element={<PlaylistDetail />} />        
+          <Route path="/playlists/:id" element={<PlaylistDetail />} />
+          <Route path='/likedSongs' element={<LikedSongs />} />
         </Routes>
       </Router>
     </AuthProvider>

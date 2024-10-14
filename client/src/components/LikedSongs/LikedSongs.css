@@ -1,0 +1,56 @@
+.liked-songs {
+  padding: 20px;
+  padding-top: 100px;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.liked-songs h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.liked-songs-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.liked-song-item {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.liked-song-item:hover {
+  transform: scale(1.02);
+}
+
+.liked-song-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.liked-song-info {
+  text-align: left;
+}
+
+.liked-song-info h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #333;
+}
+
+.liked-song-info p {
+  margin: 5px 0 0;
+  color: #666;
+  font-size: 0.9rem;
+}

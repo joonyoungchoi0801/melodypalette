@@ -1,5 +1,7 @@
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
+const User = require('../models/User');
 const UserLikes = require('../models/UserLikes'); // UserLikes 모델 불러오기
 
 // 좋아요 추가
@@ -47,11 +49,33 @@ router.get('/', async (req, res) => {
   const { userId } = req.query;
 
   try {
+    // DB에서 사용자 정보를 가져오기 (accessToken 포함)
+    const user = await User.findOne({ spotifyId: userId });
+    if (!user || !user.accessToken) {
+      return res.status(404).json({ error: 'User not found or access token missing' });
+    }
+
+     // accessToken을 가져와서 Spotify API 호출에 사용
+     const accessToken = user.accessToken;
+     // 좋아요한 트랙 정보 가져오기
     const likedTracks = await UserLikes.find({ userId });
     const trackIds = likedTracks.map(like => like.trackId);
-    res.json({ likedTracks: trackIds });
+
+    // Spotify API로 트랙 정보 가져오기
+    const trackDetailsPromises = trackIds.map(trackId =>
+      axios.get(`https://api.spotify.com/v1/tracks/${trackId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // DB에서 가져온 accessToken 사용
+        },
+      })
+    );
+
+    const trackDetails = await Promise.all(trackDetailsPromises);
+    const detailedTracks = trackDetails.map(response => response.data);
+
+    res.json({ likedTracks: detailedTracks });
   } catch (error) {
-    console.error('Error fetching liked tracks:', error);
+    console.error('좋아요한 트랙 목록 불러오기 오류:', error);
     res.status(500).json({ error: 'Failed to fetch liked tracks' });
   }
 });

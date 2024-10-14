@@ -1,6 +1,7 @@
 import React from 'react';
 import './ProfilePopup.css';
 import { useAuth } from '../../contexts/AuthContext';
+import { Link } from 'react-router-dom'; 
 
 const ProfilePopup = ({ isOpen, onClose, onLogout }) => {
   const { userProfile, logout } = useAuth();
@@ -27,7 +28,7 @@ const ProfilePopup = ({ isOpen, onClose, onLogout }) => {
             <p className="profile-username">{userProfile?.display_name || '정보 없음'}</p>
           </div>
         </div>
-        <a href="/likedSongs">좋아요 표시한 곡</a>
+        <Link to="/likedSongs">좋아요 표시한 곡</Link>
         <button className="logout-button" onClick={handleLogout}>로그아웃</button>
       </div>
     </div>

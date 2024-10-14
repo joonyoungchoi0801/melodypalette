@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './LikedSongs.css';
 import { useAuth } from '../../contexts/AuthContext';
+import Navbar from '../Navbar/Navbar';
 
 const LikedSongs = () => {
   const { userProfile } = useAuth(); // 사용자 프로필 불러오기
@@ -31,6 +32,7 @@ const LikedSongs = () => {
 
   return (
     <div className="liked-songs">
+      <Navbar />
       <h2>좋아요한 노래</h2>
       {likedTracks.length > 0 ? (
         <ul className="liked-songs-list">

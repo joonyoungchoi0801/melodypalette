@@ -57,8 +57,8 @@ function Navbar() {
         <h3 className="logo" onClick={handleLogoClick}>Melodypalette</h3>
         <nav className="navbar-box">
           <ul>
-            <li><a href="#section2">제목 또는 아티스트 검색</a></li>
-            <li><a href="#section3">실시간 TOP 랭킹</a></li>
+            <li><a href="#search-section">제목 또는 아티스트 검색</a></li>
+            <li><a href="#rank-section">실시간 TOP 랭킹</a></li>
             <li><a href="/playlists">Playlist</a></li>
             <li>
               <a href="#profile" onClick={handleProfileClick}>

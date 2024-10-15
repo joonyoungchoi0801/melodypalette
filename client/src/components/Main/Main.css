@@ -1,98 +1,176 @@
-/* Main container style */
 .Main {
   scroll-behavior: smooth;
   overflow-y: scroll;
   scrollbar-width: none; 
   -ms-overflow-style: none; 
   width: 100%;
+  background-color: #e1f4fe;
 }
 
-/* Section styles */
-.section {
+.section1 {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100%;
-  color: white;
   font-size: 2em;
-}
-/* Gradient background for the first section */
-.gradient-background {
-  /* background: linear-gradient(to right, #CC00FF, #FFCC99); */
-  background: white;
+  background: linear-gradient(270deg, #e1f4fe, #faffdd);
+  background-size: 400% 400%;
+  animation: bgMove 10s ease infinite; /* 배경 애니메이션 */
 }
 
-/* Black background for the other sections */
-.black-background1 {
-  background: black;
+@keyframes bgMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-.black-background2 {
-  background: black;
-}
-
-/* Intro container style */
 .intro-container {
   text-align: center;
-  color: black;
-  padding: 20px;
-  margin-top: 100px;
+  color: #58a8fe;
+  padding: 1.25rem;
+  margin-top: 6.25rem;
+  animation: fadeIn 2s ease-in-out; /* 텍스트 애니메이션 */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .intro-text{
-  font-size: 25px;
-  color: black;
+  font-size: 1.56rem;
+  color: #535878;
 }
 
-/* Recommend button style */
 .recommend-button {
-  margin-top: 30px;
-  padding: 10px 20px;
+  margin-top: 1.875rem; 
+  padding: 0.625rem 1.25rem; 
   font-size: 1rem;
-  width: 250px;
-  height: 50px;
-  color: #fff;
-  background-color: black;
+  width: 15.625rem; 
+  height: 3.125rem; 
+  color: black;
+  background-color: #9ac8fa;
   border: none;
-  border-radius: 5px;
+  border-radius: 3.125rem; 
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .recommend-button:hover {
-  background-color: gray;
-}
-
-/* Album container styles */
-.album-container {
-  display: flex;
-  overflow-x: auto;
-  padding: 1rem;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-  margin-top: 40px;
-}
-
-.album {
-  flex: 0 0 auto;
-  transition: transform 0.3s ease;
-}
-
-.album img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.album:hover {
   transform: scale(1.1);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-/*search-container style*/
+#features-section {
+  background-color: #f4f7fb;
+  padding: 5rem 3rem;
+  height: auto;
+}
+
+.features-container {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.features-container h2 {
+  font-size: 3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.feature-item {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: scale(1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-item h3 {
+  font-size: 1.8rem;
+  color: #3498db;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+}
+
+.feature-item p {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+}
+
+.feature-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #3498db, #8e44ad);
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.5s ease;
+}
+
+.feature-item:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* 애니메이션 효과 */
+.feature-item:nth-child(odd) {
+  animation: fadeIn 1s ease-out 0.3s forwards;
+}
+
+.feature-item:nth-child(even) {
+  animation: fadeIn 1s ease-out 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section3{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 2em;
+  background-color: #e1f4fe;
+}
+
 .second-container {
   display: flex;
   align-items: center;
@@ -102,6 +180,10 @@
 
 .search-container {
   align-items: center;
+}
+
+.second-container-title{
+  color: #535878;
 }
 
 .search-input {
@@ -117,7 +199,7 @@
 
 .search-button {
   padding: 0.5rem 1rem;
-  background-color: #CC00FF;
+  background-color: #3498db;
   color: white;
   border: none;
   border-radius: 20px;
@@ -127,15 +209,28 @@
 }
 
 .search-button:hover {
-  background-color: #9a01c1;
+  background-color: #69a9d3;
 }
 
 /*third-container styles*/
+.section4{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 2em;
+  background-color: #e1f4fe;
+}
+
 .third-container {
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 30px;
+}
+
+.third-container-title{
+  color: #535878;
 }
 
 .chart-container {
@@ -165,7 +260,7 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   cursor: pointer;
-  color: white;
+  color: #535878;
   font-size: medium;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
 }

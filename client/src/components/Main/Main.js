@@ -3,14 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './Main.css';
 import Navbar from '../Navbar/Navbar';
 
-const albumCovers = [
-  'https://img.etnews.com/news/article/2024/05/23/cms_temp_article_23120344835638.jpg',
-  'http://img.etoday.co.kr/pto_db/2024/05/20240509102337_2022568_1200_1800.jpg',
-  'https://cdn.sports.hankooki.com/news/photo/202404/6861711_1079508_493.jpg',
-  'https://cdn.tenbizt.com/tenbizt/2024/03/11190353/%EC%95%84%EC%9D%BC%EB%A6%BF_%EB%AF%BC%EC%A3%BC-640x427.jpg',
-  'https://image.ytn.co.kr/general/jpg/2024/0125/202401251017584548_d.jpg'
-];
-
 // Hot Hits Korea Playlist ID (정확한 ID인지 확인 필요)
 const HOT_HITS_KOREA_PLAYLIST_ID = '37i9dQZF1DWT9uTRZAYj0c';
 
@@ -101,24 +93,49 @@ function Main() {
   return (
     <div className="Main">
       <Navbar />
-      <section className="section gradient-background">
+      <section className="section1" id="main-section">
         <div className="intro-container">
           <h3>Melodypalette에서 새로운 음악을 만나보세요</h3>
           <p className='intro-text'>음악 취향을 분석하여, 당신에게 딱 맞는 곡을 추천해드립니다.</p>
-          
           <button className="recommend-button" onClick={handleRecommendButtonClick}>음악 추천받기</button>
-          <div className="album-container">
-            {albumCovers.map((cover, index) => (
-              <div key={index} className="album">
-                <img src={cover} alt={`Album ${index + 1}`} />
-              </div>
-            ))}
+        </div>
+      </section>
+
+      <section className="section2" id="features-section">
+        <div className="features-container">
+          <h2>Melodypalette의 주요 기능</h2>
+          <div className="feature-list">
+            <div className="feature-item">
+              <h3>취향에 맞는 음악 추천</h3>
+              <p>선호하는 아티스트 또는 장르를 선택해, 당신만의 음악을 추천받을 수 있습니다.</p>
+            </div>
+            <div className="feature-item">
+              <h3>나만의 플레이리스트 만들기</h3>
+              <p>추천받은 노래 중 맘에 드는 곡을 모아 나만의 플레이리스트를 만들 수 있습니다.</p>
+            </div>
+            <div className="feature-item">
+              <h3>음악 재생</h3>
+              <p>추천된 곡들을 바로 들어보면서 음악을 즐길 수 있습니다.</p>
+            </div>
+            <div className="feature-item">
+              <h3>좋아요 표시하기</h3>
+              <p>마음에 드는 곡에 좋아요 표시를 해 나만의 컬렉션을 만들어보세요.</p>
+            </div>
+            <div className="feature-item">
+              <h3>실시간 음악 랭킹</h3>
+              <p>현재 인기 있는 음악을 실시간으로 확인하고, 최신 트렌드를 파악할 수 있습니다.</p>
+            </div>
+            <div className="feature-item">
+              <h3>음악 및 아티스트 검색</h3>
+              <p>원하는 음악이나 아티스트를 검색하여 쉽게 찾아 듣고, 즐길 수 있습니다.</p>
+            </div>
           </div>
         </div>
       </section>
-      <section className="section black-background1" id="section2">
+
+      <section className="section3" id="search-section">
         <div className='second-container'>
-          <h2>제목 또는 아티스트 검색</h2>
+          <h2 className='second-container-title'>제목 또는 아티스트 검색</h2>
           <div className='search-container'>
             <input 
               type="text" 
@@ -131,9 +148,10 @@ function Main() {
           </div>
         </div>
       </section>
-      <section className="section black-background2" id="section3">
+
+      <section className="section4" id="rank-section">
         <div className='third-container'>
-          <h2>실시간 TOP 랭킹</h2>
+          <h2 className='third-container-title'>실시간 TOP 랭킹</h2>
           <div className='chart-container'>
             {loading ? (
               <div className="loading-spinner">로딩 중...</div>

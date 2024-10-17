@@ -54,7 +54,7 @@ function Navbar() {
   return (
     <header className={`navbar ${isScrolled ? 'scrolled' : 'transparent'}`}>
       <div className="navbar-container">
-        <h3 className="logo" onClick={handleLogoClick}>Melodypalette</h3>
+        <h3 className="logo" onClick={handleLogoClick}>🎶 Melodypalette</h3>
         <nav className="navbar-box">
           <ul>
             <li><a href="#search-section">제목 또는 아티스트 검색</a></li>

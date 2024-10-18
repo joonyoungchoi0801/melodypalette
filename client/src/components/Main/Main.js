@@ -63,6 +63,7 @@ function Main() {
   const [topTracks, setTopTracks] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const artists = ["aespa", "BLACKPINK", "QWER", "IU", "DAY6", "NewJeans", "LE SSERAFIM", "KISS OF LIFE", "RIIZE"]; 
 
   const handleSearch = () => {
     console.log('Search button clicked with term:', searchTerm);
@@ -144,7 +145,7 @@ function Main() {
               <h3>음악 및 아티스트 검색</h3>
               <img src="/images/feature6.png" alt="feature6"/>
               <div className='feature-box'>
-                <p>원하는 음악이나 아티스트를 검색하여 쉽게 찾아 듣고, 즐길 수 있습니다</p>
+                <p>원하는 음악이나 아티스트를 검색하여<br/> 쉽게 찾아 듣고, 즐길 수 있습니다</p>
               </div>
             </div>
           </div>
@@ -153,7 +154,7 @@ function Main() {
 
       <section className="section3" id="search-section">
         <div className='second-container'>
-          <h2 className='second-container-title'>제목 또는 아티스트 검색</h2>
+          <h2 className='second-container-title'>검색</h2>
           <div className='search-container'>
             <input 
               type="text" 
@@ -164,6 +165,16 @@ function Main() {
             />
             <button className="search-button" onClick={handleSearch}>검색</button>
           </div>
+            <p>최근 인기 아티스트</p>
+            <div className="artists-marquee">
+              <div className="artists-marquee-inner">
+                {artists.concat(artists).map((artist, index) => (
+                  <div className='artist-name-box' key={index}>
+                    <span className="artist-name">{artist}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
         </div>
       </section>
 

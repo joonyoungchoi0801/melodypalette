@@ -35,6 +35,7 @@
   cursor: pointer;
   background: linear-gradient(to right, #3498db, #7bf38d);
   -webkit-background-clip: text; 
+  background-clip: text;
   color: transparent; 
 }
 

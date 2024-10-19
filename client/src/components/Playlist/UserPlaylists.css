@@ -97,6 +97,24 @@
   min-height: 500px;
 }
 
+.top-background{
+  height: 150px;
+  background: linear-gradient(270deg, #e1f4fe, #faffdd);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.top-background h2 {
+  text-align: center;
+  color: #3498db;
+}
+
+.no-song {
+  text-align: center;
+  margin-top: 20px;
+}
+
 .track-item {
   display: flex;
   align-items: center;

@@ -161,9 +161,12 @@ function UserPlaylists() {
           </div>
         </div>
         <div className='playlist-right-container'>
+          <div className='top-background'>
+            {selectedPlaylist ? <h2>{selectedPlaylist.name}</h2> : <h2>플레이리스트를 선택하세요</h2>}
+          </div>
           {selectedPlaylist ? (
             selectedPlaylist.tracks && selectedPlaylist.tracks.length === 0 ? (
-              <p>플레이리스트에 노래가 없습니다.</p>
+              <p className='no-song'>플레이리스트에 노래가 없습니다.</p>
             ) : (
               selectedPlaylist.tracks && selectedPlaylist.tracks.map(track => (
                 <div key={`${track.spotifyUri}-${track.name}`} className="track-item">
@@ -188,7 +191,7 @@ function UserPlaylists() {
               ))
             )
           ) : (
-            <p>플레이리스트를 선택하세요.</p>
+            <p></p>
           )}
         </div>
       </div>

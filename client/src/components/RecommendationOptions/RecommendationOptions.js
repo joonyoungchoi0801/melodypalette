@@ -43,7 +43,7 @@ function RecommendationOptions() {
     <div className='RecommendationOptions'>
       <Navbar />
       <div className="content">
-        <h1>음악 추천</h1>
+        <h1>음악 추천 옵션</h1>
         <p className='description'>
           선호하는 아티스트 또는 장르를 선택하여 맞춤형 음악 추천을 받아보세요.<br />
           어떤 것을 선택하시겠습니까?
@@ -51,8 +51,14 @@ function RecommendationOptions() {
       </div>
       <div className='select-content'>
         <div className='options'>
-          <Link to="/artists" className='option-button'>아티스트로 선택</Link>
-          <Link to="/genres" className='option-button'>장르로 선택</Link>
+          <Link to="/artists" className='option-button'>
+            <img src="/images/artist.png" alt="artist" />
+            <span>아티스트</span>
+          </Link>
+          <Link to="/genres" className='option-button'>
+            <img src="/images/genre.png" alt="genre" />
+            <span>장르</span>
+          </Link>
         </div>
       </div>
     </div>

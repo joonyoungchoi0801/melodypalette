@@ -91,6 +91,32 @@ function UserPlaylists() {
       .catch((error) => console.error('플레이리스트 생성 중 오류 발생:', error));
   };
 
+  // 플레이리스트 삭제 핸들러
+  const handleDeletePlaylist = async (playlistId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/playlists/${playlistId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('플레이리스트 삭제 실패: ' + response.statusText);
+      }
+
+      // 삭제된 플레이리스트를 제외한 새로운 플레이리스트 목록 생성
+      const updatedPlaylists = playlists.filter(playlist => playlist._id !== playlistId);
+
+      // 상태 업데이트
+      setPlaylists(updatedPlaylists);
+      setSelectedPlaylist(null); // 선택된 플레이리스트 초기화
+    } catch (error) {
+      console.error('플레이리스트 삭제 실패:', error);
+    }
+  };
+
   // 플레이리스트 내 곡 삭제 핸들러
   const handleDeleteTrack = async (trackId) => {
     try {
@@ -155,6 +181,15 @@ function UserPlaylists() {
                     <h3 className="playlist-name">{playlist.name}</h3>
                     <p className="playlist-track-count">{playlist.tracks.length} 곡</p>
                   </div>
+                  <button
+                    className='delete-playlist-button'
+                    onClick={(e) => {
+                      e.stopPropagation(); // 클릭 이벤트 전파 막기
+                      handleDeletePlaylist(playlist._id);
+                    }}
+                  >
+                    🗑 삭제
+                  </button>
                 </div>
               ))
             )}

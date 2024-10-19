@@ -94,4 +94,21 @@ router.delete('/:id/tracks/:trackId', async (req, res) => {
   }
 });
 
+// 플레이리스트 삭제
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params; // URL에서 플레이리스트 ID 추출
+
+  try {
+    const playlist = await Playlist.findByIdAndDelete(id); // 플레이리스트 삭제
+    if (!playlist) {
+      return res.status(404).json({ message: '플레이리스트를 찾을 수 없습니다.' });
+    }
+
+    res.status(200).json({ message: '플레이리스트 삭제 완료', playlist });
+  } catch (error) {
+    console.error('플레이리스트 삭제 중 오류 발생:', error);
+    res.status(500).json({ error: '플레이리스트 삭제 실패' });
+  }
+});
+
 module.exports = router;

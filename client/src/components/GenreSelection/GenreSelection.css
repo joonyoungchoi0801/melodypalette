@@ -50,7 +50,9 @@
   text-align: center;
   margin-top: 20px;
   font-size: 20px;
-  color: #888;
+  color: #2c3e50; 
+  background-color: #58a8fe; 
+  padding: 20px;
 }
 
 .genre-grid {

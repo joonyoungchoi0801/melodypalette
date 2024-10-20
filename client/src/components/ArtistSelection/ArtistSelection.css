@@ -1,51 +1,68 @@
-/* body {
-  background-color: black;
-  margin: 0;
-  padding: 0;
-} */
-
 .ArtistSelection {
-  background: black;
-  color: white;
+  background: #e1f4fe;
   width: 100%;
   min-height: 100vh;
   padding-top: 100px;
+  overflow: hidden;
 }
-
-/* .select-container {
-  padding-top: 100px;
-} */
-
-/* .page-title {
-  margin-left: 30px;
-} */
 
 .select-complete {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 10vh;
-  padding-left: 30px;
-  padding-right: 30px;
+  margin-bottom: 20px;
+  padding: 0 30px;
 }
 
 .select-complete-btn {
   padding: 10px 25px;
-  background-color: #CC00FF;
+  background-color: #58a8fe;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s;
 }
 
-.loading-spinner {
+.error-message {
+  color: red;
   text-align: center;
-  margin-top: 20px;
-  font-size: 20px;
-  color: white; 
-  background-color: black; 
-  padding: 20px;
+  margin: 10px 0 30px;
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #e1f4fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  flex-direction: column; 
+}
+
+.spinner {
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #3498db; 
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 20px; 
+  font-size: 18px; 
+  color: #2c3e50; 
 }
 
 .select-list {
@@ -72,7 +89,11 @@
 }
 
 .artist-item.selected .artist-image-container {
-  border-color: #CC00FF;
+  border-color: #3498db;
+}
+
+.artist-item:hover {
+  transform: scale(1.02);
 }
 
 .artist-image {
@@ -84,45 +105,4 @@
 .artist-name {
   margin-top: 5px;
   text-align: center;
-}
-
-.error-message {
-  color: red;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 30px;
-}
-
-.loading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  flex-direction: column; /* 텍스트와 스피너를 세로 방향으로 배치 */
-}
-
-.spinner {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.loading-text {
-  margin-top: 20px; /* 스피너와 텍스트 사이에 공간을 추가 */
-  font-size: 18px; /* 텍스트 크기 */
-  color: white; /* 텍스트 색상 */
 }

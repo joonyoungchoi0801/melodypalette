@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Recommendation.css';
 import Player from '../Player/Player';
-import PlaylistPopup from '../PlaylistPopup/PlaylistPopup'; 
+import PlaylistPopup from '../PlaylistPopup/PlaylistPopup';
 import { useAuth } from '../../contexts/AuthContext';
 
 function Recommendation() {
@@ -71,17 +71,15 @@ function Recommendation() {
         },
         body: JSON.stringify({ userId, trackId }),
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.message === 'Like removed successfully') {
-          console.log('좋아요가 제거되었습니다.');
-        // } else {
-        //   console.error(data.error);
-        }
-      })
-      .catch(error => {
-        console.error('좋아요 제거 실패:', error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.message === 'Like removed successfully') {
+            console.log('좋아요가 제거되었습니다.');
+          }
+        })
+        .catch(error => {
+          console.error('좋아요 제거 실패:', error);
+        });
     } else {
       // 좋아요 추가
       setLikedTracks(prev => [...prev, { id: trackId, name: trackName }]); // 트랙 정보 추가
@@ -94,21 +92,19 @@ function Recommendation() {
         },
         body: JSON.stringify({ userId, trackId }),
       })
-      .then(response => {
-        console.log('응답 상태:', response.status); // 응답 상태 코드 확인
-        return response.json();
-      })
-      .then(data => {
-        console.log('서버 응답:', data); // 서버 응답 로그
-        if (data.message === 'Like added successfully') {
-          console.log('좋아요가 추가되었습니다.');
-        // } else {
-        //   console.error(data.error);
-        }
-      })
-      .catch(error => {
-        console.error('좋아요 추가 실패:', error);
-      });
+        .then(response => {
+          console.log('응답 상태:', response.status); // 응답 상태 코드 확인
+          return response.json();
+        })
+        .then(data => {
+          console.log('서버 응답:', data); // 서버 응답 로그
+          if (data.message === 'Like added successfully') {
+            console.log('좋아요가 추가되었습니다.');
+          }
+        })
+        .catch(error => {
+          console.error('좋아요 추가 실패:', error);
+        });
     }
   };
 
@@ -144,24 +140,24 @@ function Recommendation() {
         },
       }),
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.message === 'Track added to playlist successfully') {
-        alert('곡이 플레이리스트에 성공적으로 추가되었습니다!');
-        // 플레이리스트 상태 업데이트
-        return fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`);
-      } else {
-        alert(data.error);
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      setUserPlaylists(data.playlists); // 업데이트된 플레이리스트 상태 설정
-      setIsPlaylistOpen(false);
-    })
-    .catch(error => {
-      console.error('곡 추가 실패:', error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Track added to playlist successfully') {
+          alert('곡이 플레이리스트에 성공적으로 추가되었습니다!');
+          // 플레이리스트 상태 업데이트
+          return fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`);
+        } else {
+          alert(data.error);
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        setUserPlaylists(data.playlists); // 업데이트된 플레이리스트 상태 설정
+        setIsPlaylistOpen(false);
+      })
+      .catch(error => {
+        console.error('곡 추가 실패:', error);
+      });
   };
 
   // 추천 완료 버튼 클릭 핸들러
@@ -177,28 +173,28 @@ function Recommendation() {
         {recommendations.length > 0 ? (
           recommendations.map((track) => (
             <div key={track.id} className='recommendation-item'>
-              <img 
-                src={track.albumImage || 'default_album_image_url.jpg'} 
-                alt={`${track.name} album cover`} 
+              <img
+                src={track.albumImage || 'default_album_image_url.jpg'}
+                alt={`${track.name} album cover`}
                 className='album-image'
               />
               <div className='recommendation-info'>
                 <h1 className='recommendation-track'>{track.name || 'No Title'}</h1>
                 <p className='recommendation-artist'>{track.artist || 'Unknown Artist'}</p>
                 <div className='recommendation-actions'>
-                <button 
-                  className={`like-button ${likedTracks.some(likedTrack => likedTrack.id === track.id) ? 'liked' : ''}`}                  
-                  onClick={() => handleLike(track.id, track.name)} // 트랙 ID와 이름을 전달
-                >
-                  👍 좋아요
-                </button>
-                  <button 
+                  <button
+                    className={`like-button ${likedTracks.some(likedTrack => likedTrack.id === track.id) ? 'liked' : ''}`}
+                    onClick={() => handleLike(track.id, track.name)} // 트랙 ID와 이름을 전달
+                  >
+                    👍 좋아요
+                  </button>
+                  <button
                     className='play-button'
                     onClick={() => handlePlay(track)}
                   >
                     ▶️ 재생
                   </button>
-                  <button 
+                  <button
                     className='add-button' // 추가 버튼
                     onClick={() => handleAddToPlaylist(track)}
                   >
@@ -214,9 +210,9 @@ function Recommendation() {
       </div>
 
       {isPlaylistOpen && (
-        <PlaylistPopup 
-          playlists={userPlaylists} 
-          onSelect={handleSelectPlaylist} 
+        <PlaylistPopup
+          playlists={userPlaylists}
+          onSelect={handleSelectPlaylist}
           onClose={() => setIsPlaylistOpen(false)} // 팝업 닫기
         />
       )}

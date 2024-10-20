@@ -1,23 +1,19 @@
-/* 페이지 전체 레이아웃 스타일 */
 .Recommendation {
-  background: black;
-  color: white;
+  background: linear-gradient(270deg, #e1f4fe, #faffdd);
   width: 100%;
   min-height: 100vh;
   padding-top: 100px;
   padding-bottom: 30px;
 }
 
-/* 추천 곡 리스트 스타일 */
 .recommendations-list {
   display: flex;
-  flex-wrap: wrap; /* 여러 줄로 감싸기 */
-  gap: 20px; /* 항목 간의 간격 */
-  max-width: 95%; /* 전체 너비 제한 */
-  margin: 0 auto; /* 가운데 정렬 */
+  flex-wrap: wrap; 
+  gap: 20px; 
+  max-width: 95%; 
+  margin: 0 auto;
 }
 
-/* 개별 추천 아이템 스타일 */
 .recommendation-item {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -27,8 +23,8 @@
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  width: calc(50% - 20px); /* 두 개 열로 나누기 (간격을 고려) */
-  box-sizing: border-box; /* 패딩과 테두리 포함 너비 계산 */
+  width: calc(50% - 20px); 
+  box-sizing: border-box;
 }
 
 .album-image {
@@ -40,18 +36,16 @@
 }
 
 .recommendation-info {
-  flex: 1; /* 텍스트와 버튼 영역이 이미지와 동일한 높이를 가지도록 함 */
+  flex: 1; 
 }
 
-/* 곡명 스타일 */
 .recommendation-track {
   font-size: 1.1em;
-  color: black; /* Spotify 그린 색상 */
+  color: #535878; 
   margin: 0;
   font-weight: bold;
 }
 
-/* 아티스트 이름 스타일 */
 .recommendation-artist {
   font-size: 1em;
   margin: 0 0 10px;
@@ -63,7 +57,7 @@
   gap: 10px;
 }
 
-.like-button, .dislike-button, .play-button {
+.like-button, .play-button, .add-button {
   padding: 5px 10px;
   border: none;
   cursor: pointer;
@@ -73,21 +67,20 @@
 }
 
 .like-button.liked {
-  background-color: violet; /* 좋아요가 눌렸을 때 녹색 */
-  color: white;
-}
-
-.dislike-button.disliked {
-  background-color: #fec881; /* 싫어요가 눌렸을 때 빨간색 */
+  background-color: #9ac8fa;
   color: white;
 }
 
 .play-button {
-  background-color: #2196F3; /* 재생 버튼은 파란색 */
+  background-color: #58a8fe;
   color: white;
 }
 
-/* 추천 항목이 없을 때의 스타일 */
+.add-button {
+  background-color: #2c3e50;
+  color: white;
+}
+
 .no-recommendations {
   text-align: center;
   font-size: 1.2em;
@@ -97,8 +90,8 @@
 
 .recommendation-button-container {
   display: flex;
-  justify-content: center; /* 가로 방향 중앙 정렬 */
-  margin-top: 30px; /* 위쪽 여백 */
+  justify-content: center; 
+  margin-top: 30px;
 }
 
 .recommendation-finished {
@@ -108,12 +101,12 @@
   border-radius: 5px;
   font-size: 14px;
   transition: background-color 0.3s;
-  background-color: white;
-  color: black;
+  background-color: #535878;
+  color: white;
   font-weight: bold;
   font-size: 1.2rem;
 }
 
 .recommendation-finished:hover{
-  background-color: #e0dfdf;
+  background-color: #797b85;
 }

@@ -3,32 +3,29 @@
   scrollbar-width: none; 
   -ms-overflow-style: none; 
   width: 100%;
+  background-color: #e1f4fe;
 }
 
 .search-container2 {
-  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 35vh;
   width: 100%;
-  color: white;
   font-size: 2em;
 }
 
 .result-song-container {
-  padding: 2rem;
-  background-color: black;
-  color: white;
-  height: 200px;
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  padding: 2rem;
+  color: #2c3e50;
 }
 
 .search-keyword {
-  color: #CC00FF;
+  color: #3498db;
   font-weight: bold;
   font-size: large;
 }
@@ -36,10 +33,9 @@
 .result-song-list {
   display: flex;
   flex-direction: column;
-  background-color: black;
   height: 80vh;
   margin-top: 20px;
-  border-top: 1px solid white; 
+  border-top: 1px solid #7f8c8d; 
   border-bottom: none; 
   border-left: none;
   border-right: none;
@@ -48,11 +44,9 @@
 .result-song-line {
   display: flex;
   justify-content: space-between;
-  color: white;
   height: 15vh;
   align-items: center;
-  background-color: black;
-  border-bottom: 1px solid white; 
+  border-bottom: 1px solid #ccc; 
   padding: 20px;
 }
 
@@ -67,13 +61,12 @@
 
 .result-singer-container{
   padding: 2rem;
-  background-color: black;
-  color: white;
   height: 200px;
   display: flex;
   flex-direction: column;
   height: 70vh;
   width: 100%;
+  color: #2c3e50;
 }
 
 .singer-img-container {
@@ -94,6 +87,7 @@
   height: 200px;
   background-color: white;
   border-radius: 100px;
+  cursor: pointer;
 }
 
 .singer-img:hover {

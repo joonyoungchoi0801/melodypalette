@@ -87,14 +87,14 @@ function SearchResult() {
     const uri = track.uri; // Spotify URI
     navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artists.map(artist => artist.name).join(', '))}&albumImage=${encodeURIComponent(track.album.images[0]?.url)}`);
   };
-  
+
 
   return (
     <div className='SearchResult'>
       <Navbar />
       <section className='search-container2'>
         <div className='search-container'>
-        <input
+          <input
             type="text"
             className="search-input"
             placeholder="검색어를 입력하세요"
@@ -117,10 +117,10 @@ function SearchResult() {
                 <img className='album-img2' src={track.album.images[0]?.url} alt={track.name} />
                 <p>{track.name}</p>
                 <p>{track.artists.map(artist => artist.name).join(', ')}</p>
-                <button 
+                <button
                   className='play-button'
                   onClick={() => handlePlay(track)}>
-                    ▶️ 재생
+                  ▶️ 재생
                 </button>
               </div>
             ))

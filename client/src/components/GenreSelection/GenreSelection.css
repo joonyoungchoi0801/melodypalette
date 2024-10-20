@@ -1,6 +1,5 @@
 .GenreSelection {
-  background: black;
-  color: white;
+  background: #e1f4fe;
   width: 100%;
   min-height: 100vh;
   padding-top: 100px;
@@ -9,8 +8,7 @@
 
 .select-container {
   padding: 20px;
-  overflow-y: auto; 
-  /* max-height: calc(100vh - 120px);  */
+  overflow-y: auto;
 }
 
 .page-title {
@@ -29,7 +27,7 @@
 
 .select-complete-btn {
   padding: 10px 25px;
-  background-color: #CC00FF;
+  background-color: #58a8fe;
   color: white;
   border: none;
   border-radius: 5px;
@@ -39,7 +37,13 @@
 }
 
 .select-complete-btn:hover {
-  background-color: #FF00FF;
+  background-color: #a2cefe;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin: 10px 0 30px;
 }
 
 .loading-spinner {
@@ -51,14 +55,14 @@
 
 .genre-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); 
-  grid-auto-rows: minmax(150px, auto); 
-  gap: 14px; 
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(150px, auto);
+  gap: 14px;
   padding: 0 30px 50px;
 }
 
 .genre-item {
-  background: #333;
+  background: #f4f7fb;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
@@ -71,9 +75,11 @@
 }
 
 .genre-item.selected {
-  background-color: #FF00FF;
   transform: scale(1.05);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  padding: 4px; 
+  border-radius: 15px;
+  border: 5px solid #3498db;
 }
 
 .genre-item:hover {
@@ -83,11 +89,5 @@
 .genre-name {
   font-size: 1.2em;
   font-weight: bold;
-  color: #FFF;
-}
-
-.error-message {
-  color: red;
-  text-align: center;
-  margin: 10px 0 30px;
+  color: #535878;
 }

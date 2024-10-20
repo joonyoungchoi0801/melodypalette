@@ -100,7 +100,7 @@ function Player() {
   return (
     <div className='Player'>
       <Navbar />
-      <button onClick={handleBack} className="x-button">✖</button>
+      <button onClick={handleBack} className="x-button">⇦</button>
       <div className="player-container">
         {trackUri ? (
           <div>

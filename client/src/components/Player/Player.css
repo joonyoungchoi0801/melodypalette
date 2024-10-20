@@ -1,7 +1,27 @@
-/* Player.css */
 .Player{
-  margin-top: 100px;
-  background-color: white;
+  background: linear-gradient(270deg, #e1f4fe, #faffdd);
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-bottom: 30px;
+}
+
+.x-button {
+  position: absolute;
+  top: 50px;
+  left: 25px;
+  background-color: transparent;
+  border: none;
+  font-size: 3rem;
+  cursor: pointer;
+  color: #535878;
+  padding: 5px;
+  transition: transform 0.3s ease;
+}
+
+.x-button:hover {
+  transform: scale(1.1);
+  color: #b3b3b3;
 }
 
 .player-container {
@@ -10,13 +30,13 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: #1c1c1c;
-  color: white;
+  background-color: #f4f7fb;
+  color: #535878;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px #58a8fe;
   width: 400px;
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 30px;
 }
 
 .player-container img {
@@ -50,7 +70,7 @@
 }
 
 .player-controls button {
-  background-color: #1db954;
+  background-color: #9ac8fa;
   border: none;
   border-radius: 50%;
   color: white;
@@ -61,27 +81,9 @@
 }
 
 .player-controls button:hover {
-  background-color: #1ed760;
+  background-color: #afd4fd;
 }
 
 .player-controls button:active {
-  background-color: #14833b;
-}
-
-.x-button {
-  position: absolute;
-  top: 50px;
-  right: 20px;
-  background-color: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: black;
-  padding: 5px;
-  transition: transform 0.3s ease;
-}
-
-.x-button:hover {
-  transform: scale(1.1);
-  color: #b3b3b3; /* Red hover color for emphasis */
+  background-color: #58a8fe;
 }

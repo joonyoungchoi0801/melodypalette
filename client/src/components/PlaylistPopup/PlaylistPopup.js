@@ -1,7 +1,7 @@
 import React from 'react';
 import './PlaylistPopup.css';
 
-function PlaylistPopup({ track, playlists, onSelect, onClose }) {
+function PlaylistPopup({ playlists, onSelect, onClose }) {
   return (
     <div className="playlist-popup">
       <div className="popup-content">

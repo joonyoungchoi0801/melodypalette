@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* 최상위로 표시 */
+  z-index: 1000;
 }
 
 .popup-content {
@@ -20,15 +20,16 @@
 }
 
 .playlist-option-title{
-  color: black;
+  color: #535878;
 }
 
 .playlist-option {
   display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background-color: black;
-  color: white;
+  margin: 20px auto;
+  padding: 10px 40px;
+  background-color: #f4f7fb;
+  color: #3498db;
+  font-weight: bold;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -36,11 +37,11 @@
 }
 
 .playlist-option:hover {
-  background-color: #9aa09c;
+  background-color: rgba(232, 232, 232, 0.76);
 }
 
 .playlist-close-button {
-  margin-top: 10px;
+  margin-top: 5px;
   background-color: transparent;
   border: none;
   padding: 10px 20px;

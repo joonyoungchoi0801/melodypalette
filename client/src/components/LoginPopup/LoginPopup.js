@@ -1,14 +1,23 @@
-import React from 'react';
-// import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import './LoginPopup.css';
 
 function LoginPopup({ isOpen, onClose }) {
-  // const navigate = useNavigate();
 
   const handleSpotifyLogin = () => {
     // 스포티파이 인증 페이지로 이동
     window.location.href = 'http://localhost:5000/api/spotify/auth';
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      // 스크롤 위치 계산
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const popup = document.querySelector('.login-popup');
+      if (popup) {
+        popup.style.top = `${scrollTop + window.innerHeight / 2 - popup.offsetHeight / 2}px`;
+      }
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ProfilePopup.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom'; 
@@ -10,6 +10,17 @@ const ProfilePopup = ({ isOpen, onClose, onLogout }) => {
     logout(); // AuthContext에서 제공하는 logout 호출
     onLogout(); // 추가적인 클로즈 핸들러 호출
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      // 스크롤 위치 계산
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const popup = document.querySelector('.profile-popup');
+      if (popup) {
+        popup.style.top = `${scrollTop + window.innerHeight / 2 - popup.offsetHeight / 2}px`;
+      }
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

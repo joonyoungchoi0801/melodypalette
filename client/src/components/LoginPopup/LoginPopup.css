@@ -16,11 +16,15 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: absolute;
+  position: relative;
   width: 350px;
   height: 500px;
   z-index: 1001;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
 }
 
 .close-button {
@@ -36,4 +40,17 @@
 
 .login {
   text-align: center;
+}
+
+.login-button {
+  display: block;
+  background: #58a8fe;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  width: 100%;
 }

@@ -26,7 +26,7 @@ function LoginPopup({ isOpen, onClose }) {
       <div className="login-popup">
         <button className="close-button" onClick={onClose}>X</button>
         <h2 className='login'>로그인</h2>
-        <button className="spotify-login-button" onClick={handleSpotifyLogin}>
+        <button className="login-button" onClick={handleSpotifyLogin}>
           스포티파이로 로그인
         </button>
       </div>

@@ -32,6 +32,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .profile-image {
@@ -55,15 +56,30 @@
   color: gray;
 }
 
-.profile-email{
-  color: orange;
+.link {
+  display: block; 
+  text-align: center; 
+  margin-bottom: 15px; 
+  color: #007bff; 
+  text-decoration: none; 
 }
 
-.logout-button{
+.link:hover {
+  text-decoration: underline; 
+}
+
+.logout-button {
   display: block;
-  background: none;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  color: gray;
+  background: #58a8fe; 
+  color: white; 
+  border: none; 
+  padding: 10px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  width: 100%; 
+}
+
+.logout-button:hover {
+  background: #89c2ff; 
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import Navbar from '../Navbar/Navbar';
+import PlaylistPopup from '../PlaylistPopup/PlaylistPopup';
 import './SearchResult.css';
 
 // Access Token 가져오기
@@ -36,8 +38,13 @@ async function fetchSearchResults(query, token) {
 
 function SearchResult() {
   const [searchTerm, setSearchTerm] = useState(''); // 입력한 검색어 상태 관리
+  const { userProfile } = useAuth(); // 사용자 프로필 불러오기
+  const userId = userProfile?.id;
   const [tracks, setTracks] = useState([]);
   const [artists, setArtists] = useState([]);
+  const [isPlaylistOpen, setIsPlaylistOpen] = useState(false); // 플레이리스트 선택 창 열기/닫기
+  const [selectedTrack, setSelectedTrack] = useState(null); // 추가할 트랙 정보
+  const [userPlaylists, setUserPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [accessToken, setAccessToken] = useState(''); // 서버에서 받아온 액세스 토큰 상태 관리
   const location = useLocation();
@@ -88,6 +95,65 @@ function SearchResult() {
     navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(track.artists.map(artist => artist.name).join(', '))}&albumImage=${encodeURIComponent(track.album.images[0]?.url)}`);
   };
 
+  useEffect(() => {
+    // 사용자 플레이리스트 불러오기
+    if (userId) {
+      fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => setUserPlaylists(data.playlists))
+        .catch(error => console.error('플레이리스트를 불러오는데 실패했습니다.', error));
+    }
+  }, [userId]);
+
+   // 추가 버튼 클릭 핸들러
+   const handleAddToPlaylist = (track) => {
+    setSelectedTrack({
+      name: track.name,
+      artist: track.artists.map(artist => artist.name).join(', '), // 아티스트 이름
+      albumImage: track.album.images[0]?.url, // 앨범 이미지
+      spotifyUri: track.uri, // Spotify URI
+    });
+    setIsPlaylistOpen(true); // 플레이리스트 선택 창 열기
+  };
+
+  // 플레이리스트에 곡 추가
+  const handleSelectPlaylist = (playlistId) => {
+    if (!selectedTrack) return;
+
+    fetch('http://localhost:5000/api/playlists/add-track', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        playlistId,
+        track: {
+          name: selectedTrack.name,
+          artist: selectedTrack.artist,
+          albumImage: selectedTrack.albumImage,
+          spotifyUri: selectedTrack.spotifyUri,
+        },
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Track added to playlist successfully') {
+          alert('곡이 플레이리스트에 성공적으로 추가되었습니다!');
+          // 플레이리스트 상태 업데이트
+          return fetch(`http://localhost:5000/api/playlists/user-playlists?userId=${userId}`);
+        } else {
+          alert(data.error);
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        setUserPlaylists(data.playlists); // 업데이트된 플레이리스트 상태 설정
+        setIsPlaylistOpen(false);
+      })
+      .catch(error => {
+        console.error('곡 추가 실패:', error);
+      });
+  };
 
   return (
     <div className='SearchResult'>
@@ -122,6 +188,12 @@ function SearchResult() {
                   onClick={() => handlePlay(track)}>
                   ▶️ 재생
                 </button>
+                <button
+                  className='add-button' // 추가 버튼
+                  onClick={() => handleAddToPlaylist(track)}
+                >
+                  ➕ 추가
+                </button>
               </div>
             ))
           )}
@@ -141,6 +213,13 @@ function SearchResult() {
             ))
           )}
         </div>
+        {isPlaylistOpen && (
+        <PlaylistPopup
+          playlists={userPlaylists}
+          onSelect={handleSelectPlaylist}
+          onClose={() => setIsPlaylistOpen(false)} // 팝업 닫기
+        />
+      )}
       </section>
     </div>
   );

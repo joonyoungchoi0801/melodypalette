@@ -59,6 +59,19 @@
   border-radius: 5px;
 }
 
+.result-song-line p {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+}
+
+.play-button,
+.add-button {
+  margin-left: 10px;
+}
+
 .result-singer-container{
   padding: 2rem;
   height: 200px;

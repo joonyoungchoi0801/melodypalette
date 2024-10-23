@@ -1,8 +1,8 @@
 .Main {
   scroll-behavior: smooth;
   overflow-y: scroll;
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   width: 100%;
   background-color: #e1f4fe;
 }
@@ -15,13 +15,14 @@
   font-size: 2em;
   background: linear-gradient(270deg, #e1f4fe, #faffdd);
   background-size: 400% 400%;
-  animation: bgMove 10s ease infinite; /* 배경 애니메이션 */
+  animation: bgMove 10s ease infinite;
 }
 
 @keyframes bgMove {
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -32,7 +33,7 @@
   color: #58a8fe;
   padding: 1.25rem;
   margin-top: 6.25rem;
-  animation: fadeIn 2s ease-in-out; /* 텍스트 애니메이션 */
+  animation: fadeIn 2s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -40,27 +41,28 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.intro-text{
+.intro-text {
   font-size: 1.56rem;
   color: #535878;
 }
 
 .recommend-button {
-  margin-top: 1.875rem; 
-  padding: 0.625rem 1.25rem; 
+  margin-top: 1.875rem;
+  padding: 0.625rem 1.25rem;
   font-size: 1rem;
-  width: 15.625rem; 
-  height: 3.125rem; 
+  width: 15.625rem;
+  height: 3.125rem;
   color: black;
   background-color: #9ac8fa;
   border: none;
-  border-radius: 3.125rem; 
+  border-radius: 3.125rem;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -131,7 +133,7 @@
   height: 70px;
   border-radius: 10px;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   margin-top: 30px;
 }
@@ -173,13 +175,14 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.section3{
+.section3 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -199,7 +202,7 @@
   align-items: center;
 }
 
-.second-container-title{
+.second-container-title {
   color: #535878;
 }
 
@@ -236,7 +239,7 @@
   background-color: #69a9d3;
 }
 
-.artists-marquee-container{
+.artists-marquee-container {
   display: flex;
   justify-content: center;
 }
@@ -248,8 +251,8 @@
   margin-top: 20px;
   font-size: 18px;
   font-weight: bold;
-  overflow: hidden; 
-  white-space: nowrap; 
+  overflow: hidden;
+  white-space: nowrap;
   width: 100%;
   box-sizing: border-box;
 }
@@ -266,7 +269,7 @@
 
 .artist-name {
   display: inline-block;
-  padding: 8px 25px 10px; 
+  padding: 8px 25px 10px;
 }
 
 .artists-marquee-inner {
@@ -278,78 +281,8 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
-    transform: translateX(-50%); /* 두 번째 리스트가 첫 번째 리스트와 정확히 이어지도록 설정 */
+    transform: translateX(-50%);
   }
-}
-
-/*third-container styles*/
-.section4{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 2em;
-  background-color: #e1f4fe;
-}
-
-.third-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 30px;
-}
-
-.third-container-title{
-  color: #535878;
-}
-
-.chart-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  gap: 1rem;
-}
-
-.chartline {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 350px;
-  height: 400px;
-  padding: 1rem;
-  gap: 0.5rem;
-  background-color: transparent;
-}
-
-.chart-box {
-  display: flex;
-  align-items: center;
-  width: 350px;
-  height: 80px;
-  background-color: transparent;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  cursor: pointer;
-  color: #535878;
-  font-size: medium;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-}
-
-.chart-box:hover {
-  background-color: aliceblue;
-  color: black;
-}
-
-.rank {
-  width: 18px;
-  height: 23px;
-}
-
-.album-img {
-  width: 50px;
-  height: 50px;
-  background-color: #da75f3;
-  margin-left: 20px;
-  margin-right: 10px;
 }

@@ -1,0 +1,69 @@
+.section4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 2em;
+  background-color: #e1f4fe;
+}
+
+.third-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.third-container-title {
+  color: #535878;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.chartline {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 350px;
+  height: 400px;
+  padding: 1rem;
+  gap: 0.5rem;
+  background-color: transparent;
+}
+
+.chart-box {
+  display: flex;
+  align-items: center;
+  width: 350px;
+  height: 80px;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #535878;
+  font-size: medium;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+}
+
+.chart-box:hover {
+  background-color: aliceblue;
+  color: black;
+}
+
+.rank {
+  width: 18px;
+  height: 23px;
+}
+
+.album-img {
+  width: 50px;
+  height: 50px;
+  background-color: #da75f3;
+  margin-left: 20px;
+  margin-right: 10px;
+}

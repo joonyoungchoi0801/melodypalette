@@ -58,7 +58,7 @@ function Navbar() {
         <nav className="navbar-box">
           <ul>
             <li><a href="#search-section">제목 또는 아티스트 검색</a></li>
-            <li><a href="#rank-section">실시간 TOP 랭킹</a></li>
+            <li><a href="/rank">실시간 TOP 랭킹</a></li>
             <li><a href="/playlists">Playlist</a></li>
             <li>
               <a href="#profile" onClick={handleProfileClick}>
@@ -68,7 +68,7 @@ function Navbar() {
           </ul>
         </nav>
       </div>
-      
+
       <LoginPopup
         isOpen={isLoginPopupOpen}
         onClose={closeLoginPopup}

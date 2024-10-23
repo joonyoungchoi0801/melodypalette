@@ -43,6 +43,7 @@
 
 .liked-song-info {
   text-align: left;
+  flex-grow: 1;
 }
 
 .liked-song-info h3 {
@@ -55,4 +56,8 @@
   margin: 5px 0 0;
   color: #666;
   font-size: 0.9rem;
+}
+
+.play-button {
+  margin-left: auto;
 }

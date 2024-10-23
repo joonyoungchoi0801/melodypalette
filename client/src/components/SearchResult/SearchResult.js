@@ -155,6 +155,11 @@ function SearchResult() {
       });
   };
 
+  // 아티스트 클릭 핸들러
+  const handleArtistClick = (artistName) => {
+    navigate(`/searchResult?query=${encodeURIComponent(artistName)}`);
+  };
+
   return (
     <div className='SearchResult'>
       <Navbar />
@@ -206,7 +211,7 @@ function SearchResult() {
             <p>로딩 중...</p>
           ) : (
             artists.map(artist => (
-              <div key={artist.id} className='singer-img-box'>
+              <div key={artist.id} className='singer-img-box' onClick={() => handleArtistClick(artist.name)}>
                 <img className='singer-img' src={artist.images[0]?.url} alt={artist.name} />
                 <p className='singer-name'>{artist.name}</p>
               </div>

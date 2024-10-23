@@ -1,0 +1,104 @@
+.section3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 2em;
+  background-color: #e1f4fe;
+}
+
+.second-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-container {
+  align-items: center;
+}
+
+.second-container-title {
+  color: #535878;
+}
+
+.search-input {
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 1rem;
+  margin-top: 30px;
+  width: 650px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.792);
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  width: 100px;
+  height: 50px;
+}
+
+.second-container p {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #3498db;
+}
+
+.search-button:hover {
+  background-color: #69a9d3;
+}
+
+.artists-marquee-container {
+  display: flex;
+  justify-content: center;
+}
+
+.artists-marquee {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.artist-name-box {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.42);
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  display: inline-block;
+}
+
+.artist-name {
+  display: inline-block;
+  padding: 8px 25px 10px;
+}
+
+.artists-marquee-inner {
+  display: flex;
+  animation: marquee 15s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}

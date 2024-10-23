@@ -71,6 +71,7 @@ const LikedSongs = () => {
               </div>
               <button
                 className='play-button'
+                id='liked-play-btn'
                 onClick={() => handlePlay(track)}
               >
                 ▶️ 재생

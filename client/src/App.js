@@ -22,7 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path='/rank' element={<Rank />} />
-          <Route path="/search" element={<SearchResult />} />
+          <Route path="/searchResult" element={<SearchResult />} />
           <Route path="/RecommendationOptions" element={<RecommendationOptions />} />
           <Route path="/artists" element={<ArtistSelection />} />
           <Route path="/genres" element={<GenreSelection />} />

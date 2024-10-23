@@ -85,7 +85,7 @@ function SearchResult() {
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
+      navigate(`/searchResult?query=${encodeURIComponent(searchTerm)}`);
     }
   };
 

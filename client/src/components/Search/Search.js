@@ -9,7 +9,7 @@ function Search() {
 
   const handleSearch = () => {
     console.log('Search button clicked with term:', searchTerm);
-    navigate(`/search?query=${searchTerm}`);
+    navigate(`/searchResult?query=${searchTerm}`);
   };
 
   return (

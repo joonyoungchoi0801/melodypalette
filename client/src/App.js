@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Navbar from './components/Navbar/Navbar';
 import Main from './components/Main/Main';
+import Search from './components/Search/Search';
 import Rank from './components/Rank/Rank';
 import SearchResult from './components/SearchResult/SearchResult';
 import RecommendationOptions from './components/RecommendationOptions/RecommendationOptions';
@@ -21,6 +22,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path='/search' element={<Search/>}/>
           <Route path='/rank' element={<Rank />} />
           <Route path="/searchResult" element={<SearchResult />} />
           <Route path="/RecommendationOptions" element={<RecommendationOptions />} />

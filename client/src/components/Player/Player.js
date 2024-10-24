@@ -95,6 +95,9 @@ function Player() {
   // 뒤로 버튼 클릭 시 호출
   const handleBack = () => {
     window.history.back();  // 이전 페이지로 이동
+    setTimeout(() => {
+      window.location.reload();  // 새로고침
+    }, 500); // 0.5초 지연 후 새로고침
   };
 
   return (
@@ -114,7 +117,7 @@ function Player() {
           <p>No track info available</p>
         )}
         <div className="player-controls">
-          <button 
+          <button
             onClick={togglePlayback}
             disabled={!isPlayerReady} // 플레이어가 준비되지 않으면 버튼 비활성화
           >
@@ -123,7 +126,7 @@ function Player() {
         </div>
       </div>
     </div>
-    
+
   );
 }
 

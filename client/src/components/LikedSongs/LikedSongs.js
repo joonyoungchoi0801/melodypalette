@@ -40,10 +40,6 @@ const LikedSongs = () => {
     }
   }, [userId]);
 
-  if (loading) {
-    return <p>로딩 중...</p>;
-  }
-
   // 재생 버튼 클릭 핸들러
   const handlePlay = (track) => {
     const uri = track.uri;
@@ -55,6 +51,10 @@ const LikedSongs = () => {
     // 정보를 전달하며 Player로 이동
     navigate(`/player?uri=${encodeURIComponent(uri)}&token=${encodeURIComponent(accessToken)}&name=${encodeURIComponent(track.name)}&artist=${encodeURIComponent(artist)}&albumImage=${encodeURIComponent(albumImage)}`);
   };
+
+  if (loading) {
+    return <p className="loading-message">로딩 중...</p>;
+  }
 
   return (
     <div className="liked-songs">

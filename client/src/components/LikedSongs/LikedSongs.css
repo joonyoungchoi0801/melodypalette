@@ -1,3 +1,20 @@
+.loading-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-size: 1.5rem; 
+  color: #4a90e2; 
+  font-weight: bold; 
+  animation: blink-animation 1.5s infinite; 
+}
+
+@keyframes blink-animation {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
 .liked-songs {
   background-color: #f4f7fb;
   width: 100%;

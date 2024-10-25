@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import './Callback.css'
 
 function Callback() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Callback() {
       },
       body: JSON.stringify({ code }),
     })
-    
+
       .then(response => {
         if (!response.ok) {
           return response.json().then(err => {
@@ -37,7 +38,7 @@ function Callback() {
   }, [login, navigate]);
 
   return (
-    <div>
+    <div className="callback-container">
       <h2>로그인 처리 중...</h2>
     </div>
   );

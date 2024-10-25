@@ -1,0 +1,23 @@
+.callback-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #282c34; 
+  color: #ffffff; 
+  font-family: Arial, sans-serif;
+  font-size: 1.5rem;
+}
+
+.callback-container h2 {
+  animation: fadeIn 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}

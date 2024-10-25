@@ -46,7 +46,7 @@ const LikedSongs = () => {
 
   // 재생 버튼 클릭 핸들러
   const handlePlay = (track) => {
-    const uri = track.spotifyUrl; // 트랙 URI
+    const uri = track.uri;
     const albumImage = track.album?.images?.[0]?.url || '/images/default_album_image.png'; // 앨범 이미지
     const artist = track.artists?.[0]?.name || 'Unknown Artist'; // 아티스트 이름
 

@@ -31,4 +31,5 @@
 ```
 cd client
 npm start
+https://melodypalette.vercel.app/
 ```
